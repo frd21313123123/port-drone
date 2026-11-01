@@ -6,7 +6,7 @@ extends CanvasLayer
 
 signal request(name: String)
 
-const VERSION: String = "v0.33.2.2"
+const VERSION: String = "v0.33.2.3"
 
 const WHATS_NEW: Array = [
 	"ПК: автообновление через GitHub, настройка «Истощение залежей», Steam-мультиплеер, интерфейс под широкий экран",
