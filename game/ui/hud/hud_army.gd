@@ -19,6 +19,11 @@ func _build_army24() -> void:
 	if ux is GDScript:
 		army_ux = (ux as GDScript).new()
 		army_ux.mount(self, army_dock)
+	if _PcPortS.desktop():
+		var pas: Variant = load("res://pc/army_select.gd")
+		if pas is GDScript:
+			pc_army = (pas as GDScript).new()
+			pc_army.mount(self)
 	armies_bar_old = armies_bar
 	armies_bar = army_dock.panel
 

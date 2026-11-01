@@ -1161,9 +1161,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 	if event is InputEventKey and event.pressed and not event.echo:
 		var kc: int = (event as InputEventKey).keycode
+		if not menus.is_open() and _pc_army() != null and bool(_pc_army().key(event as InputEventKey)):
+			return
 		if kc == KEY_ESCAPE or kc == KEY_BACK:
 			if not menus.is_open() and _army_back():
 				return
+			if not menus.is_open() and pc_cancel_mode():
+				return  # PC port: Esc leaves a build / placement mode first
 			if menus.is_open():
 				_on_menu("resume")
 			else:
@@ -1247,6 +1251,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		elif mb.button_index == MOUSE_BUTTON_WHEEL_DOWN and mb.pressed:
 			cam.step_zoom(-1, mb.position)
 		elif mb.button_index == MOUSE_BUTTON_LEFT:
+			if _pc_army() != null and bool(_pc_army().lmb(mb)):
+				_mouse_down = false
+				return
 			if mb.pressed:
 				_mouse_down = true
 				_begin_press(mb.position)
@@ -1254,10 +1261,22 @@ func _unhandled_input(event: InputEvent) -> void:
 				_mouse_down = false
 				_release_press(mb.position)
 		elif mb.button_index == MOUSE_BUTTON_RIGHT or mb.button_index == MOUSE_BUTTON_MIDDLE:
-			_pc_pan = mb.pressed  # PC port: right / middle drag moves the map (never a tap)
+			_pc_pan = mb.pressed  # PC port: right / middle drag moves the map
+			if mb.button_index == MOUSE_BUTTON_RIGHT:
+				# PC port: a right click that did not move the map is an order (Hearts of Iron style)
+				if mb.pressed:
+					_rmb_at = mb.position
+					_rmb_path = 0.0
+				elif _rmb_at.is_finite() and _rmb_path < 6.0 and _pc_army() != null:
+					_pc_army().rmb_click(mb.position)
+				if not mb.pressed:
+					_rmb_at = Vector2.INF
 	elif event is InputEventMouseMotion:
 		var mm: = event as InputEventMouseMotion
+		if mm.device != InputEvent.DEVICE_ID_EMULATION and _pc_army() != null and bool(_pc_army().mouse_move(mm.position)):
+			return
 		if mm.device != InputEvent.DEVICE_ID_EMULATION and _pc_pan and not _mouse_down:
+			_rmb_path += mm.relative.length()
 			if (mm.button_mask & (MOUSE_BUTTON_MASK_RIGHT | MOUSE_BUTTON_MASK_MIDDLE)) == 0:
 				_pc_pan = false
 				return
@@ -1277,6 +1296,13 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 var _pc_pan: bool = false
+var _rmb_at: Vector2 = Vector2.INF
+var _rmb_path: float = 0.0
+
+
+func _pc_army() -> Object:
+	var pa: Variant = hud.get("pc_army") if hud != null else null
+	return pa as Object if pa != null and is_instance_valid(pa) else null
 
 
 ## Desktop / MCP test keys: -/= zoom, arrows pan, Space = tap at screen centre,

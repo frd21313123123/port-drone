@@ -91,6 +91,11 @@ func _on_tab_tap(p: int) -> void:
 
 
 func _army_tab_hook(p: int, second_tap: bool) -> void:
+	if _PcPortS.desktop():
+		# PC port: the ARMY tab opens the tab itself (buildings, orders); the list is the АРМИИ key
+		if p != 4 and armies_open:
+			toggle_armies()
+		return
 	if p == 4 and not second_tap:
 		if not armies_open and gw != null and gw.player != null and gw.mil != null and gw.mil.has_kind(gw.player.id, Facility.Kind.BARRACKS):
 			toggle_armies()

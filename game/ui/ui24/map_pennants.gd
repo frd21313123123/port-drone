@@ -806,7 +806,7 @@ func _ux_draw(ux: Node, cam: MapCamera, z: float, per: Dictionary) -> void:
 			if plate_log_on:
 				plate_log.append([Engine.get_process_frames(), int(it["gid"]), key, false, int(mm2["fid"]), cc, ""])
 
-	if not far:
+	if not far and hud.get("pc_army") == null:
 		for fid4: int in per:
 			var fac: Facility = ArmyGroups.fac(gw, fid4)
 			if fac == null or fac.group_id >= 0:

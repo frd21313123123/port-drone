@@ -34,6 +34,21 @@ func _army_back() -> bool:
 	return false
 
 
+const _PcP = preload("res://pc/pc_port.gd")
+
+
+## PC port: RMB / Esc leaves a build or placement mode (not the strike planners: their plan would be lost).
+func pc_cancel_mode() -> bool:
+	if not _PcP.desktop() or mode == Mode.NONE:
+		return false
+	if BUILD_KIND.has(mode) or mode in [Mode.TRENCH_H, Mode.TEETH_H, Mode.CAPITAL, Mode.TOWN, Mode.RAIL_ST, Mode.RAIL_LINE, Mode.SATELLITE, Mode.RECON, Mode.ORDER, Mode.MOVE_ALL, Mode.MODULE, Mode.GARRISON, Mode.HOLD, Mode.ATTACK, Mode.EXPEDITION, Mode.OPERATION]:
+		line_cells.clear()
+		_set_mode(Mode.NONE)
+		hud.hide_ops()
+		return true
+	return false
+
+
 func _set_mode(m: int) -> void:
 	if strike.active and not _strike_sw and not _is_strike_mode(m):
 		strike.end(_plan_targets(), false)
@@ -983,6 +998,9 @@ func _on_built(r: Variant, kind: int) -> void:
 		return
 	hud.show_toast(Loc.msg(Loc.mk("Построено: %s", [Loc.t(Military.title_of(kind))])))
 	UiKit.snd("ui_build")
+	if _PcP.desktop() and BUILD_KIND.has(mode):
+		# PC port: the building stays picked — place the next one; RMB / Esc leaves the mode
+		return
 	_set_mode(Mode.NONE)
 	if kind == Facility.Kind.DRONE_PORT or kind == Facility.Kind.MISSILE_FACTORY or kind == Facility.Kind.AIRFIELD or kind == Facility.Kind.BARRACKS or kind == Facility.Kind.PORT or kind == Facility.Kind.DRONE_FACTORY:
 		selected_fac = f

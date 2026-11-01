@@ -22,6 +22,9 @@ func _tap(pos: Vector2) -> void:
 	var aux: Variant = hud.get("army_ux")
 	if mode == Mode.NONE and aux != null and is_instance_valid(aux) and aux.map_tap(pos, wp):
 		return
+	var pca: Variant = hud.get("pc_army")
+	if mode == Mode.NONE and pca != null and is_instance_valid(pca) and bool(pca.tap(pos)):
+		return
 
 	if mode == Mode.NONE and ndk != null and is_instance_valid(ndk) and ndk.has_method("map_tap") and world.player != null and not world.player.eliminated and ndk.map_tap(pos, wp):
 		return
@@ -826,8 +829,7 @@ func _dep_build() -> void:
 	if world.mil.facilities.size() > n0:
 		if Hud.ores_open:
 			hud.toggle_ores()
-	else:
-		_set_mode(Mode.NONE)
+	_set_mode(Mode.NONE)
 
 
 func _jets_own() -> Array:

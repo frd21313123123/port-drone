@@ -352,6 +352,7 @@ var army_dock = null
 var army_ux = null
 var cmd_sheet = null
 var army_pennants = null
+var pc_army = null
 var armies_bar_old: PanelContainer = null
 var _arm_player: Object = null
 
