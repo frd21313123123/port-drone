@@ -25,6 +25,8 @@ jobs:
 
       - name: Version
         id: v
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -e
           BASE="$(sed -n 's/^version="\(.*\)"/\1/p' game/pc/version.cfg)"
@@ -32,6 +34,9 @@ jobs:
             echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"; echo "release=true" >> "$GITHUB_OUTPUT"
           elif [[ -n "${{ github.event.inputs.release_version }}" ]]; then
             echo "version=${{ github.event.inputs.release_version }}" >> "$GITHUB_OUTPUT"; echo "release=true" >> "$GITHUB_OUTPUT"
+          elif [[ "$GITHUB_EVENT_NAME" == "push" && "$GITHUB_REF" == "refs/heads/main" ]] && ! gh release view "v$BASE" >/dev/null 2>&1; then
+            # a new version number in game/pc/version.cfg on main = a release (no tag push needed)
+            echo "version=${BASE}" >> "$GITHUB_OUTPUT"; echo "release=true" >> "$GITHUB_OUTPUT"
           else
             echo "version=${BASE}" >> "$GITHUB_OUTPUT"; echo "release=false" >> "$GITHUB_OUTPUT"
           fi

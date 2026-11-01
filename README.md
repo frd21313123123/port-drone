@@ -31,11 +31,11 @@ tools/gdc2gd.py        the decompiler used to get game/ out of the APK's binary 
 
 ### Releases
 
-* Push a tag `v0.32.2` **or** run the *Build* workflow with `release_version = 0.32.2`.
+* **Bump `version` in `game/pc/version.cfg` and push to `main`** — if there is no release `v<version>` yet, CI publishes it.
+  (A tag `v0.32.2` or running the *Build* workflow with `release_version` works too.)
   CI builds `DroneFlames.exe`, `DroneFlames-libs-r1.zip`, `SHA256SUMS.txt` and publishes the release.
   Players' games see it on next start and offer the update.
-* Bump the number in `game/pc/version.cfg` (`version`) when you change the game; the tag decides the
-  released version (CI writes it into the exe and into `Menus.VERSION`, which the multiplayer lobby compares).
+* The released version is written into the exe (CI writes it into the exe and into `Menus.VERSION`, which the multiplayer lobby compares).
 * Changed anything in `libs/`? Bump `libs_rev` in `game/pc/version.cfg` — the game re-downloads the libs.
 * Version order: all numbers in the tag are compared left to right (`0.32.2` > `0.32.1` > `0.32.0.1`).
 
