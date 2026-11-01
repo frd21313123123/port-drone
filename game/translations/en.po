@@ -34062,3 +34062,15 @@ msgstr "Fixed: fronts against a neighbour you are not at war with no longer vani
 msgid "НОВОЕ: настройка «Размер интерфейса» (80–100%) в разделе «Графика»; очередь верфи прокручивается"
 msgstr "NEW: «Interface size» setting (80–100%) in Graphics; the shipyard queue scrolls"
 
+
+msgid "ПРОФИЛЬ · НИК И ФЛАГ"
+msgstr "PROFILE · NICK AND FLAG"
+
+msgid "НИК СОХРАНЁН: %s"
+msgstr "NICK SAVED: %s"
+
+msgid "В STEAM-ИГРЕ ВАС ВИДНО ПОД ИМЕНЕМ STEAM: %s"
+msgstr "IN STEAM GAMES YOU APPEAR AS YOUR STEAM NAME: %s"
+
+msgid "ФЛАГ И НАЗВАНИЕ СТРАНЫ"
+msgstr "FLAG AND COUNTRY NAME"

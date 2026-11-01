@@ -85,6 +85,14 @@ static func inst() -> NetSession:
 	return _inst
 
 
+## PC port: the name the player is shown under (the Steam name in a Steam room, else the profile nick)
+static func my_name_for_card() -> String:
+	var sn: Node = steam_net()
+	if sn != null and bool(sn.get("ok")) and String(sn.get("persona")).strip_edges() != "":
+		return String(sn.get("persona"))
+	return NetConfig.nick()
+
+
 static func allowed() -> Dictionary:
 	return ALLOWED
 

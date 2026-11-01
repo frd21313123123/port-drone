@@ -1605,9 +1605,11 @@ func show_mp(msg: String = "", sev: String = "") -> void:
 	if net == null:
 		_button(vb, "НАЗАД", "stone", "main")
 		return
-	var online_ok: bool = _mp_online_ok()
+	var online_ok: bool = false  # PC port: the game's own online (accounts, ranked, its servers) is removed: Steam + Wi-Fi + profile
+	if _mp_tab == 1:
+		_mp_tab = 0
 	if _mp_tab < 0:
-		_mp_tab = 1 if online_ok else 0
+		_mp_tab = 2 if _steam_ok() else 0
 	if not net.lan.rooms_changed.is_connected(_mp_rooms_changed):
 		net.lan.rooms_changed.connect(_mp_rooms_changed)
 	if not net.browser.rooms_changed.is_connected(_mp_rooms_changed):
@@ -1622,16 +1624,20 @@ func show_mp(msg: String = "", sev: String = "") -> void:
 				_mp_fill_list())
 	var rs: bool = _mp_resume_card(vb)
 	var rj: bool = _mp_rejoin_card(vb)
-	var mp_tabs: Array = [["net_lan", "WI-FI"], ["net_globe", "ОНЛАЙН", online_ok and (not Account.signed_in() or Account.mp_ok())]]
-	if _steam_net() != null:
-		mp_tabs.append(["net_players", "STEAM"])  # PC port
-	elif _mp_tab == 2:
-		_mp_tab = 0
-	MpKit.tabs(vb, mp_tabs, _mp_tab, func(i: int) -> void:
-		if i == _mp_tab:
+	var tab_ids: Array = [2, 0] if _steam_net() != null else [0]  # STEAM first, then WI-FI
+	var mp_tabs: Array = []
+	for tid: int in tab_ids:
+		mp_tabs.append(["net_players", "STEAM"] if tid == 2 else ["net_lan", "WI-FI"])
+	if not tab_ids.has(_mp_tab):
+		_mp_tab = int(tab_ids[0])
+	MpKit.tabs(vb, mp_tabs, tab_ids.find(_mp_tab), func(i: int) -> void:
+		if int(tab_ids[i]) == _mp_tab:
 			return
-		_mp_tab = i
+		_mp_tab = int(tab_ids[i])
 		show_mp())
+	var parrow: TextureRect = UiKit.icon_rect("wb_arrow_r", 20.0)  # the local profile (nick, flag): no account needed
+	parrow.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	MpKit.player_card(vb, NetSession.my_name_for_card(), Loc.t("ПРОФИЛЬ · НИК И ФЛАГ"), {}, MpKit.ROW_H, func() -> void: show_profile(), parrow)
 	_acc_sig = _account_sig()
 	if _mp_tab == 0:
 		_mp_nick_row(vb)
@@ -1639,8 +1645,8 @@ func show_mp(msg: String = "", sev: String = "") -> void:
 		_label(vb, Loc.t("ЧЕРЕЗ STEAM, ДО %d ИГРОКОВ") % NetConfig.MAX_PLAYERS, 10, UiKit.MUTED)
 	else:
 		_label(vb, "БЕЗ ИНТЕРНЕТА, В ОДНОЙ СЕТИ" if _mp_tab == 0 else "ЧЕРЕЗ ИНТЕРНЕТ, ДО %d ИГРОКОВ" % NetConfig.MAX_PLAYERS, 10, UiKit.MUTED)
-	var signed: bool = Account.signed_in()
-	var open_ok: bool = online_ok and signed and Account.mp_open()
+	var signed: bool = false
+	var open_ok: bool = false
 	if _mp_tab == 1:
 		if not online_ok:
 			MpKit.placeholder(vb, "net_warn", "ОНЛАЙН НЕДОСТУПЕН В ЭТОЙ ВЕРСИИ", "ИГРАЙТЕ ПО WI-FI: ВКЛАДКА СЛЕВА", false, 96.0)
@@ -3376,101 +3382,42 @@ func _pwr_submit() -> void:
 
 
 func show_profile(msg: String = "", sev: String = "info") -> void:
-	_hook_account()
-	if current != "profile":
-		_logout_ok = false
 	var vb: VBoxContainer = _screen("Профиль", 0.45, current != "profile")
 	current = "profile"
 	_top = true
-	_acc_sig = _account_sig()
-	if not Account.mp_ok():
-		MpKit.status_bar(vb, "ОНЛАЙН-ИГРА ДЛЯ АККАУНТА ЗАКРЫТА · WI-FI ДОСТУПЕН", "alarm", "acc_ban")
-	elif Account.suspended_s() > 0:
-		MpKit.status_bar(vb, "ОНЛАЙН ЗАКРЫТ ДО %s · %s" % [Account.suspension_until(), Account.suspension_reason()], "alarm", "acc_ban")
-	var since: String = String(Account.info.get("creation_date", "")).left(10)
-	var p3: PackedStringArray = since.split("-")
-	MpKit.player_card(vb, Account.username(), ("В ИГРЕ С %s.%s.%s" % [p3[2], p3[1], p3[0]]) if p3.size() == 3 else "", Account.equipped(), 72.0)
-	var fresh: int = Account.unseen().size()
-	var orow: Button = _nav_row(vb, "ОФОРМЛЕНИЕ", ("НОВОЕ: %d" % fresh) if fresh > 0 else ("ОТКРЫТО %d" % Account.owned.size() if not Account.owned.is_empty() else "РАМКА · БАННЕР · ТИТУЛ"), func() -> void: show_outfit())
-	if fresh > 0:
-		for l: Node in orow.get_child(0).get_children():
-			if l is Label and (l as Label).text.begins_with("НОВОЕ"):
-				(l as Label).add_theme_color_override("font_color", UiKit.GREEN)
-	var searching: bool = net != null and net.ranked_mode != "" and not net.in_match and net.rtc.ranked.is_empty()
-	var busy: bool = net != null and net.active() and not searching
-	if Account.mp_ok():
-		var f: Dictionary = MpKit.field(vb, "СМЕНИТЬ НИК", "Латиница и цифры", "nick")
-		var e: LineEdit = f["edit"]
-		e.text = Account.username()
-		e.editable = not busy
-		if Account.nick_error(Account.username()) != "":
-			MpKit.set_field_error(f, "НИК НУЖНО СМЕНИТЬ: ЛАТИНИЦА И ЦИФРЫ")
-		var save: Button = UiKit.big("СОХРАНИТЬ", "blue", "", 44.0, 13)
-		save.custom_minimum_size.x = 112
-		save.disabled = true
-		(f["row"] as HBoxContainer).add_child(save)
-		f["save"] = save
-		e.text_changed.connect(func(t: String) -> void:
-			var r: Array = Account.filter_nick(t)
-			if String(r[0]) != t:
-				var col: int = e.caret_column
-				e.text = String(r[0])
-				e.caret_column = mini(col, e.text.length())
-			if bool(r[1]):
-				MpKit.set_field_error(f, Account.NICK_RULE)
-			save.disabled = e.text == Account.username() or e.text.length() < 3
-			_nick_probe(f, e, Account.username()))
-		var do_save: = func() -> void:
-			var why: String = Account.nick_error(e.text)
-			if why != "":
-				MpKit.set_field_error(f, why)
-				UiKit.snd("ui_error")
-				return
-			save.disabled = true
-			save.text = "..."
-			var r2: Dictionary = await Account.change_username(e.text)
-			if current != "profile" or not is_instance_valid(save) or not is_instance_valid(e):
-				return
-			if bool(r2["ok"]):
-				UiKit.snd("ui_capture")
-				show_profile("НИК ИЗМЕНЁН", "ok")
-			else:
-				save.text = "СОХРАНИТЬ"
-				save.disabled = false
-				MpKit.set_field_error(f, "НИК: УЖЕ ЗАНЯТ" if int(r2.get("code", 0)) == 409 else String(r2["err"]).to_upper())
-				UiKit.snd("ui_error")
-		save.pressed.connect(do_save)
-		e.text_submitted.connect(func(_t: String) -> void:
-			if not save.disabled:
-				do_save.call())
-		if busy:
-			_label(vb, "НИК МЕНЯЕТСЯ ВНЕ КОМНАТЫ", 10, UiKit.MUTED)
-	MpKit.section(vb, "ФЛАГ")
+	var busy: bool = net != null and net.active()
+	MpKit.player_card(vb, NetSession.my_name_for_card(), "", {}, 72.0)
+	var f: Dictionary = MpKit.field(vb, "НИК", "Латиница и цифры", "nick")
+	var e: LineEdit = f["edit"]
+	e.text = NetConfig.nick()
+	e.max_length = NetConfig.NICK_MAX
+	e.editable = not busy
+	var save: Button = UiKit.big("СОХРАНИТЬ", "blue", "", 44.0, 13)
+	save.custom_minimum_size.x = 112
+	save.disabled = true
+	(f["row"] as HBoxContainer).add_child(save)
+	e.text_changed.connect(func(t: String) -> void:
+		save.disabled = NetConfig.clean_nick(t) == "" or NetConfig.clean_nick(t) == NetConfig.nick())
+	var do_save: = func() -> void:
+		var r: String = NetConfig.set_nick(e.text)
+		UiKit.snd("ui_capture")
+		show_profile(Loc.t("НИК СОХРАНЁН: %s") % r.to_upper(), "ok")
+	save.pressed.connect(do_save)
+	e.text_submitted.connect(func(_t: String) -> void:
+		if not save.disabled:
+			do_save.call())
+	var sn: Node = _steam_net()
+	if sn != null and _steam_ok():
+		_label(vb, Loc.t("В STEAM-ИГРЕ ВАС ВИДНО ПОД ИМЕНЕМ STEAM: %s") % String(sn.get("persona")).to_upper(), 10, UiKit.MUTED)
+	elif busy:
+		_label(vb, "НИК МЕНЯЕТСЯ ВНЕ КОМНАТЫ", 10, UiKit.MUTED)
+	MpKit.section(vb, "ФЛАГ И НАЗВАНИЕ СТРАНЫ")
 	var fc: Button = FlagEditor.card(vb, func() -> void:
 		FlagEditor.from_profile = true
 		show_flag_editor(), true)
 	fc.disabled = busy
 	if busy:
 		_label(vb, "ФЛАГ МЕНЯЕТСЯ ВНЕ КОМНАТЫ", 10, UiKit.MUTED)
-	MpKit.section(vb, "СТАТИСТИКА")
-	var played: Variant = Account.info.get("match_played", null)
-	MpKit.stat_card(vb, "ОБЫЧНЫЕ ПАРТИИ", "СЧИТАЮТСЯ ОТ 2 ИГРОКОВ И 10 МИНУТ ИГРЫ", "—" if played == null else str(int(played)), false, "icon_stats")
-	MpKit.stat_card(vb, "РЕЙТИНГОВЫЕ ИГРЫ", "ПОБЕДЫ · ПОРАЖЕНИЯ", "%d · %d" % [int(Account.info.get("wins", 0)), int(Account.info.get("losses", 0))], false, "acc_ranked")
-	_sep(vb, 8)
-	var lo: Button = _ibutton(vb, ("ВЫЙТИ МОЖНО ПОСЛЕ ПАРТИИ" if net.in_match else "СНАЧАЛА ВЫЙДИТЕ ИЗ КОМНАТЫ") if busy else ("СНАЧАЛА ОТМЕНИТЕ ПОИСК" if searching else ("ТОЧНО ВЫЙТИ? ЕЩЁ ТАП" if _logout_ok else "ВЫЙТИ ИЗ АККАУНТА")), "red" if _logout_ok else "stone", "", "acc_logout", 44.0)
-	lo.disabled = busy or searching
-	lo.pressed.connect(func() -> void:
-		if not _logout_ok:
-			_logout_ok = true
-			show_profile()
-			get_tree().create_timer(3.0).timeout.connect(func() -> void:
-				if _logout_ok and current == "profile":
-					_logout_ok = false
-					show_profile())
-			return
-		_logout_ok = false
-		Account.logout()
-		show_mp("ВЫ ВЫШЛИ ИЗ АККАУНТА", "info"))
 	var slot: = Control.new()
 	slot.custom_minimum_size = Vector2(0, 36)
 	slot.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -3487,9 +3434,6 @@ func show_profile(msg: String = "", sev: String = "info") -> void:
 	var back: Button = _button(br, "НАЗАД", "stone", "")
 	back.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	back.pressed.connect(func() -> void: show_mp())
-	if Time.get_ticks_msec() - _acc_fetch_ms > 10000:
-		_acc_fetch_ms = Time.get_ticks_msec()
-		Account.fetch_info()
 
 
 

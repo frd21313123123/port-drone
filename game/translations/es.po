@@ -22285,3 +22285,18 @@ msgstr ""
 msgid "ЭНЕРГОСБЕРЕЖЕНИЕ · 30 FPS"
 msgstr ""
 
+
+msgid "ПРОФИЛЬ · НИК И ФЛАГ"
+msgstr "PERFIL · NICK Y BANDERA"
+
+msgid "НИК СОХРАНЁН: %s"
+msgstr "NICK GUARDADO: %s"
+
+msgid "В STEAM-ИГРЕ ВАС ВИДНО ПОД ИМЕНЕМ STEAM: %s"
+msgstr "EN PARTIDAS DE STEAM APARECES CON TU NOMBRE DE STEAM: %s"
+
+msgid "ФЛАГ И НАЗВАНИЕ СТРАНЫ"
+msgstr "BANDERA Y NOMBRE DEL PAÍS"
+
+msgid "НИК МЕНЯЕТСЯ ВНЕ КОМНАТЫ"
+msgstr "EL NICK SE CAMBIA FUERA DE UNA SALA"
