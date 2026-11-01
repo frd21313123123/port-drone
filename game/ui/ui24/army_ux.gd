@@ -880,7 +880,7 @@ func _army_chip(parent: Control, fid: int) -> Button:
 	tv.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	tv.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	hb.add_child(tv)
-	var l1: Label = UiKit.lbl("№%d %s" % [int(s["no"]), Loc.t(String(s["build_name"])).to_upper()], 10, UiKit.TEXT, 2, 2)
+	var l1: Label = UiKit.lbl("%s %s" % [Loc.no(int(s["no"])), Loc.t(String(s["build_name"])).to_upper()], 10, UiKit.TEXT, 2, 2)
 	l1.clip_text = true
 	l1.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	tv.add_child(l1)
@@ -1207,7 +1207,7 @@ func _skip_why(d: Dictionary) -> String:
 		return "нет армий"
 	var e: Array = sk[0]
 	var f: Facility = AG.fac(gw, int(e[0]))
-	return "№%d — %s" % [f.army_no if f != null else 0, String(e[1])]
+	return "%s — %s" % [Loc.no(f.army_no if f != null else 0), String(e[1])]
 
 
 
@@ -2083,7 +2083,7 @@ func _pick_sections(vb: VBoxContainer) -> void:
 		for fid: int in _group(pick_into).get("fids", PackedInt32Array()):
 			var f6: Facility = AG.fac(gw, fid)
 			if f6 != null:
-				mine.append("№%d" % f6.army_no)
+				mine.append(Loc.no(f6.army_no))
 		if not mine.is_empty():
 			_line(lv, Loc.t("В группе %s уже: %s") % [AS.gname(_group(pick_into)), ", ".join(mine)], UiKit.MUTED)
 

@@ -590,7 +590,7 @@ func _struct_sig() -> String:
 			s += ":%s" % str(dp.subject_wars(sid).get("with", []))
 	var dr: Object = gw.get("drama") as Object
 	if dr != null and dr.has_method("chronicle"):
-		s += "|h%d" % (dr.get("chron") as Array).size()
+		s += "|h%d" % (dr.get("chron") as Array).size() if dr.get("chron") is Array else ""
 	if not dp.coalition.is_empty():
 		s += "|k%d" % int(dp.coalition["leader"])
 	return s
@@ -770,7 +770,7 @@ func _hero() -> void:
 	var top_t: int = int(st.get("tiers", TIER_NAMES.size())) - 1
 	if tier >= 0 and tier < top_t:
 		var pr: float = float(st["progress"])
-		nxt = Loc.t("ДО %s") % Loc.t(String(TIER_GEN[clampi(tier + 1, 0, TIER_GEN.size() - 1)])) + ((" — %d %%" % roundi(clampf(pr, 0.0, 1.0) * 100.0)) if pr >= 0.0 else "")
+		nxt = Loc.t("ДО %s") % Loc.t(String(TIER_GEN[clampi(tier + 1, 0, TIER_GEN.size() - 1)])) + ((" — " + Loc.pct(roundi(clampf(pr, 0.0, 1.0) * 100.0))) if pr >= 0.0 else "")
 	elif tier >= top_t:
 		nxt = "ВЫСШИЙ СТАТУС — УДЕРЖИВАЙТЕ"
 	if nxt != "":
@@ -863,7 +863,7 @@ func _ladder(tier: int, prog: float) -> Control:
 		var used: Array = []
 		for lb: Array in labels:
 			var i2: int = int(lb[0])
-			var s: String = String(names[i2])
+			var s: String = Loc.t(String(names[i2]))
 			var tw: float = f.get_string_size(s, HORIZONTAL_ALIGNMENT_LEFT, -1, 9).x
 			var nx2: float = x0 + step * float(i2)
 			var lx: float = clampf(nx2 - tw * 0.5, 3.0, w - tw - 3.0)
@@ -1940,7 +1940,7 @@ static func _signed(v: int) -> String:
 
 
 static func _x(v: float) -> String:
-	return ("%.1f" % v).replace(".", ",")
+	return Loc.dec("%.1f" % v)
 
 
 static func _short(v: float) -> String:
@@ -1948,5 +1948,5 @@ static func _short(v: float) -> String:
 	if a >= 10000.0:
 		return Loc.t("%dК") % roundi(a / 1000.0)
 	if a >= 1000.0:
-		return (Loc.t("%.1fК") % (a / 1000.0)).replace(".", ",")
+		return Loc.dec(Loc.t("%.1fК") % (a / 1000.0))
 	return str(roundi(a))

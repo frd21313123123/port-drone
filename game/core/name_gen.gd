@@ -146,7 +146,7 @@ static func clean_country(s: String) -> String:
 static func country_name_error(s: String) -> String:
 	var t: String = s.strip_edges()
 	if t.length() < NAME_MIN:
-		return "Минимум %d буквы" % NAME_MIN
+		return Loc.t("Минимум %d буквы") % NAME_MIN
 	var k: String = t.to_lower().replace("ё", "е").replace(" ", "").replace("-", "")
 	if REAL_STATES.has(k) or REAL.map(func(r: String) -> String: return r.to_lower()).has(k):
 		return "Мир вымышленный — придумайте своё название"

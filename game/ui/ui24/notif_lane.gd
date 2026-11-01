@@ -150,6 +150,7 @@ class Ring extends Control:
 func _ready() -> void:
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_to_group("notif_lane")
+	add_to_group("i18n")
 	_vb = VBoxContainer.new()
 	_vb.add_theme_constant_override("separation", 4)
 	_vb.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -284,7 +285,7 @@ func mark_read() -> void:
 func _log(text: String, lvl: int, unread: bool = false) -> void:
 	if not journal.is_empty() and String(journal[journal.size() - 1]["text"]) == text:
 		return
-	journal.append({"t": clock, "text": text, "lvl": lvl})
+	journal.append({"t": clock, "text": text, "lvl": lvl, "k": Loc.keep(text)})
 	if journal.size() > JOURNAL_CAP:
 		journal.pop_front()
 	if unread:
@@ -336,8 +337,9 @@ func ambient(text: String, lvl: int, col: Color = Color(0, 0, 0, 0)) -> void:
 				if String(e["mk"]) == mk:
 					e["n"] = int(e["n"]) + 1
 					e["text"] = text
+					e["tk"] = Loc.keep(text)
 					return
-			_note_pend.append({"mk": mk, "key": key, "n": 1, "text": text, "t0": clock, "col": col})
+			_note_pend.append({"mk": mk, "key": key, "n": 1, "text": text, "t0": clock, "col": col, "tk": Loc.keep(text)})
 			_note_tick()
 		_:
 			_log(text, lvl)
@@ -372,6 +374,8 @@ func _note_tick() -> void:
 	note_next = clock + NOTE_GAP
 	var t: String = _note_title(e)
 	var d: Dictionary = {"title": t, "ttl": 2.6 + clampf((t.length() - 40) * 0.03, 0.0, 1.4)}
+	if int(e["n"]) <= 1 and e.has("tk"):
+		d["tk"] = e["tk"]
 	if (e["col"] as Color).a > 0.0:
 		d["colour"] = e["col"]
 	push("note", d)
@@ -546,6 +550,10 @@ func _place() -> void:
 
 
 func push(kind: String, d: Dictionary) -> void:
+	if d.has("title") and not d.has("tk"):
+		d["tk"] = Loc.keep(String(d["title"]))
+	if d.has("sub") and not d.has("sk"):
+		d["sk"] = Loc.keep(String(d["sub"]))
 	if kind == "tip" and hold_tips:
 		return
 	if hold_conf and kind != "ult" and _conf_own(d):
@@ -827,6 +835,48 @@ func _show(it: Dictionary) -> void:
 	var tw: Tween = n.create_tween().set_parallel(true)
 	tw.tween_property(n, "modulate:a", 1.0, 0.15)
 	tw.tween_property(n, "scale", Vector2.ONE, 0.3 if String(it["kind"]) == "war" else 0.18).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+
+
+
+
+
+func relocalize() -> void:
+	for e: Dictionary in journal:
+		if e.has("k"):
+			e["text"] = Loc.re(e["k"])
+	for e2: Dictionary in _note_pend:
+		if e2.has("tk"):
+			e2["text"] = Loc.re(e2["tk"])
+	for it: Dictionary in _shown + _queue:
+		var d: Dictionary = it["d"]
+		if d.has("tk"):
+			d["title"] = Loc.re(d["tk"])
+		if d.has("sk"):
+			d["sub"] = Loc.re(d["sk"])
+		var v: Variant = it["node"]
+		if v == null or not is_instance_valid(v):
+			continue
+		var old: Control = v
+		if String(it["kind"]) == "ult":
+			_update_chip(it)
+			continue
+		if old.get_parent() != _vb:
+			continue
+		var idx: int = old.get_index()
+		var n: Control
+		match String(it["kind"]):
+			"war":
+				n = _make_war(it)
+			"status":
+				n = _make_status(it)
+			_:
+				n = _make_line(it)
+		it["node"] = n
+		_vb.add_child(n)
+		_vb.move_child(n, idx)
+		_vb.remove_child(old)
+		old.queue_free()
+	_settle()
 
 
 

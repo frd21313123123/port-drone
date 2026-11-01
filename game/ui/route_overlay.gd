@@ -43,7 +43,7 @@ func _process(delta: float) -> void:
 			ripples.remove_at(k)
 	var busy: bool = not ripples.is_empty()
 	if gw != null and gw.mil != null and main_node != null:
-		busy = busy or bool(main_node.call("plan_active")) or main_node.call("follow_drone") != null or not gw.mil.missiles.is_empty() or not gw.mil.air.aircraft.is_empty() or not gw.army.arrows.is_empty() or gw.selected_facility() != null or not gw.army.units.is_empty() or not (main_node.get("line_cells") as Array).is_empty()
+		busy = busy or bool(main_node.call("plan_active")) or main_node.call("follow_drone") != null or not gw.mil.missiles.is_empty() or not gw.mil.air.aircraft.is_empty() or not gw.army.arrows.is_empty() or gw.selected_facility() != null or not gw.army.units.is_empty() or (main_node.get("line_cells") is Array and not (main_node.get("line_cells") as Array).is_empty())
 
 
 		if not busy:
@@ -623,8 +623,11 @@ func _sel_brackets(f: Facility, cam: MapCamera) -> void:
 
 
 func _line_preview(cam: MapCamera) -> void:
-	var lc: Array = main_node.get("line_cells")
-	if lc.is_empty() or gw.player == null:
+	var lcv: Variant = main_node.get("line_cells") if main_node != null else null
+	if not (lcv is Array) or gw.player == null:
+		return
+	var lc: Array = lcv
+	if lc.is_empty():
 		return
 	var z: float = cam.zoom.x
 	var ok: = Color(Palette.c("grass_light"), 0.75)

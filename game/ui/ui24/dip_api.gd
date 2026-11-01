@@ -40,7 +40,7 @@ func _init(world: GameWorld, me_id: int) -> void:
 
 func cmd(names: Array) -> String:
 	for n: String in names:
-		if dp.has_method(n) and NetSession.ALLOWED.has("diplo." + n):
+		if dp.has_method(n) and NetSession.allowed().has("diplo." + n):
 			return n
 	return ""
 
@@ -57,7 +57,7 @@ func trd():
 
 func tcmd(m: String) -> String:
 	var t = trd()
-	return m if t != null and t.has_method(m) and NetSession.ALLOWED.has(TRD + "." + m) else ""
+	return m if t != null and t.has_method(m) and NetSession.allowed().has(TRD + "." + m) else ""
 
 
 func _call(obj: Object, m: String, args: Array) -> Variant:
@@ -217,7 +217,7 @@ func contracts(cid: int) -> Array:
 
 
 func contract_room(cid: int, res: String = "") -> String:
-	if NetSession.inst != null and (NetSession.inst.reconnecting or NetSession.inst.rejoining):
+	if NetSession.inst() != null and (NetSession.inst().reconnecting or NetSession.inst().rejoining):
 		return "нет связи — контракт не отправить"
 	var tr = trd()
 	if tr != null and tr.has_method("contract_why"):

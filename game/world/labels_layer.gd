@@ -278,10 +278,17 @@ func _boot_pass(delta: float) -> void:
 		if _boot_rg > 0.0:
 			return
 		_boot_rg = 0.25
-		if _rg_stage < 0:
-			_region_start()
-		while _rg_stage >= 0:
-			_region_step()
+		if not _regions.is_empty():
+
+
+
+			if _rg_stage < 0:
+				_region_start()
+		else:
+			if _rg_stage < 0:
+				_region_start()
+			while _rg_stage >= 0:
+				_region_step()
 		if _regions.is_empty():
 			return
 	_layout()

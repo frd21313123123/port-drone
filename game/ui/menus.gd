@@ -6,16 +6,19 @@ extends CanvasLayer
 
 signal request(name: String)
 
-const VERSION: String = "v0.32.0-pcfix1"
+const VERSION: String = "v0.33.2"
 
 const WHATS_NEW: Array = [
 	"ПК: автообновление через GitHub, настройка «Истощение залежей», Steam-мультиплеер, интерфейс под широкий экран",
-	"Локальное исправление ПК: фронт принимает армии на паузе; бойцы выходят из окопов по приказу; смена режима снимает стоп; непроходимый путь не считается прибытием",
-	"Быстрее: расчёт границ и анклавов на 29% быстрее — меньше нагрузка на больших картах",
-	"ОНЛАЙН: выигранный матч засчитывается; кнопки после победы — двойным тапом; «НЕТ СВЯЗИ С ХОСТОМ» в чате",
-	"Внутри: большой порядок в коде (армия, экономика, мир, главный экран разделены на части, лишний код удалён) — игра не изменилась",
-	"Для тестеров: скрытый замер производительности (режим разработчика в настройках)",
-	"Всё из 0.31.6: онлайн-исправления, защита от вылетов при касаниях, обучение (22 ролика), новый баланс армии и ПВО",
+	"Исправлено: фронты против соседа без войны больше не исчезают; аэродромы, порты и склады дронопортов после ударов восстанавливаются — порты снова принимают корабли",
+	"НОВОЕ: настройка «Размер интерфейса» (80–100%) в разделе «Графика»; очередь верфи прокручивается",
+	"Онлайн: новый быстрый сетевой модуль, восстановление пароля по почте, баннер игрока в лобби",
+	"Исправлен вылет в долгих партиях",
+	"Оптимизация: 60 FPS по умолчанию — меньше нагрев и расход батареи; 30 FPS в меню и на паузе; меньше фризов в поздней игре",
+	"Одинаковый расчёт на iPhone и Android — основа для кросс-плея",
+	"Армия: приказы больше не теряются («в резерве»), ровнее маршруты, адекватное авто-командование штаба",
+	"Исправлено: сохранение после конца партии и «поставьте столицу», окно ультиматума, туман войны, «Страны нет», осколки погибших стран, удары вассала без войны, музыка в обучении",
+	"Английский и украинский: исправлены термины, подписи и формат чисел",
 ]
 
 var gw: GameWorld
@@ -1300,8 +1303,8 @@ func _bot_rows(vb: VBoxContainer) -> void:
 
 static func _pts(v: int) -> String:
 	var t: String = str(v)
-	if v >= 10000:
-		t = "%d %03d" % [v / 1000, v % 1000]
+	if v >= 10000 or Loc.lang == "en":
+		t = Loc.inum(v)
 	return Loc.t("%s ОЧКОВ") % t
 
 
@@ -2258,6 +2261,8 @@ func _mp_lobby_changed() -> void:
 
 
 func show_lobby(msg: String = "") -> void:
+	if net != null and net.in_match:
+		return
 	if _mp_gate():
 		return
 	if not net.active():
@@ -2380,6 +2385,8 @@ func _paint_big(b: Button, colour: String) -> void:
 
 
 func show_lobby_style() -> void:
+	if net != null and net.in_match:
+		return
 	if not net.active():
 		show_mp(net.status_text)
 		return
@@ -2470,6 +2477,16 @@ func show_settings_sub(kind: String) -> void:
 	current = "settings_" + kind
 	_sheet = kind != "gfx"
 	if kind == "gfx":
+
+		var uis: Array = []
+		for k347: Variant in GameConfig.UI_SCALES:
+			uis.append("%d%%" % roundi(float(k347) * 100.0))
+		_selector(vb, "РАЗМЕР ИНТЕРФЕЙСА", uis, func() -> int: return GameConfig.ui_scale_i, func(i: int) -> void:
+			if i == GameConfig.ui_scale_i:
+				return
+			GameConfig.ui_scale_i = i
+			Save.apply_ui_scale()
+			Save.save_prefs(), VW_SHORT)
 		_selector(vb, "ДЕНЬ/НОЧЬ", ["ВКЛ", "ВЫКЛ"], func() -> int: return 0 if GameConfig.night else 1, func(i: int) -> void: GameConfig.night = i == 0, VW_SHORT)
 		_selector(vb, "ЦВЕТ СУТОК", ["ВКЛ", "ВЫКЛ"], func() -> int: return 0 if GameConfig.day_grade else 1, func(i: int) -> void: GameConfig.day_grade = i == 0, VW_SHORT)
 		_selector(vb, "ОБЛАКА", ["ВКЛ", "ВЫКЛ"], func() -> int: return 0 if GameConfig.clouds else 1, func(i: int) -> void: GameConfig.clouds = i == 0, VW_SHORT)
@@ -2478,7 +2495,11 @@ func show_settings_sub(kind: String) -> void:
 		_selector(vb, "ЦИФРЫ ДОХОДА", ["ВКЛ", "ВЫКЛ"], func() -> int: return 0 if GameConfig.econ_fx else 1, func(i: int) -> void: GameConfig.econ_fx = i == 0, VW_SHORT)
 
 
-		_selector(vb, "ЭНЕРГОСБЕРЕЖЕНИЕ · 45 FPS", ["ВЫКЛ", "ВКЛ"], func() -> int: return 1 if GameConfig.power_save else 0, func(i: int) -> void:
+
+		_selector(vb, "ЧАСТОТА КАДРОВ", ["30", "60", "МАКС"], func() -> int: return GameConfig.fps_i, func(i: int) -> void:
+			GameConfig.fps_i = i
+			Save.apply_power_save(), VW_SHORT)
+		_selector(vb, "ЭНЕРГОСБЕРЕЖЕНИЕ · 30 FPS" if GameConfig.android else "ЭНЕРГОСБЕРЕЖЕНИЕ · 45 FPS", ["ВЫКЛ", "ВКЛ"], func() -> int: return 1 if GameConfig.power_save else 0, func(i: int) -> void:
 			GameConfig.power_save = i == 1
 			Save.apply_power_save(), VW_SHORT)
 		var pc_port: Node = get_node_or_null("/root/PcPort")
@@ -2712,6 +2733,8 @@ func _two_taps(b: Button, req: String) -> void:
 
 var _top: bool = false
 var _auth_tab: int = 0
+var _pwr_resend_ms: int = 0
+var _pwr_btn: Button = null
 var _auth_intent: String = ""
 var _auth_nick: String = ""
 var _auth_email: String = ""
@@ -2829,6 +2852,9 @@ func show_auth(tab: int = -1, intent: String = "-", msg: String = "", sev: Strin
 	if _auth_intent != "":
 		var what: String = {"create": "СОЗДАТЬ КОМНАТУ", "rejoin": "ВЕРНУТЬСЯ В ПАРТИЮ", "resume": "ПРОДОЛЖИТЬ ПАРТИЮ"}.get(_auth_intent, "ИГРАТЬ ОНЛАЙН")
 		_label(vb, ("НУЖЕН АККАУНТ, ЧТОБЫ " if reg else "ВОЙДИТЕ, ЧТОБЫ ") + what, 11, UiKit.GOLD)
+	if _auth_tab >= 2:
+		_show_recover(vb, msg, sev)
+		return
 	MpKit.tabs(vb, [["", "ВХОД"], ["", "РЕГИСТРАЦИЯ"]], _auth_tab, func(i: int) -> void:
 		if _auth_busy or i == _auth_tab:
 			return
@@ -2867,6 +2893,24 @@ func show_auth(tab: int = -1, intent: String = "-", msg: String = "", sev: Strin
 		e.focus_exited.connect(func() -> void:
 			if is_instance_valid(e) and e.text != "" and not _auth_busy:
 				MpKit.set_field_error(_af[key], _auth_check(key, e.text)))
+	if not reg:
+		var fg: = Button.new()
+		fg.text = Loc.t("ЗАБЫЛИ ПАРОЛЬ?")
+		fg.flat = true
+		fg.focus_mode = Control.FOCUS_NONE
+		fg.custom_minimum_size = Vector2(0, 44)
+		fg.size_flags_horizontal = Control.SIZE_SHRINK_END
+		fg.add_theme_font_size_override("font_size", 11)
+		fg.add_theme_color_override("font_color", UiKit.BLUE)
+		fg.pressed.connect(func() -> void:
+			if _auth_busy:
+				return
+			_auth_keep()
+			_auth_pw = ""
+			_auth_tab = 2
+			UiKit.snd("ui_tab")
+			show_auth())
+		vb.add_child(fg)
 	_a_submit = _ibutton(vb, "СОЗДАТЬ АККАУНТ" if reg else "ВОЙТИ", "green", "", "acc_pilot" if reg else "acc_login", 48.0)
 	_a_submit.pressed.connect(_auth_submit)
 	_a_slot = Control.new()
@@ -2875,10 +2919,6 @@ func show_auth(tab: int = -1, intent: String = "-", msg: String = "", sev: Strin
 	vb.add_child(_a_slot)
 	if msg != "":
 		_auth_status(msg, sev)
-	elif reg:
-		var h: Label = _label(_a_slot, "ЗАПОМНИТЕ ПАРОЛЬ: ВОССТАНОВЛЕНИЯ ПОКА НЕТ", 10, UiKit.MUTED)
-		h.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		h.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	if Account.device_check_missing():
 		_auth_status(DeviceCheck.TXT_MISSING, "info")
 	_auth_tick()
@@ -2956,10 +2996,6 @@ func _auth_status(text: String, sev: String = "alarm", extra: Button = null) -> 
 		ch.queue_free()
 	_a_slot.custom_minimum_size.y = 44.0 if extra != null else 36.0
 	if text == "":
-		if _auth_tab == 1:
-			var h: Label = _label(_a_slot, "ЗАПОМНИТЕ ПАРОЛЬ: ВОССТАНОВЛЕНИЯ ПОКА НЕТ", 10, UiKit.MUTED)
-			h.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-			h.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 		return
 	var icon: String = {"wait": "net_sync", "ok": "icon_ok"}.get(sev, "")
 	var bar: PanelContainer = MpKit.status_bar(_a_slot, text, sev, icon, sev == "wait")
@@ -2972,20 +3008,20 @@ func _auth_status(text: String, sev: String = "alarm", extra: Button = null) -> 
 func _auth_tick() -> void:
 	if _a_submit == null or not is_instance_valid(_a_submit):
 		return
-	var reg: bool = _auth_tab == 1
 	var left: int = int(ceil(float(_auth_block_ms - Time.get_ticks_msec()) / 1000.0))
+	var idle: String = ["ВОЙТИ", "СОЗДАТЬ АККАУНТ", Loc.t("ПРИСЛАТЬ КОД"), Loc.t("СМЕНИТЬ ПАРОЛЬ")][clampi(_auth_tab, 0, 3)]
 	if Account.device_check_missing():
 		_a_submit.disabled = true
 		return
 	if _auth_busy:
-		_a_submit.text = "СОЗДАЁМ..." if reg else "ВХОДИМ..."
+		_a_submit.text = ["ВХОДИМ...", "СОЗДАЁМ...", Loc.t("ОТПРАВЛЯЕМ..."), Loc.t("МЕНЯЕМ...")][clampi(_auth_tab, 0, 3)]
 		_a_submit.disabled = true
 	elif left > 0:
 		_a_submit.text = "ПОДОЖДИТЕ %d:%02d" % [left / 60, left % 60]
 		_a_submit.disabled = true
 		get_tree().create_timer(1.0).timeout.connect(_auth_tick)
 	else:
-		_a_submit.text = "СОЗДАТЬ АККАУНТ" if reg else "ВОЙТИ"
+		_a_submit.text = idle
 		_a_submit.disabled = false
 
 
@@ -3030,23 +3066,7 @@ func _auth_submit() -> void:
 	for f2: Dictionary in _af.values():
 		(f2["edit"] as LineEdit).editable = true
 	if bool(r["ok"]):
-		_auth_pw = ""
-		UiKit.snd("ui_capture")
-		var intent: String = _auth_intent
-		_auth_intent = ""
-		_mp_tab = 1
-		if intent == "create" and Account.mp_ok():
-			show_mp_create()
-			_mp_toast("АККАУНТ СОЗДАН" if reg else "ВЫ ВОШЛИ")
-		elif intent == "rejoin" and Account.mp_ok():
-			var w: String = net.rejoin()
-			show_mp(w if w != "" else ("АККАУНТ СОЗДАН" if reg else "ВЫ ВОШЛИ"), "" if w != "" else "ok")
-		elif intent == "resume" and Account.mp_ok():
-			var w2: String = net.resume_host()
-			if w2 != "":
-				show_mp(w2)
-		else:
-			show_mp("АККАУНТ СОЗДАН" if reg else "ВЫ ВОШЛИ", "ok")
+		_auth_signed_in("АККАУНТ СОЗДАН" if reg else "ВЫ ВОШЛИ")
 		return
 	UiKit.snd("ui_error")
 	var code: int = int(r.get("code", 0))
@@ -3077,6 +3097,281 @@ func _auth_submit() -> void:
 			_auth_status(String(r["err"]))
 			_hide_keyboard()
 	_auth_tick()
+
+
+
+func _auth_signed_in(done: String) -> void:
+	_auth_pw = ""
+	UiKit.snd("ui_capture")
+	var intent: String = _auth_intent
+	_auth_intent = ""
+	_mp_tab = 1
+	if intent == "create" and Account.mp_ok():
+		show_mp_create()
+		_mp_toast(done)
+	elif intent == "rejoin" and Account.mp_ok():
+		var w: String = net.rejoin()
+		show_mp(w if w != "" else done, "" if w != "" else "ok")
+	elif intent == "resume" and Account.mp_ok():
+		var w2: String = net.resume_host()
+		if w2 != "":
+			show_mp(w2)
+	else:
+		show_mp(done, "ok")
+
+
+
+
+
+
+func _show_recover(vb: VBoxContainer, msg: String, sev: String) -> void:
+	var step2: bool = _auth_tab == 3
+	_label(vb, Loc.t("НОВЫЙ ПАРОЛЬ · 2 ИЗ 2") if step2 else Loc.t("ВОССТАНОВЛЕНИЕ · 1 ИЗ 2"), 13, UiKit.TITLE)
+	_af = {}
+	_pwr_btn = null
+	if not step2:
+		_af["email"] = MpKit.field(vb, Loc.t("ПОЧТА"), "name@example.com", "email")
+		var ee: LineEdit = _pf("email")
+		ee.text = _auth_email if _auth_email != "" else Account.last_email
+		ee.caret_column = ee.text.length()
+		ee.text_submitted.connect(func(_t: String) -> void: _pwr_send(false))
+		_label(vb, Loc.t("ПРИШЛЁМ 6 ЦИФР НА ПОЧТУ"), 10, UiKit.MUTED)
+		_a_submit = _ibutton(vb, Loc.t("ПРИСЛАТЬ КОД"), "green", "", "acc_login", 48.0)
+		_a_submit.pressed.connect(func() -> void: _pwr_send(false))
+	else:
+		_label(vb, Loc.t("ПОЧТА: %s · КОД ДЕЙСТВУЕТ 15 МИНУТ") % _mid_cut(_auth_email.strip_edges(), 28), 10, UiKit.MUTED)
+		_af["code"] = MpKit.field(vb, Loc.t("КОД ИЗ ПИСЬМА"), Loc.t("6 цифр"), "text")
+		var ce: LineEdit = _pf("code")
+		ce.virtual_keyboard_type = LineEdit.KEYBOARD_TYPE_NUMBER
+		ce.max_length = 16
+		ce.add_theme_font_size_override("font_size", 20)
+		_pwr_btn = UiKit.big(Loc.t("ЕЩЁ КОД"), "stone", "", 44.0, 11)
+		_pwr_btn.custom_minimum_size = Vector2(104, 44)
+		_pwr_btn.pressed.connect(func() -> void: _pwr_send(true))
+		var crow: Variant = (_af["code"] as Dictionary).get("row")
+		if is_instance_valid(crow):
+			(crow as HBoxContainer).add_child(_pwr_btn)
+		_af["password"] = MpKit.field(vb, Loc.t("НОВЫЙ ПАРОЛЬ"), Loc.t("Не меньше 8 символов"), "password")
+		_af["password2"] = MpKit.field(vb, Loc.t("ПОВТОРИТЕ ПАРОЛЬ"), Loc.t("Ещё раз"), "password")
+		var pe: LineEdit = _pf("password")
+		var pe2: LineEdit = _pf("password2")
+		ce.text_changed.connect(func(t: String) -> void:
+			var d: String = ""
+			for ch: String in t:
+				if ch >= "0" and ch <= "9" and d.length() < 6:
+					d += ch
+			if d != t:
+				ce.text = d
+				ce.caret_column = d.length()
+			if d.length() == 6 and pe.text == "":
+				pe.grab_focus())
+		ce.text_submitted.connect(func(_t: String) -> void: pe.grab_focus())
+		pe.text_submitted.connect(func(_t: String) -> void: pe2.grab_focus())
+		pe2.text_submitted.connect(func(_t: String) -> void: _pwr_submit())
+		_a_submit = _ibutton(vb, Loc.t("СМЕНИТЬ ПАРОЛЬ"), "green", "", "acc_login", 48.0)
+		_a_submit.pressed.connect(_pwr_submit)
+	_a_slot = Control.new()
+	_a_slot.custom_minimum_size = Vector2(0, 36)
+	_a_slot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	vb.add_child(_a_slot)
+	if msg != "":
+		_auth_status(msg, sev)
+	if Account.device_check_missing():
+		_auth_status(DeviceCheck.TXT_MISSING, "info")
+	_auth_tick()
+	_pwr_tick()
+	var first: LineEdit = _pf("code" if step2 else "email")
+	if first != null:
+		first.grab_focus.call_deferred()
+	var br: HBoxContainer = _bottom_row()
+	var back: Button = _button(br, Loc.t("НАЗАД"), "stone", "")
+	back.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	back.pressed.connect(func() -> void:
+		_auth_busy = false
+		_auth_req += 1
+		if _auth_tab == 2:
+			_auth_keep()
+		_auth_tab = 0 if _auth_tab == 2 else 2
+		show_auth())
+
+
+
+func _pwr_tick() -> void:
+	if _pwr_btn == null or not is_instance_valid(_pwr_btn) or current != "auth" or _auth_tab != 3:
+		return
+	var left: int = int(ceil(float(_pwr_resend_ms - Time.get_ticks_msec()) / 1000.0))
+	_pwr_btn.disabled = left > 0 or _auth_busy or Account.device_check_missing()
+	_pwr_btn.text = (Loc.t("ЕЩЁ КОД %d:%02d") % [left / 60, left % 60]) if left > 0 else Loc.t("ЕЩЁ КОД")
+	if left > 0:
+		get_tree().create_timer(1.0).timeout.connect(_pwr_tick)
+
+
+func _mid_cut(s: String, n: int) -> String:
+	return s if s.length() <= n else s.left(n / 2 - 1) + "…" + s.right(n / 2 - 1)
+
+
+
+func _pwr_fail(r: Dictionary) -> void:
+	UiKit.snd("ui_error")
+	var code: int = int(r.get("code", 0))
+	if code == 429:
+		_auth_block_ms = Time.get_ticks_msec() + 60000
+		_auth_status(Loc.t("СЛИШКОМ ЧАСТО. ПОПРОБУЙТЕ ПОЗЖЕ"))
+	elif code == 0 and String(r.get("err", "")) == DeviceCheck.TXT_MISSING:
+		_auth_status(DeviceCheck.TXT_MISSING, "info")
+	elif code == 0:
+		_auth_status(Loc.t("НЕТ СВЯЗИ С СЕРВЕРОМ. ПРОВЕРЬТЕ ИНТЕРНЕТ"))
+	elif code >= 500:
+		_auth_status(Loc.t("СЕРВЕР НЕ ОТВЕЧАЕТ. ПОПРОБУЙТЕ ПОЗЖЕ"))
+	else:
+		_auth_status(String(r.get("err", "")) if String(r.get("err", "")) != "" else Loc.t("НЕ ПОЛУЧИЛОСЬ. ПОПРОБУЙТЕ ЕЩЁ РАЗ"))
+	_hide_keyboard()
+
+
+
+func _pf(key: String) -> LineEdit:
+	var f: Variant = _af.get(key)
+	if not (f is Dictionary):
+		return null
+	var e: Variant = (f as Dictionary).get("edit")
+	if not is_instance_valid(e):
+		return null
+	return e as LineEdit
+
+
+func _pf_editable(on: bool) -> void:
+	for key: String in _af.keys():
+		var e: LineEdit = _pf(key)
+		if e != null:
+			e.editable = on
+
+
+
+func _pwr_send(again: bool) -> void:
+	if _auth_busy or Time.get_ticks_msec() < _auth_block_ms or (again and Time.get_ticks_msec() < _pwr_resend_ms):
+		return
+	if not again:
+		var em: LineEdit = _pf("email")
+		var why: String = Account.email_error(em.text if em != null else "")
+		MpKit.set_field_error(_af["email"], why)
+		if why != "":
+			UiKit.snd("ui_error")
+			return
+		_auth_keep()
+	_auth_busy = true
+	_auth_req += 1
+	var req: int = _auth_req
+	_pf_editable(false)
+	if _pwr_btn != null and is_instance_valid(_pwr_btn):
+		_pwr_btn.text = Loc.t("ОТПРАВЛЯЕМ...")
+		_pwr_btn.disabled = true
+	_auth_status("")
+	_auth_tick()
+	get_tree().create_timer(1.0).timeout.connect(func() -> void:
+		if _auth_busy and current == "auth" and req == _auth_req:
+			_auth_status(Loc.t("ПРОВЕРЯЕМ УСТРОЙСТВО..."), "wait"))
+	var r: Dictionary = await Account.password_forgot(_auth_email)
+	if req != _auth_req or current != "auth":
+		return
+	_auth_busy = false
+	_pf_editable(true)
+	print("[Account] password code: %d" % int(r["code"]))
+	if bool(r["ok"]):
+		_pwr_resend_ms = Time.get_ticks_msec() + 1000 * maxi(1, int(r["resend_in"]))
+		if again and not bool(r.get("fresh", true)):
+			_auth_status(Loc.t("КОД УЖЕ ОТПРАВЛЕН · ПОДОЖДИТЕ"), "info")
+			_auth_tick()
+			_pwr_tick()
+		elif again:
+			var c2: LineEdit = _pf("code")
+			if c2 != null:
+				c2.text = ""
+				MpKit.set_field_error(_af["code"], "")
+			_auth_status(Loc.t("НОВЫЙ КОД ОТПРАВЛЕН"), "ok")
+			_auth_tick()
+			_pwr_tick()
+		else:
+			_auth_tab = 3
+			show_auth(-1, "-", Loc.t("ЕСЛИ АККАУНТ С ЭТОЙ ПОЧТОЙ ЕСТЬ, МЫ ОТПРАВИЛИ КОД"), "info")
+		return
+	_pwr_fail(r)
+	_auth_tick()
+	_pwr_tick()
+
+
+
+func _pwr_submit() -> void:
+	if _auth_busy or Time.get_ticks_msec() < _auth_block_ms:
+		return
+	var ce: LineEdit = _pf("code")
+	var pe: LineEdit = _pf("password")
+	var pe2: LineEdit = _pf("password2")
+	if ce == null or pe == null or pe2 == null:
+		return
+	var bad: LineEdit = null
+	if ce.text.length() != 6:
+		MpKit.set_field_error(_af["code"], Loc.t("КОД: ВВЕДИТЕ 6 ЦИФР"))
+		bad = ce
+	var pw_why: String = Account.password_error(pe.text)
+	MpKit.set_field_error(_af["password"], pw_why)
+	if pw_why != "" and bad == null:
+		bad = pe
+	var same: String = "" if pe2.text == pe.text else Loc.t("ПАРОЛИ НЕ СОВПАДАЮТ")
+	MpKit.set_field_error(_af["password2"], same if pw_why == "" else "")
+	if same != "" and pw_why == "" and bad == null:
+		bad = pe2
+	if bad != null:
+		UiKit.snd("ui_error")
+		bad.grab_focus()
+		return
+	_auth_busy = true
+	_auth_req += 1
+	var req: int = _auth_req
+	_pf_editable(false)
+	_auth_status("")
+	_auth_tick()
+	_pwr_tick()
+	get_tree().create_timer(1.0).timeout.connect(func() -> void:
+		if _auth_busy and current == "auth" and req == _auth_req:
+			_auth_status(Loc.t("ПРОВЕРЯЕМ УСТРОЙСТВО..."), "wait"))
+	var r: Dictionary = await Account.password_reset(_auth_email, ce.text, pe.text)
+	if req != _auth_req or current != "auth":
+		return
+	ce = _pf("code")
+	pe = _pf("password")
+	pe2 = _pf("password2")
+	_auth_busy = false
+	_pf_editable(true)
+	print("[Account] password reset: %d %s" % [int(r["code"]), String(r.get("error", ""))])
+	if bool(r["ok"]):
+		for e: LineEdit in [pe, pe2]:
+			if e != null:
+				e.text = ""
+		_auth_tab = 0
+		_auth_signed_in(Loc.t("ПАРОЛЬ ИЗМЕНЁН · ВЫ ВОШЛИ"))
+		return
+	match String(r.get("error", "")):
+		"invalid_code":
+			UiKit.snd("ui_error")
+			if ce != null:
+				ce.text = ""
+			var n: int = int(r.get("tries_left", 0))
+			if n > 0 and ce != null:
+				MpKit.set_field_error(_af["code"], Loc.t("КОД НЕВЕРНЫЙ · ОСТАЛОСЬ ПОПЫТОК: %d") % n)
+				ce.grab_focus()
+			else:
+				_auth_status(Loc.t("ПОПЫТКИ КОНЧИЛИСЬ · ЗАПРОСИТЕ НОВЫЙ КОД"))
+				_hide_keyboard()
+		"code_expired":
+			UiKit.snd("ui_error")
+			if ce != null:
+				ce.text = ""
+			_auth_status(Loc.t("КОД УСТАРЕЛ · ЗАПРОСИТЕ НОВЫЙ"))
+			_hide_keyboard()
+		_:
+			_pwr_fail(r)
+	_auth_tick()
+	_pwr_tick()
 
 
 
@@ -3797,6 +4092,8 @@ func _rc_tick_once() -> void:
 
 
 func show_ranked_lobby(msg: String = "") -> void:
+	if net != null and net.in_match:
+		return
 	_hook_ranked()
 	_rc_close()
 	var vb: VBoxContainer = _screen("Рейтинговый бой", 0.45, current != "ranked_lobby")

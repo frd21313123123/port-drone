@@ -312,7 +312,7 @@ func _own_mark(cells: Array[Vector2i]) -> void:
 func _grow_initial(city: City, rings: int, per_frame: int = 6) -> void:
 	var t0: int = Time.get_ticks_usec()
 	var cells: Array[Vector2i] = []
-	var n: int = mini(rings, per_frame)
+	var n: int = mini(rings, per_frame if cad344 == null or per_frame >= 999 or cad344.step_dt >= Cad344.GROW_LONG_DT else mini(per_frame, Cad344.GROW_RINGS))
 	for k in n:
 		cells.append_array(_grow_city(city, true))
 	top.flash_cells(cells)
@@ -333,11 +333,11 @@ func country_stable(country_id: int) -> bool:
 	return true
 
 
-func _expand_tick(part: int = -1) -> void:
+func _expand_tick(part: int = -1, slices: int = EXP_SLICES) -> void:
 	var mig: int = 0
 	_gtab = BORDER_GAP.table(self)
 	for city: City in cities:
-		if part >= 0 and city.id % EXP_SLICES != part:
+		if part >= 0 and city.id % slices != part:
 			continue
 		if city.claim_v < 2 and mig < 2:
 			if city.claim_v == 0 and city.claim_max == int([104, 52, 27][clampi(city.kind, 0, 2)]):
@@ -363,7 +363,8 @@ func _expand_tick(part: int = -1) -> void:
 			_checkpoints_dirty = true
 			enclave_check(city.country_id)
 	_gtab = []
-	_fill_tick()
+	if slices == EXP_SLICES or part % (slices / EXP_SLICES) == slices / EXP_SLICES - 1:
+		_fill_tick()
 
 
 func _flush_territory() -> void:

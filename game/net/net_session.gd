@@ -77,7 +77,16 @@ const DEDUP_MS: int = 400  # the same command twice within this time = one doubl
 const TURN_KEEP: int = 900  # turns kept after they ran (90 s): a resynced guest replays from the snapshot
 
 ## The session of this game (the UI24 sheets send their commands through NetSession.sim).
-static var inst: NetSession = null
+static var _inst: NetSession = null
+
+
+## PC port: the native 0.33 NetSession has inst() / allowed() as functions; the GDScript one keeps them as such
+static func inst() -> NetSession:
+	return _inst
+
+
+static func allowed() -> Dictionary:
+	return ALLOWED
 
 var main: Node  # game/main.gd
 var gw: GameWorld
@@ -1902,17 +1911,17 @@ func resume_go(by_time: bool = false) -> void:
 ## Off-line it runs at once (single player: same behaviour as before).
 ## A player action from any UI: single player = the call at once; network = a command (see call_sim).
 static func sim(path: String, method: String, args: Array, cb: Callable = Callable()) -> void:
-	if inst != null:
-		inst.call_sim(path, method, args, cb)
+	if _inst != null:
+		_inst.call_sim(path, method, args, cb)
 
 
 func _enter_tree() -> void:
-	inst = self
+	_inst = self
 
 
 func _exit_tree() -> void:
-	if inst == self:
-		inst = null
+	if _inst == self:
+		_inst = null
 
 
 func call_sim(path: String, method: String, args: Array, cb: Callable = Callable()) -> void:

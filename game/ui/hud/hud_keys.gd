@@ -65,7 +65,7 @@ func _open_command_old() -> void:
 		hr.add_theme_constant_override("separation", 6)
 		col.add_child(hr)
 		var op: Dictionary = a.get("op", {})
-		var head: String = "%s %s · %d/%d · %d%%" % ["№%d" % int(a["no"]) if int(a["no"]) > 0 else Loc.t("Новая"), String(a["name"]), int(a["n"]), int(a["cap"]), roundi(float(a["hp_frac"]) * 100.0)]
+		var head: String = "%s %s · %d/%d · %d%%" % [Loc.no(int(a["no"])) if int(a["no"]) > 0 else Loc.t("Новая"), String(a["name"]), int(a["n"]), int(a["cap"]), roundi(float(a["hp_frac"]) * 100.0)]
 		var hl: Label = UiKit.lbl(head, 10, UiKit.TEXT, 2, 2)
 		hl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		hr.add_child(hl)

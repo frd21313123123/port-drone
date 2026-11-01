@@ -446,6 +446,7 @@ const PASS_OFFER_GAP: float = 60.0
 
 
 const STRIKE_BLOCK_TXT: String = "Нельзя: войска на чужой земле — сначала вывод"
+const STRIKE_SUBJ_TXT: String = "Нельзя: войны нет, а вассалитет её не допускает"
 var _sb_said: Dictionary = {}
 
 

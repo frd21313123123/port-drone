@@ -170,10 +170,10 @@ static func pick(cnt: int, one: String, few: String, many: String) -> String:
 
 static func f(tpl: String, args: Dictionary, ctx: String = "") -> String:
 	if is_src():
-		return _named(tpl, args, true)
+		return _seen(_named(tpl, args, true), [tpl, args, ctx])
 	var out: String = _named(t(tpl, ctx), args, false)
 	_note_src(out, _named(tpl, args, true))
-	return out
+	return _seen(out, [tpl, args, ctx])
 
 
 static func mk(msgid: String, args: Variant = [], ctx: String = "") -> Array:
@@ -194,10 +194,60 @@ static func msg(m: Variant) -> String:
 	if not is_msg(m):
 		return String(m) if m != null else ""
 	if is_src():
-		return _render(m, true)
+		return _seen(_render(m, true), m)
 	var out: String = _render(m, false)
 	_note_src(out, _render(m, true))
+	return _seen(out, m)
+
+
+
+
+static var _rend: Dictionary = {}
+const _REND_MAX: int = 160
+
+
+static func _seen(out: String, m: Variant) -> String:
+	if _rend.size() >= _REND_MAX:
+		_rend.clear()
+	_rend[out] = m
 	return out
+
+
+
+
+static func keep(text: String) -> Variant:
+	if _rend.has(text):
+		return _rend[text]
+	var s: String = src_of(text)
+	if s != text or is_src() or _tr == null:
+		return s
+	if _rev_gen != gen:
+		_rev_gen = gen
+		_rev.clear()
+		for mid: StringName in _tr.get_message_list():
+			var tr2: String = String(_tr.get_message(mid))
+			if tr2 != "" and not _rev.has(tr2):
+				_rev[tr2] = String(mid)
+	return String(_rev.get(text, text))
+
+
+static var _rev: Dictionary = {}
+static var _rev_gen: int = -1
+
+
+
+static func re(k: Variant) -> String:
+	if is_msg(k):
+		return msg(k)
+	var s: String = String(k) if k != null else ""
+	return s if is_src() or not has_cyr(s) else t(s)
+
+
+
+
+static func tc(msgid: String, ctx: String) -> String:
+	var s: String = t(msgid, ctx)
+	return t(msgid) if s == msgid else s
 
 
 static func src(m: Variant) -> String:
@@ -296,6 +346,8 @@ const LOC_DEFNAMES: Array = ["Группа %d", "Флот %d", "Фронт", "Ф
 
 
 static func _defname(s: String) -> String:
+	if FORM_NAMES.has(s):
+		return t(s, "group")
 	for pre: String in ["Группа ", "Флот "]:
 		if s.begins_with(pre) and s.substr(pre.length()).is_valid_int():
 			return t(pre + "%d") % int(s.substr(pre.length()))
@@ -304,6 +356,40 @@ static func _defname(s: String) -> String:
 	if s == "Фронт" or s == "Конвой":
 		return t(s)
 	return ""
+
+
+
+
+const FORM_NAMES: Array = ["Дивизия", "Резерв", "Бригада", "Полк", "Корпус", "Батальон", "Гвардия", "Штурм", "Танки", "Тыл"]
+
+
+
+
+static func gtag(gid: int, nm: String) -> String:
+	if is_src():
+		return "%d·%s" % [gid, nm.to_upper()]
+	if lang == "en" and FORM_NAMES.has(nm):
+		return (ordinal(gid) + " " + t(nm, "group")).to_upper()
+	return "%d·%s" % [gid, gname(nm).to_upper()]
+
+
+
+static func gname(nm: String) -> String:
+	if is_src():
+		return nm
+	var d: String = _defname(nm)
+	return d if d != "" else name(nm)
+
+
+
+static func ordinal(n: int) -> String:
+	if lang != "en":
+		return str(n)
+	var a: int = absi(n)
+	var suf: String = "th"
+	if a % 100 < 11 or a % 100 > 13:
+		suf = String({1: "st", 2: "nd", 3: "rd"}.get(a % 10, "th"))
+	return str(n) + suf
 
 
 
@@ -440,3 +526,29 @@ static func translit(s: String) -> String:
 static func num(x: float, digits: int = 1) -> String:
 	var s: String = ("%." + str(maxi(0, digits)) + "f") % x
 	return s if lang == "en" else s.replace(".", ",")
+
+
+
+static func dec(s: String) -> String:
+	return s if lang == "en" else s.replace(".", ",")
+
+
+
+static func inum(v: int) -> String:
+	var a: String = str(absi(v))
+	var sep: String = "," if lang == "en" else " "
+	var out: String = ""
+	while a.length() > 3:
+		out = sep + a.right(3) + out
+		a = a.left(a.length() - 3)
+	return ("-" if v < 0 else "") + a + out
+
+
+
+static func pct(v: int) -> String:
+	return ("%d%%" if lang == "en" else "%d %%") % v
+
+
+
+static func no(n: int) -> String:
+	return ("#%d" if lang == "en" else "№%d") % n

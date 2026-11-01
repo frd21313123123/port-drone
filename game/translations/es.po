@@ -22274,3 +22274,14 @@ msgstr "Steam no creó el lobby"
 
 msgid "Не удалось войти в лобби Steam"
 msgstr "No se pudo entrar al lobby de Steam"
+
+#. kind: t (PERF344: settings row - the frame cap 30 / 60 / MAX)
+#: ui/menus.gd
+msgid "ЧАСТОТА КАДРОВ"
+msgstr ""
+
+#. kind: t (PERF344: the power-save row on Android)
+#: ui/menus.gd
+msgid "ЭНЕРГОСБЕРЕЖЕНИЕ · 30 FPS"
+msgstr ""
+

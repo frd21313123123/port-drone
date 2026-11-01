@@ -760,7 +760,7 @@ func refresh() -> void:
 			checked.erase(k)
 	if mode == "ship" and not ids.has(sel_sid):
 		mode = "list"
-	var sig: String = "%d|%s|" % [tab_fid, selecting]
+	var sig: String = "%d|%s|%d|" % [tab_fid, selecting, Loc.gen]
 	for fl: Dictionary in fleets():
 		sig += "%d:%s:%d;" % [int(fl["id"]), String(fl.get("name", "")), (fl.get("ships", []) as Array).size()]
 	sig += str(ships.size())
@@ -1195,7 +1195,7 @@ func _issue(ss: Array, kind: String, pos: Vector2, wps: Array = [], cb: Callable
 
 
 func _dock(fn: String, args: Array, cb: Callable = Callable()) -> void:
-	if NetSession.inst == null:
+	if NetSession.inst() == null:
 		var r: Variant = gw.cmd_static(gw.player, "ship_cr", fn, args)
 		if cb.is_valid():
 			cb.call(r)

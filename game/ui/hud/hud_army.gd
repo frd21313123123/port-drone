@@ -186,7 +186,7 @@ func _armies_process(delta: float) -> void:
 		var tag: String = ["", " · ОБ", " · АТ"][st3]
 		if not op3.is_empty():
 			tag = Loc.t(" · ДВ")
-		var txt: String = Loc.t("%s %s\n%d бойц.%s") % ["№%d" % int(a3["no"]) if int(a3["no"]) > 0 else Loc.t("НОВ."), String(a3["name"]).left(6), int(a3["n"]), tag]
+		var txt: String = Loc.t("%s %s\n%d бойц.%s") % [Loc.no(int(a3["no"])) if int(a3["no"]) > 0 else Loc.t("НОВ."), String(a3["name"]).left(6), int(a3["n"]), tag]
 		var is_sel: bool = sel != null and sel.id == int(a3["fid"])
 		var b: Button = UiKit.big(txt, "gold" if is_sel else ("red" if st3 == 2 else ("green" if st3 == 1 else "blue")), "", 44.0, 9)
 		b.custom_minimum_size.x = cw

@@ -192,8 +192,12 @@ func _rect(ci: CanvasItem, r: Rect2, c: Color) -> void:
 
 
 func draw_chunk(ck: GroundChunk) -> void:
+
+
+	if vfx == null or not is_instance_valid(vfx):
+		return
 	var gw: GameWorld = vfx.gw
-	if gw == null or gw.objects.chunks.is_empty():
+	if gw == null or not is_instance_valid(gw) or gw.objects == null or not is_instance_valid(gw.objects) or gw.objects.chunks.is_empty():
 		return
 	for oc: ObjChunk in _group(ck.idx):
 		_draw_oc(ck, oc)
@@ -206,8 +210,11 @@ func _draw_oc(ck: GroundChunk, oc: ObjChunk) -> void:
 	for id in oc.ids:
 		if gw.obj_state[id] == 2 or (hid and gw.obj_hidden[id] != 0):
 			continue
-		var f: Facility = _fac_of.get(id)
-		if f != null:
+		var fv: Variant = _fac_of.get(id)
+		if fv == null or not is_instance_valid(fv):
+			continue
+		var f: Facility = fv
+		if f.main_obj == id and APRON.has(f.kind):
 			_apron(ck, f, gw.object_rect(id))
 
 	var shade: = Color(0.0, 0.03, 0.02, 0.2)
@@ -241,7 +248,7 @@ func _apron(ck: CanvasItem, f: Facility, r: Rect2i) -> void:
 		return
 	var gw: GameWorld = vfx.gw
 	var d: WorldData = gw.data
-	var ring: int = int(APRON[f.kind])
+	var ring: int = int(APRON.get(f.kind, 1))
 	var g: Rect2i = r.grow(ring)
 	for y in range(g.position.y, g.end.y):
 		for x in range(g.position.x, g.end.x):

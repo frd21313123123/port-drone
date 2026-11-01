@@ -421,6 +421,17 @@ static func _bus(bus_name: String) -> int:
 	return i
 
 
+
+
+
+static var beds_off: bool = false
+
+
+static func set_beds_off(on: bool) -> void:
+	beds_off = on
+	_apply_bus_volumes()
+
+
 static func _apply_bus_volumes() -> void:
 	var si: int = _bus("SFX")
 	var mi: int = _bus("Music")
@@ -430,7 +441,7 @@ static func _apply_bus_volumes() -> void:
 	AudioServer.set_bus_volume_db(si, linear_to_db(maxf(sfx_volume, 0.001)))
 	AudioServer.set_bus_mute(ui_i, sfx_volume < 0.001)
 	AudioServer.set_bus_volume_db(ui_i, linear_to_db(maxf(sfx_volume, 0.001)) + float(BUS_DB["UI"]))
-	AudioServer.set_bus_mute(mi, music_volume < 0.001)
+	AudioServer.set_bus_mute(mi, music_volume < 0.001 or beds_off)
 	AudioServer.set_bus_volume_db(mi, linear_to_db(maxf(music_volume, 0.001)))
 	var duck: float = _inst._duck if _inst != null and is_instance_valid(_inst) else 0.0
 	_set_amb_volume(duck)
@@ -439,8 +450,9 @@ static func _apply_bus_volumes() -> void:
 static func _set_amb_volume(duck: float) -> void:
 	var ai: int = _bus("Ambience")
 	var v: float = sfx_volume * ambience_volume
-	if AudioServer.is_bus_mute(ai) != (v < 0.001):
-		AudioServer.set_bus_mute(ai, v < 0.001)
+	var off: bool = v < 0.001 or beds_off
+	if AudioServer.is_bus_mute(ai) != off:
+		AudioServer.set_bus_mute(ai, off)
 	AudioServer.set_bus_volume_db(ai, linear_to_db(maxf(v, 0.001)) + float(BUS_DB["Ambience"]) - duck)
 
 

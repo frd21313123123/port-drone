@@ -24,6 +24,7 @@ var panel: PanelContainer
 var vb: VBoxContainer
 var head_sub: Label
 var q_box: VBoxContainer
+var q_sc: ScrollContainer
 var q_rows: Array = []
 var _q_sig: String = ""
 var hull_btns: Array = []
@@ -108,7 +109,14 @@ func mount(h: Node) -> void:
 	_build_head()
 	q_box = VBoxContainer.new()
 	q_box.add_theme_constant_override("separation", 3)
-	vb.add_child(q_box)
+	q_box.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+
+
+	q_sc = ScrollContainer.new()
+	q_sc.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	q_sc.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	q_sc.add_child(q_box)
+	vb.add_child(q_sc)
 	var mid: = HBoxContainer.new()
 	mid.add_theme_constant_override("separation", 5)
 	mid.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -589,7 +597,13 @@ func close() -> void:
 
 
 func scroll_area() -> ScrollContainer:
-	return sc if is_open() else null
+	if not is_open():
+		return null
+	var qv: Variant = q_sc
+	if is_instance_valid(qv) and (qv as ScrollContainer).is_visible_in_tree() and (qv as ScrollContainer).get_global_rect().has_point(get_viewport().get_mouse_position()):
+		return qv as ScrollContainer
+	var sv: Variant = sc
+	return (sv as ScrollContainer) if is_instance_valid(sv) else null
 
 
 func blocked_rects() -> Array:
@@ -831,6 +845,7 @@ func _refresh_queue() -> void:
 			q_box.add_child(UiKit.lbl(Loc.t("ОЧЕРЕДЬ ВЕРФИ · %d") % q.size(), 10, UiKit.TITLE, 2, 3))
 		for i in q.size():
 			q_box.add_child(_q_row(q[i], i))
+		_fit_queue(q.size())
 	var up: bool = gw.mil.alive(base)
 	for i in q_rows.size():
 		var e: Array = q_rows[i]
@@ -846,6 +861,17 @@ func _refresh_queue() -> void:
 			(e[2] as Label).text = (Loc.t("%s ×%d · готово %d") % [nm, int(o2["n"]), int(o2["done"])]) if int(o2["n"]) > 1 else nm
 		if is_instance_valid(e[3]):
 			(e[3] as Label).text = mmss(float(o2["t"])) if on else (Loc.t("стоит") if not up else Loc.t("ждёт"))
+
+
+
+func _fit_queue(n: int) -> void:
+	if q_sc == null:
+		return
+	q_sc.visible = n > 0
+	var need: float = q_box.get_combined_minimum_size().y
+	var vp: Vector2 = get_viewport_rect().size
+	var cap: float = floorf(vp.y * (0.15 if vp.y < 700.0 else 0.2))
+	q_sc.custom_minimum_size.y = minf(need, maxf(cap, 110.0))
 
 
 func _q_row(o: Dictionary, i: int) -> Control:

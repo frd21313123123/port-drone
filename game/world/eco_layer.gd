@@ -81,6 +81,8 @@ func _draw() -> void:
 				continue
 			if not gw.mil.alive(f):
 				continue
+			if gw.vision != null and not gw.vision.fac_shown(f):
+				continue
 			var o: Vector2 = gw.obj_origin(f.main_obj)
 			if f.kind == Facility.Kind.OIL_RIG and at.has("oil_rig_beam"):
 				var n: int = int(at.info("oil_rig_beam")["frames"])

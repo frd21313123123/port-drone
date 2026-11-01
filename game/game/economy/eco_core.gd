@@ -1657,22 +1657,46 @@ func drop_spent() -> int:
 
 
 func _relocate_check() -> void:
+	_relocate_check_fast()
+
+
+
+
+
+
+func _relocate_check_fast() -> void:
 	var d: WorldData = gw.data
+	var w: int = d.w
+	var h: int = d.h
+	var stop: int = WorldData.F_CITY | WorldData.F_OCCUPIED | WorldData.F_ROAD | WorldData.F_BRIDGE
+	var has_r: bool = gw.get("rail") != null
+	var bio: PackedByteArray = d.biome
+	var fl: PackedByteArray = d.flags
+	var rm: PackedByteArray = gw.rail.mask if has_r else PackedByteArray()
 	for dp: Dictionary in deposits.duplicate():
 		if dp["mine"] != null:
 			continue
 		var c: Vector2i = dp["cell"]
 		var sz: int = int(dp.get("size", 3))
-		var nw: Vector2i = c - Vector2i(sz / 2, sz / 2)
-		var bad: bool = false
-		for y in range(nw.y, nw.y + sz):
-			for x in range(nw.x, nw.x + sz):
-				if not d.inside(x, y) or Biome.is_water(d.get_biome(x, y)) or d.has_flag(x, y, WorldData.F_CITY | WorldData.F_OCCUPIED | WorldData.F_ROAD | WorldData.F_BRIDGE):
-					bad = true
-				elif gw.get("rail") != null and gw.rail.has_rail(Vector2i(x, y)):
-					bad = true
+		var x0: int = c.x - sz / 2
+		var y0: int = c.y - sz / 2
+		var bad: bool = x0 < 0 or y0 < 0 or x0 + sz > w or y0 + sz > h
+		if not bad:
+			var rn: int = rm.size()
+			for y in range(y0, y0 + sz):
+				var row: int = y * w
+				for x in range(x0, x0 + sz):
+					var i: int = row + x
+					if bio[i] <= Biome.RIVER or (fl[i] & stop) != 0 or (i < rn and rm[i] != 0):
+						bad = true
+						break
+				if bad:
+					break
 		if bad:
 			_relocate(dp)
+			bio = d.biome
+			fl = d.flags
+			rm = gw.rail.mask if has_r else PackedByteArray()
 
 
 

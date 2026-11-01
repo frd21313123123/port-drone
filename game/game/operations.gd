@@ -669,6 +669,13 @@ func _wd_fronts(who: int, land: int) -> void:
 		var pts: Variant = fr.get("pts")
 		if not (pts is PackedVector2Array) or (pts as PackedVector2Array).is_empty():
 			continue
+		if int(fr.get("foe", -1)) == land and int(fr.get("host", -1)) <= 0:
+
+
+
+
+			_wd_note("fronts_kept")
+			continue
 		var on: int = 0
 		for q: Vector2 in pts:
 			if _owner_at(q) == land:
@@ -964,6 +971,12 @@ func _run_oq() -> void:
 		var was_quiet: bool = _quiet
 		_quiet = bool(e["quiet"])
 		var why: String = start(f, kind, to, wp, bool(e.get("sea", false)))
+		if why != "" and why != PENDING and pos.is_finite() and to.distance_to(pos) > 1.0 and kind != Kind.RETREAT:
+
+
+			var why2: String = start(f, kind, pos, e["wp"], bool(e.get("sea", false)))
+			if why2 == "" or why2 == PENDING:
+				why = why2
 		_quiet = was_quiet
 		_q_run = false
 		if why == PENDING:
@@ -2698,7 +2711,7 @@ func preview_all(country_id: int, target: Vector2) -> Dictionary:
 			if not bool(chk["ok"]):
 				why = String(chk["why"])
 		if why != "":
-			reasons.append("№%d: %s" % [f.army_no, why])
+			reasons.append("%s: %s" % [Loc.no(f.army_no), why])
 			continue
 		n += 1
 		ends.append(chk["target"])
@@ -2997,7 +3010,7 @@ func _centre(mem: Array[Unit]) -> Vector2:
 	for u: Unit in mem:
 		cen += u.pos
 	cen /= float(maxi(1, mem.size()))
-	if mem.size() < 2 or gw.army == null or gw.army.ground_at(cen) == 1:
+	if mem.size() < 2 or gw.army == null or (gw.army.ground_at(cen) == 1 and (gw.diplo == null or gw.diplo.may_cross(mem[0].country_id, _owner_at(cen)))):
 		return cen
 
 

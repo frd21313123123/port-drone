@@ -16,7 +16,7 @@ static var _arm: Dictionary = {}
 
 
 static func money_text(v: int) -> String:
-	return "%d %03d" % [v / 1000, v % 1000] if v >= 1000 else str(v)
+	return Loc.inum(v)
 
 
 static func money_i(v: int) -> int:

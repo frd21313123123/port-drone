@@ -144,7 +144,7 @@ func _rebuild() -> void:
 		if not gh.is_empty() and float(Time.get_ticks_msec() - int(gh["ms"])) > GHOST_MS:
 			g.erase("done_arrow")
 			gh = {}
-		_items.append({"pts": fr.get("vis", fr["pts"]), "nrm": fr.get("vnrm", fr["nrm"]), "col": col, "name": "%d·%s" % [int(g["id"]), Loc.uname(String(g["name"])).to_upper()],
+		_items.append({"pts": fr.get("vis", fr["pts"]), "nrm": fr.get("vnrm", fr["nrm"]), "col": col, "name": Loc.gtag(int(g["id"]), String(g["name"])),
 
 			"emb": String(g["emblem"]), "own": true, "gid": int(g["id"]), "slots": sl, "plan": pl0, "run": FrontPlan.running(g) and not pl0.is_empty(), "ghost": gh,
 			"active": bool(dock.get("is_open")) and int(dock.get("tab_gid")) == int(g["id"])})

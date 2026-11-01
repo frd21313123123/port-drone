@@ -233,7 +233,7 @@ func set_data(r: Dictionary, show_group: bool, selecting: bool, checked: bool, s
 	var first: bool = data.is_empty()
 	data = r
 	fid = int(r["fid"])
-	no_lbl.text = "№%d" % int(r["no"])
+	no_lbl.text = Loc.no(int(r["no"]))
 	name_lbl.text = String(r["name"])
 	U.set_tex_rect(build_ic, String(M.BUILD_ICON.get(String(r["build"]), "icon_build_assault")))
 	gmark.visible = show_group and int(r["gid"]) >= 0

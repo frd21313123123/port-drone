@@ -56,6 +56,8 @@ func update(dt: float) -> void:
 		_produce(_prod_acc)
 		_prod_acc = 0.0
 	_repair(dt)
+	if int(gw.game_time / HEAL_DT) != int((gw.game_time - dt) / HEAL_DT):
+		heal_partial()
 	_roam_t += dt
 	if _roam_t >= ROAM_DT:
 		_roam_t = 0.0

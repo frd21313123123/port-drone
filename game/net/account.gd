@@ -154,6 +154,31 @@ static func login(email: String, password: String) -> Dictionary:
 	return await _auth("/user/login", {"email": email.strip_edges(), "password": password}, 200)
 
 
+## PC port: 0.33 moved these two into the native module. Same server routes as the native code uses.
+static func password_forgot(email: String) -> Dictionary:
+	load_state()
+	if device_check_missing():
+		return {"ok": false, "err": DeviceCheck.TXT_MISSING, "field": "", "code": 0}
+	var r: Dictionary = await _signed("POST", "/user/password/forgot", {"email": email.strip_edges()}, false)
+	return _pw_result(r)
+
+
+static func password_reset(email: String, code: String, password: String) -> Dictionary:
+	load_state()
+	if device_check_missing():
+		return {"ok": false, "err": DeviceCheck.TXT_MISSING, "field": "", "code": 0}
+	var r: Dictionary = await _signed("POST", "/user/password/reset", {"email": email.strip_edges(), "code": code.strip_edges(), "password": password}, false)
+	return _pw_result(r)
+
+
+static func _pw_result(r: Dictionary) -> Dictionary:
+	var code: int = int(r["code"])
+	if code == 200 or code == 202 or code == 204:
+		return {"ok": true, "err": "", "error": "", "field": "", "code": code}
+	var d: String = String((r["data"] as Dictionary).get("detail", "")) if r["data"] is Dictionary else ""
+	return {"ok": false, "err": String(r["err"]), "error": d, "field": "", "code": code}
+
+
 static func _auth(path: String, fields: Dictionary, ok_code: int) -> Dictionary:
 	load_state()
 	if device_check_missing():

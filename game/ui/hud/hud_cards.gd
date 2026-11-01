@@ -124,7 +124,7 @@ func show_telemetry(d: Drone) -> void:
 		st_name = Loc.t("УНИЧТОЖЕН")
 	var cr: bool = d.kind == 1
 	var dname: String = Loc.t("Крылатая ракета") if cr else (Loc.t("Реактивный БПЛА") if d.kind == 2 else Loc.t("Ударный БПЛА"))
-	_card("drone%d" % d.id, "icon_cr_launch" if cr else ("icon_jet_uav" if d.kind == 2 else "icon_launch"), "%s №%d" % [dname, d.id], st_name, false, true, false)
+	_card("drone%d" % d.id, "icon_cr_launch" if cr else ("icon_jet_uav" if d.kind == 2 else "icon_launch"), "%s %s" % [dname, Loc.no(d.id)], st_name, false, true, false)
 	var rem: float = 0.0 if d.state == Drone.State.DONE else d.remaining_len()
 	var eta: float = rem / maxf(d.speed, Military.CRUISE)
 	if d.state < Drone.State.BOOST:
@@ -140,7 +140,7 @@ func show_missile_telemetry(m: Missile) -> void:
 		st = Loc.t("ЦЕЛЬ ПОРАЖЕНА")
 	elif m.state == Missile.State.FLIGHT:
 		st = Loc.t("ПИКИРОВАНИЕ") if m.u() > 0.75 else (Loc.t("АПОГЕЙ") if absf(m.u() - 0.5) < 0.08 else Loc.t("ПОЛЁТ"))
-	_card("missile%d" % m.id, "icon_m_hyper" if m.hyper else "icon_m_ballistic", "%s №%d" % [Loc.t("Гиперзвуковая ракета") if m.hyper else Loc.t("Баллистическая ракета"), m.id], st, false, true, false)
+	_card("missile%d" % m.id, "icon_m_hyper" if m.hyper else "icon_m_ballistic", "%s %s" % [Loc.t("Гиперзвуковая ракета") if m.hyper else Loc.t("Баллистическая ракета"), Loc.no(m.id)], st, false, true, false)
 	_set_info(Loc.t("ВЫСОТА %d КМ · М %.1f · %s") % [roundi(m.alt_km()), 0.0 if m.state == Missile.State.DONE else m.mach(), _mmss(m.time_left())], false)
 	_set_bar(0, m.u(), "res_missile")
 	_set_bar(1, m.alt_km() / maxf(m.apex_km, 1.0), "res_level")
@@ -325,7 +325,7 @@ func show_facility(f: Facility, mil: Military, player: Country) -> void:
 				var op: Dictionary = gw.ops.of(f) if gw.get("ops") != null else {}
 				var no: int = int(ab.get("no", ai["no"]))
 				var stn: int = gw.ops.stance_of(f) if gw.ops.has_method("stance_of") else 0
-				info = "%s %s · %d/%d · %s" % ["№%d" % no if no > 0 else Loc.t("НОВАЯ"), String(ab.get("build_name", ai["name"])), n, int(ab.get("cap", ai["cap"])), String(Operations.AutoCmd.STANCE_NAMES[stn])]
+				info = "%s %s · %d/%d · %s" % [Loc.no(no) if no > 0 else Loc.t("НОВАЯ"), String(ab.get("build_name", ai["name"])), n, int(ab.get("cap", ai["cap"])), String(Operations.AutoCmd.STANCE_NAMES[stn])]
 				var doing: String = String(ab.get("order_text", ""))
 				if not op.is_empty():
 					doing = "%s: %s" % [String(op.get("name", "")), String(op.get("state_text", ""))]
@@ -455,7 +455,10 @@ func show_army(f: Facility, mil: Military, player: Country) -> void:
 	var ab: Dictionary = gw.army.army_brief(f)
 	var no: int = int(ab.get("no", f.army_no))
 	var g: Dictionary = ArmyGroups303.group_of(gw, player.id, f.id) if player != null else {}
-	var sub: String = (Loc.t("ГРУППА %d·%s") % [int(g["id"]), Loc.uname(String(g["name"])).to_upper()]) if not g.is_empty() else Loc.t("БЕЗ ГРУППЫ")
+	var sub: String = Loc.t("БЕЗ ГРУППЫ")
+	if not g.is_empty():
+		var gt: String = Loc.gtag(int(g["id"]), String(g["name"]))
+		sub = gt if not gt.contains("·") else Loc.t("ГРУППА %d·%s") % [int(g["id"]), gt.substr(gt.find("·") + 1)]
 	var bic: String = String(ab.get("build_icon", ""))
 	_card("army%d" % f.id, bic if bic != "" and UiKit.has(bic) else "icon_barracks", Loc.t("АРМИЯ №%d · %s") % [no, String(ab.get("build_name", "")).to_upper()], sub, false, false, true)
 	ops_comp.visible = true
@@ -625,7 +628,7 @@ func show_aircraft(a: Aircraft, air: Air, player: Country) -> void:
 	var names: Dictionary = {Aircraft.State.PARKED: "НА СТОЯНКЕ", Aircraft.State.TAXI: "РУЛЁЖКА", Aircraft.State.ROLL: "ВЗЛЁТ", Aircraft.State.LIFT: "ВЗЛЁТ", Aircraft.State.FLY: "ПОЛЁТ", Aircraft.State.ORBIT: "БАРРАЖИРУЕТ", Aircraft.State.HOVER: "ВИСИТ", Aircraft.State.PATROL: "ПАТРУЛЬ", Aircraft.State.RTB: "НА БАЗУ", Aircraft.State.LAND: "ПОСАДКА", Aircraft.State.DEAD: "ПОТЕРЯН"}
 	var lvl: String = Loc.t(" · УР %d") % a.level if a.type == Aircraft.Type.FIGHTER else ""
 	var icon: String = ["icon_bomber", "icon_fighter", "icon_heli", "icon_attack_jet"][clampi(a.type, 0, 3)]
-	_card("air%d" % a.id, icon, "%s №%d%s" % [Air.name_of(a), a.id, lvl], String(names.get(a.state, "")), false, true, true)
+	_card("air%d" % a.id, icon, "%s %s%s" % [Air.name_of(a), Loc.no(a.id), lvl], String(names.get(a.state, "")), false, true, true)
 	var fmax: float = float(Air.SPEC[a.type]["fuel"])
 	var ammo: String = ""
 	var amax: int = 1
@@ -676,7 +679,7 @@ func show_aircraft(a: Aircraft, air: Air, player: Country) -> void:
 
 
 func show_cr_plan(a: Aircraft, has_target: bool, dist: float, count: int) -> void:
-	_card("plan_cr%d" % a.id, "icon_cr_launch", "Пуск крылатых ракет", "%s №%d" % [Air.name_of(a), a.id], true, false, false)
+	_card("plan_cr%d" % a.id, "icon_cr_launch", "Пуск крылатых ракет", "%s %s" % [Air.name_of(a), Loc.no(a.id)], true, false, false)
 	var ok: bool = false
 	if not has_target:
 		_set_info("ТАП ПО КАРТЕ = ЦЕЛЬ", false)

@@ -767,7 +767,7 @@ func _cycle_army() -> void:
 	cam_lock = false
 	cam.center_on(list[_army_i].pos.round())
 	if cam.zoom.x < 2.0:
-		cam.set_zoom_at(2.0, cam.view_size() * 0.5)
+		cam.set_zoom_at(MapCamera.zk(2.0), cam.view_size() * 0.5)
 		_on_zoom(2.0)
 
 

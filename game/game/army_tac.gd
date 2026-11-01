@@ -156,10 +156,7 @@ func _plan(path: PackedVector2Array, goal: Vector2, stop_d: float) -> Array:
 func start(home: Facility, members: Array[Unit], city: City, via: Vector2 = Vector2.INF) -> bool:
 	if members.is_empty():
 		return false
-	var cen: = Vector2.ZERO
-	for u: Unit in members:
-		cen += u.pos
-	cen /= float(members.size())
+	var cen: Vector2 = _cen(members)
 	var goal: = Vector2(city.center * GameWorld.CELL)
 	var forced: bool = sea_pref and gw.ops != null and gw.ops.sea_force
 	var path: PackedVector2Array = route(cen, goal, via, true) if not forced else PackedVector2Array()
@@ -801,6 +798,9 @@ func _legal(home: Facility, a: Vector2, b: Vector2, path: PackedVector2Array) ->
 	if not bool(_fp.call("closed_path", gw, home.country_id, path)):
 		return path
 	var lr: Dictionary = _fp.call("legal_route", gw, home.country_id, a, b)
+	if bool(lr.get("busy", false)):
+		gw.econ.nav_last_pending = true
+		return PackedVector2Array()
 	if not bool(lr.get("ok", false)):
 		return PackedVector2Array()
 	var ch: PackedVector2Array = lr["chain"]
@@ -839,13 +839,23 @@ func route(a: Vector2, b: Vector2, via: Vector2 = Vector2.INF, budget: bool = fa
 
 
 
+
+func _cen(members: Array[Unit]) -> Vector2:
+	if gw.ops != null:
+		return gw.ops._centre(members)
+	var c: = Vector2.ZERO
+	for u: Unit in members:
+		c += u.pos
+	return c / float(maxi(1, members.size()))
+
+
+
+
+
 func start_area(home: Facility, members: Array[Unit], goal: Vector2, via: Vector2 = Vector2.INF, defend: bool = false) -> bool:
 	if members.is_empty():
 		return false
-	var cen: = Vector2.ZERO
-	for u: Unit in members:
-		cen += u.pos
-	cen /= float(members.size())
+	var cen: Vector2 = _cen(members)
 	var forced: bool = sea_pref and gw.ops != null and gw.ops.sea_force
 	var path: PackedVector2Array = route(cen, goal, via, true) if not forced else PackedVector2Array()
 	if gw.econ.nav_last_pending and not forced:

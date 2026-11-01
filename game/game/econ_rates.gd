@@ -430,7 +430,7 @@ static func consumers(gw: GameWorld, c: Country, res: String) -> Array:
 
 static func fmt(v: float, signed: bool = true) -> String:
 	var a: float = absf(v)
-	var s: String = ("%d" % roundi(a)) if absf(a - roundf(a)) < 0.05 or a >= 10.0 else ("%.1f" % a).replace(".", ",")
+	var s: String = ("%d" % roundi(a)) if absf(a - roundf(a)) < 0.05 or a >= 10.0 else Loc.dec("%.1f" % a)
 	if not signed:
 		return s
 	if v > 0.0001:

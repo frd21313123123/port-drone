@@ -1821,6 +1821,11 @@ static func _refresh_geo(gw: GameWorld, c: Country, g: Dictionary) -> void:
 		at = fr.get("at", at)
 	var fc: Country = gw.country_by_id(foe)
 	if fc == null or fc.eliminated:
+		if c.is_player and fc != null and int(fr.get("host", -1)) <= 0:
+
+
+			_stat("front_foe_gone")
+			clear_front(gw, c.id, int(g["id"]))
 		return
 	var want: float = float(fr.get("want", FRONT_MAX))
 
@@ -2365,7 +2370,7 @@ static func _note_stuck(gw: GameWorld, g: Dictionary, stuck: Array, c: Country =
 	var nos: Array = []
 	for e2: Array in stuck:
 		if String(e2[1]) == why0:
-			nos.append("№%d" % int(e2[0]))
+			nos.append(Loc.no(int(e2[0])))
 	var who: String = (Loc.t("Армия %s") % [String(nos[0])]) if nos.size() == 1 else (Loc.t("Армии %s") % [", ".join(PackedStringArray(nos))])
 	var more: int = stuck.size() - nos.size()
 	var to340: Country = c

@@ -91,63 +91,63 @@ msgstr "Металобрухт: +%d металу (евакуація техні�
 
 #. kind: t
 #. short caps label: keep <= 7 chars (glossary short form)
-#: game/ai.gd:42 ui/hud/hud_lane.gd:246
+#: game/ai.gd:44 ui/hud/hud_lane.gd:246 game/ai.gd:42
 msgid "ИГРОК"
 msgstr "ГРАВЕЦЬ"
 
 #. kind: mk
-#: game/ai.gd:352
+#: game/ai.gd:358 game/ai.gd:352
 msgid "%s ЗАНИМАЕТ МЕСТОРОЖДЕНИЕ (%s): НОВЫЙ ГОРОД"
 msgstr "%s ЗАЙМАЄ РОДОВИЩЕ (%s): НОВЕ МІСТО"
 
 #. kind: t
-#: game/ai.gd:954
+#: game/ai.gd:1027 game/ai.gd:954
 msgid "%s %.1f/р%.1f"
 msgstr "%s %.1f/р%.1f"
 
 #. kind: t
-#: game/ai.gd:988
+#: game/ai.gd:1061 game/ai.gd:988
 msgid "дом с гарнизоном %d %.1f/р%.1f"
 msgstr "будинок із гарнізоном %d %.1f/р%.1f"
 
 #. kind: t
-#: game/ai.gd:1010
+#: game/ai.gd:1083 game/ai.gd:1010
 msgid "удар %s: целей отклонено %d"
 msgstr "удар %s: цілей відхилено %d"
 
 #. kind: t
-#: game/ai.gd:1010
+#: game/ai.gd:1083 game/ai.gd:1010
 msgid "свои / не враги у цели %d, уже летит своё / союзное %d"
 msgstr "свої / не вороги біля цілі %d, уже летить своє / союзне %d"
 
 #. kind: t
-#: game/ai.gd:1065
+#: game/ai.gd:1138 game/ai.gd:1065
 msgid "гарнизон ушёл из дома"
 msgstr "гарнізон пішов із будинку"
 
 #. kind: t
-#: game/ai.gd:1067
+#: game/ai.gd:1140 game/ai.gd:1067
 msgid "цель теперь не вражеская (%s)"
 msgstr "ціль тепер не ворожа (%s)"
 
 #. kind: t
-#: game/ai.gd:1077
+#: game/ai.gd:1150 game/ai.gd:1077
 msgid "дрон перенацелен"
 msgstr "дрон перенацілено"
 
 #. kind: t
-#: game/ai.gd:1100 world/rail_view332.gd:237 ui/ui24/notif_calm.gd:47
+#: game/ai.gd:1173 world/rail_view332.gd:237 game/ai.gd:1100 ui/ui24/notif_calm.gd:47
 msgid "мост"
 msgstr "міст"
 
 #. kind: t
-#: game/ai.gd:1100
+#: game/ai.gd:1173 game/ai.gd:1100
 msgid "дом с гарнизоном"
 msgstr "будинок із гарнізоном"
 
 #. kind: t,n
 #. few (ru 2-4): города
-#: game/ai.gd:1100 game/peace_conf.gd:998 ui/ui24/conference_sheet.gd:1285
+#: game/ai.gd:1173 game/peace_conf.gd:998 ui/ui24/conference_sheet.gd:1285 game/ai.gd:1100
 msgid "город"
 msgid_plural "городов"
 msgstr[0] "місто"
@@ -155,78 +155,79 @@ msgstr[1] "міста"
 msgstr[2] "міст"
 
 #. kind: t
-#: game/ai.gd:1105
+#: game/ai.gd:1178 game/ai.gd:1105
 msgid "удар %s ×%d → %s"
 msgstr "удар %s ×%d → %s"
 
 #. kind: t
-#: game/ai.gd:1105
+#: game/ai.gd:1178 game/ai.gd:1105
 msgid "ценность %.1f, ПВО-риск %.2f (x%.2f); лучшие: %s"
 msgstr "цінність %.1f, ППО-ризик %.2f (x%.2f); найкращі: %s"
 
 #. kind: t
-#: game/ai.gd:1155
+#: game/ai.gd:1228 game/ai.gd:1155
 msgid "дроны ждут: %d из %d"
 msgstr "дрони чекають: %d з %d"
 
 #. kind: t
-#: game/ai.gd:1155
+#: game/ai.gd:1228 game/ai.gd:1155
 msgid "у цели ПВО-риск %.2f"
 msgstr "біля цілі ППО-ризик %.2f"
 
 #. kind: t,tag
 #. short caps label: keep <= 6 chars (glossary short form)
-#: game/ai.gd:1173 game/defense.gd:579 game/military.gd:744 game/strike_hub.gd:16
-#: game/strike_hub.gd:16 game/strike_hub.gd:17 game/main/main_core.gd:460 ui/menus.gd:984
+#: game/ai.gd:1246 game/defense.gd:579 game/military.gd:744 game/strike_hub.gd:16
+#: game/strike_hub.gd:16 game/strike_hub.gd:17 game/main/main_core.gd:460 game/ai.gd:1173
+#: ui/menus.gd:984
 msgid "БПЛА"
 msgstr "БпЛА"
 
 #. kind: t
 #. short caps label: keep <= 4 chars (glossary short form)
-#: game/ai.gd:1187
+#: game/ai.gd:1260 game/ai.gd:1187
 msgid "БР"
 msgstr "БР"
 
 #. kind: t
-#: game/ai.gd:1255
+#: game/ai.gd:1328 game/ai.gd:1255
 msgid "наступление отложено"
 msgstr "наступ відкладено"
 
 #. kind: t
-#: game/ai.gd:1255
+#: game/ai.gd:1328 game/ai.gd:1255
 msgid "армия голодает (еда %d)"
 msgstr "армія голодує (їжа %d)"
 
 #. kind: t
-#: game/ai.gd:1416
+#: game/ai.gd:1489 game/ai.gd:1416
 msgid "резерв у столицы"
 msgstr "резерв біля столиці"
 
 #. kind: t
-#: game/ai.gd:1416
+#: game/ai.gd:1489 game/ai.gd:1416
 msgid "враг у столицы: %d+"
 msgstr "ворог біля столиці: %d+"
 
 #. kind: t
-#: game/ai.gd:1730
+#: game/ai.gd:1803 game/ai.gd:1730
 msgid "КР/гипер"
 msgstr "КР/гіпер"
 
 #. kind: t
 #. short caps label: keep <= 13 chars (glossary short form)
-#: game/ai.gd:2100 game/recon.gd:753
+#: game/ai.gd:2173 game/recon.gd:753 game/ai.gd:2100
 msgid "МАЛО ДЕНЕГ"
 msgstr "МАЛО ГРОШЕЙ"
 
 #. kind: t
 #. short caps label: keep <= 8 chars (glossary short form)
-#: game/ai.gd:2111 game/recon.gd:789
+#: game/ai.gd:2184 game/recon.gd:789 game/ai.gd:2111
 msgid "ДАЛЕКО"
 msgstr "ДАЛЕКО"
 
 #. kind: t
 #. short caps label: keep <= 13 chars (glossary short form)
-#: game/ai.gd:2113 game/recon.gd:795
+#: game/ai.gd:2186 game/recon.gd:795 game/ai.gd:2113
 msgid "НЕ ХВАТАЕТ"
 msgstr "БРАКУЄ"
 
@@ -883,8 +884,8 @@ msgid "альянсы выключены в настройках матча"
 msgstr "альянси вимкнено в налаштуваннях матчу"
 
 #. kind: t,tag
-#: game/alliances.gd:114 game/diplomacy.gd:1278 game/sky_cover.gd:195 game/sky_cover.gd:739
-#: game/trade331.gd:45
+#: game/alliances.gd:114 game/diplomacy.gd:1309 game/sky_cover.gd:195 game/sky_cover.gd:739
+#: game/trade331.gd:45 game/diplomacy.gd:1278
 msgid "страны нет"
 msgstr "країни немає"
 
@@ -1114,16 +1115,17 @@ msgstr "%s: повний прохід по землі, нападуть на о�
 
 #. kind: t
 #. short caps label: keep <= 9 chars (glossary short form)
-#: game/alliances.gd:450 game/diplomacy.gd:788 game/diplomacy.gd:796 game/peace_conf.gd:1295
-#: game/sky_cover.gd:669 game/trade331.gd:567 ui/menus.gd:3523 ui/ui24/dip_page.gd:2041
+#: game/alliances.gd:450 game/diplomacy.gd:819 game/diplomacy.gd:827 game/peace_conf.gd:1295
+#: game/sky_cover.gd:669 game/trade331.gd:573 game/diplomacy.gd:788 game/diplomacy.gd:796
+#: game/trade331.gd:567 ui/menus.gd:3523
 msgid "ПРИНЯТЬ"
 msgstr "ПРИЙНЯТИ"
 
 #. kind: t
 #. short caps label: keep <= 10 chars (glossary short form)
 #: game/alliances.gd:450 game/dip_react.gd:992 game/dip_react.gd:994 game/dip_requests.gd:811
-#: game/diplomacy.gd:783 game/diplomacy.gd:788 game/diplomacy.gd:796 game/diplomacy.gd:805
-#: game/diplomacy.gd:810 game/sky_cover.gd:669
+#: game/diplomacy.gd:814 game/diplomacy.gd:819 game/diplomacy.gd:827 game/diplomacy.gd:836
+#: game/diplomacy.gd:841 game/sky_cover.gd:669
 msgid "ОТКАЗАТЬ"
 msgstr "ВІДМОВИТИ"
 
@@ -1143,7 +1145,8 @@ msgid "АЛЬЯНС «%s» (%s)"
 msgstr "АЛЬЯНС «%s» (%s)"
 
 #. kind: t
-#: game/alliances.gd:482 game/diplomacy.gd:1004 game/diplomacy/dip_rules.gd:1159
+#: game/alliances.gd:482 game/diplomacy.gd:1035 game/diplomacy/dip_rules.gd:1159
+#: game/diplomacy.gd:1004
 msgid "Нельзя"
 msgstr "Не можна"
 
@@ -1691,7 +1694,7 @@ msgstr "поповнення вимкнено"
 #. kind: t
 #: game/army.gd:1883 game/army.gd:1882
 msgid "нет еды — постройте колхоз"
-msgstr "немає їжі — збудуйте колгосп"
+msgstr "немає їжі — збудуйте ферму"
 
 #. kind: t
 #: game/army.gd:1885 game/army.gd:1884
@@ -1726,8 +1729,8 @@ msgid "КАЗАРМЫ РАЗРУШЕНЫ"
 msgstr "КАЗАРМИ ЗРУЙНОВАНО"
 
 #. kind: t
-#: game/army.gd:1932 ui/hud/hud_cards.gd:339 ui/hud/hud_cards.gd:538 game/army.gd:1931
-#: ui/ui24/army_ux.gd:1466
+#: game/army.gd:1932 ui/hud/hud_cards.gd:339 ui/hud/hud_cards.gd:541 game/army.gd:1931
+#: ui/hud/hud_cards.gd:538 ui/ui24/army_ux.gd:1466
 msgid "НАБОР ОСТАНОВЛЕН"
 msgstr "НАБІР ЗУПИНЕНО"
 
@@ -2703,7 +2706,7 @@ msgstr "Літаки"
 #. kind: table:LOC_AD_COLS,table:LOC_COL_SHORT
 #: game/defense.gd:113 ui/ui24/ad_rules_sheet.gd:32
 msgid "Вертолёты"
-msgstr "Гелікоптери"
+msgstr "Вертольоти"
 
 #. kind: table:LOC_AD_COLS,tag
 #: game/defense.gd:113 game/strike_hub.gd:16
@@ -2801,8 +2804,8 @@ msgid "требование"
 msgstr "вимога"
 
 #. kind: t,tag
-#: game/dip_react.gd:410 game/trade331.gd:45 ui/ui24/dip_page.gd:1844 ui/ui24/trade_sheet.gd:1334
-#: ui/ui24/notif_calm.gd:49
+#: game/dip_react.gd:410 game/trade331.gd:45 ui/ui24/dip_page.gd:1845 ui/ui24/trade_sheet.gd:1334
+#: ui/ui24/dip_page.gd:1844 ui/ui24/notif_calm.gd:49
 msgid "санкции"
 msgstr "санкції"
 
@@ -2846,7 +2849,7 @@ msgid "%s: %s → %s · %s"
 msgstr "%s: %s → %s · %s"
 
 #. kind: t
-#: game/dip_react.gd:453 game/diplomacy.gd:1530
+#: game/dip_react.gd:453 game/diplomacy.gd:1561 game/diplomacy.gd:1530
 msgid "Нота устарела"
 msgstr "Нота застаріла"
 
@@ -2901,9 +2904,9 @@ msgid "не бить поставки"
 msgstr "не бити поставки"
 
 #. kind: t
-#: game/dip_react.gd:530 game/dip_requests.gd:711 game/diplomacy.gd:838 game/diplomacy.gd:848
-#: game/diplomacy.gd:913 game/diplomacy.gd:919 game/diplomacy.gd:922 game/diplomacy.gd:924
-#: game/diplomacy.gd:1534 game/diplomacy.gd:1535
+#: game/dip_react.gd:530 game/dip_requests.gd:711 game/diplomacy.gd:869 game/diplomacy.gd:879
+#: game/diplomacy.gd:944 game/diplomacy.gd:950 game/diplomacy.gd:953 game/diplomacy.gd:955
+#: game/diplomacy.gd:1565 game/diplomacy.gd:1566
 msgid "Нет такого"
 msgstr "Немає такого"
 
@@ -3037,7 +3040,7 @@ msgstr "ЗАГРОЗА"
 
 #. kind: tag,t
 #. short caps label: keep <= 7 chars (glossary short form)
-#: game/dip_react.gd:59 ui/hud.gd:393
+#: game/dip_react.gd:59 ui/hud.gd:425 ui/hud.gd:393
 msgid "НЕФТИ"
 msgstr "НАФТИ"
 
@@ -3049,13 +3052,13 @@ msgstr "ПАЛЬНОГО"
 
 #. kind: tag,t
 #. short caps label: keep <= 9 chars (glossary short form)
-#: game/dip_react.gd:59 ui/hud.gd:393
+#: game/dip_react.gd:59 ui/hud.gd:425 ui/hud.gd:393
 msgid "МЕТАЛЛА"
 msgstr "МЕТАЛУ"
 
 #. kind: tag,t
 #. short caps label: keep <= 8 chars (glossary short form)
-#: game/dip_react.gd:59 ui/hud.gd:393
+#: game/dip_react.gd:59 ui/hud.gd:425 ui/hud.gd:393
 msgid "ТИТАНА"
 msgstr "ТИТАНУ"
 
@@ -3085,7 +3088,7 @@ msgstr "ДОРОГОЦІННИХ МЕТАЛІВ"
 
 #. kind: tag,t
 #. short caps label: keep <= 7 chars (glossary short form)
-#: game/dip_react.gd:60 ui/hud.gd:393
+#: game/dip_react.gd:60 ui/hud.gd:425 ui/hud.gd:393
 msgid "УРАНА"
 msgstr "УРАНУ"
 
@@ -3160,9 +3163,9 @@ msgid "Это вы"
 msgstr "Це ви"
 
 #. kind: t
-#: game/dip_requests.gd:150 game/dip_requests.gd:917 game/diplomacy.gd:734 game/diplomacy.gd:992
-#: game/diplomacy.gd:1226 game/sky_cover.gd:157 game/trade331.gd:181 game/trade331.gd:283
-#: game/trade331.gd:435 game/diplomacy/dip_allies.gd:244
+#: game/dip_requests.gd:150 game/dip_requests.gd:917 game/diplomacy.gd:765 game/diplomacy.gd:1023
+#: game/diplomacy.gd:1257 game/sky_cover.gd:157 game/trade331.gd:181 game/trade331.gd:283
+#: game/trade331.gd:441 game/diplomacy/dip_allies.gd:244
 msgid "Страны нет"
 msgstr "Країни немає"
 
@@ -3187,8 +3190,8 @@ msgid "они сами"
 msgstr "вони самі"
 
 #. kind: t
-#: game/dip_requests.gd:156 game/diplomacy.gd:743 game/diplomacy/dip_rules.gd:866
-#: game/diplomacy/dip_rules.gd:1194 ui/ui24/dip_sheet.gd:801
+#: game/dip_requests.gd:156 game/diplomacy.gd:774 game/diplomacy/dip_rules.gd:866
+#: game/diplomacy/dip_rules.gd:1194 game/diplomacy.gd:743 ui/ui24/dip_sheet.gd:801
 msgid "Сначала заключите мир"
 msgstr "Спершу укладіть мир"
 
@@ -3359,7 +3362,8 @@ msgid "НЕ СЕЙЧАС — %s отказывает без объяснений
 msgstr "НЕ ЗАРАЗ — %s відмовляє без пояснень"
 
 #. kind: t
-#: game/dip_requests.gd:445 game/diplomacy.gd:1302 game/diplomacy/dip_allies.gd:829
+#: game/dip_requests.gd:445 game/diplomacy.gd:1333 game/diplomacy/dip_allies.gd:829
+#: game/diplomacy.gd:1302
 msgid "не видит выгоды"
 msgstr "не бачить вигоди"
 
@@ -3369,7 +3373,7 @@ msgid "уже просили · ждём %d:%02d"
 msgstr "уже просили · чекаємо %d:%02d"
 
 #. kind: t
-#: game/dip_requests.gd:459 game/diplomacy.gd:1291 ui/ui24/dip_sheet.gd:998
+#: game/dip_requests.gd:459 game/diplomacy.gd:1322 game/diplomacy.gd:1291 ui/ui24/dip_sheet.gd:998
 msgid "ждём ответа"
 msgstr "чекаємо відповіді"
 
@@ -3385,7 +3389,7 @@ msgid "СОПЕРНИК — не станет помогать"
 msgstr "СУПЕРНИК — не допомагатиме"
 
 #. kind: t
-#: game/dip_requests.gd:489 ui/ui24/dip_page.gd:2318
+#: game/dip_requests.gd:489 ui/ui24/dip_page.gd:2319 ui/ui24/dip_page.gd:2318
 msgid "нет подходящих стран"
 msgstr "немає відповідних країн"
 
@@ -3396,7 +3400,7 @@ msgid "ОТВЕТИТ САМ"
 msgstr "ВІДПОВІСТЬ САМ"
 
 #. kind: t
-#: game/dip_requests.gd:545 game/diplomacy.gd:1243
+#: game/dip_requests.gd:545 game/diplomacy.gd:1274 game/diplomacy.gd:1243
 msgid "Уже просили: ещё %d с"
 msgstr "Уже просили: ще %d с"
 
@@ -3481,7 +3485,7 @@ msgid "ПЕРЕМИРИЕ: %s И %s (ПОД ДАВЛЕНИЕМ)"
 msgstr "ПЕРЕМИР’Я: %s І %s (ПІД ТИСКОМ)"
 
 #. kind: t
-#: game/dip_requests.gd:718 game/diplomacy.gd:1489 game/diplomacy.gd:1492 game/navy_art.gd:746
+#: game/dip_requests.gd:718 game/diplomacy.gd:1520 game/diplomacy.gd:1523 game/navy_art.gd:746
 #: game/navy_strike.gd:155 game/navy_strike.gd:190 game/peace_conf.gd:350 game/sky_cover.gd:696
 #: game/diplomacy/dip_allies.gd:859 game/diplomacy/dip_allies.gd:862
 msgid "Нельзя: %s"
@@ -3635,7 +3639,7 @@ msgstr "ПОГОДИТИСЯ"
 
 #. kind: t
 #. short caps label: keep <= 10 chars (glossary short form)
-#: game/dip_requests.gd:811 game/diplomacy.gd:1461 ui/ui24/dip_sheet.gd:2583
+#: game/dip_requests.gd:811 game/diplomacy.gd:1492 game/diplomacy.gd:1461 ui/ui24/dip_sheet.gd:2583
 msgid "ВСТУПИТЬ"
 msgstr "ВСТУПИТИ"
 
@@ -3681,7 +3685,7 @@ msgstr " — захист без війни, ворог: %s"
 
 #. kind: t
 #: game/dip_requests.gd:1024 ui/hud/hud_cards.gd:340 ui/ui24/army_ux.gd:1547 ui/ui24/army_ux.gd:1605
-#: ui/ui24/army_ux.gd:1779 ui/ui24/dip_page.gd:1601
+#: ui/ui24/army_ux.gd:1779 ui/ui24/dip_page.gd:1602 ui/ui24/dip_page.gd:1601
 msgid "АРМИЯ №%d"
 msgstr "АРМІЯ №%d"
 
@@ -3788,7 +3792,7 @@ msgstr "Немає відповіді від країни %s: %s"
 
 #. kind: tag,t
 #. short caps label: keep <= 18 chars (glossary short form)
-#: game/dip_requests.gd:9 ui/ui24/dip_page.gd:1758
+#: game/dip_requests.gd:9 ui/ui24/dip_page.gd:1759 ui/ui24/dip_page.gd:1758
 msgid "ОБЪЯВИТЬ ВОЙНУ"
 msgstr "ОГОЛОСИТИ ВІЙНУ"
 
@@ -3835,448 +3839,443 @@ msgid "50 НА 50"
 msgstr "50 НА 50"
 
 #. kind: mk
-#: game/diplomacy.gd:30
+#: game/diplomacy.gd:32 game/diplomacy.gd:30
 msgid "%s отказывается"
 msgstr "%s відмовляється"
 
 #. kind: mk
-#: game/diplomacy.gd:39
+#: game/diplomacy.gd:41 game/diplomacy.gd:39
 msgid "Союз не заключён: %s"
 msgstr "Союз не укладено: %s"
 
 #. kind: mk
-#: game/diplomacy.gd:44
+#: game/diplomacy.gd:46 game/diplomacy.gd:44
 msgid "ПЕРЕМИРИЕ: %s И %s"
 msgstr "ПЕРЕМИР’Я: %s І %s"
 
 #. kind: mk
-#: game/diplomacy.gd:47
+#: game/diplomacy.gd:49 game/diplomacy.gd:47
 msgid "МИРНЫЙ ДОГОВОР: %s И %s"
 msgstr "МИРНИЙ ДОГОВІР: %s І %s"
 
 #. kind: mk
-#: game/diplomacy.gd:51 game/diplomacy/dip_allies.gd:223
+#: game/diplomacy.gd:53 game/diplomacy/dip_allies.gd:223 game/diplomacy.gd:51
 msgid "СОЮЗ: %s И %s"
 msgstr "СОЮЗ: %s І %s"
 
 #. kind: mk
-#: game/diplomacy.gd:66
+#: game/diplomacy.gd:68 game/diplomacy.gd:66
 msgid "Перемирие с %s: через %d с — мир. Войны не будет ещё %d мин"
 msgstr "Перемир’я з %s: за %d с — мир. Війни не буде ще %d хв"
 
 #. kind: mk
-#: game/diplomacy.gd:72
+#: game/diplomacy.gd:74 game/diplomacy.gd:72
 msgid "ПЕРЕМИРИЕ ПЕРЕШЛО В МИР: %s И %s"
 msgstr "ПЕРЕМИР’Я ПЕРЕЙШЛО В МИР: %s І %s"
 
 #. kind: mk
-#: game/diplomacy.gd:74
+#: game/diplomacy.gd:76 game/diplomacy.gd:74
 msgid "Мир с %s. Новой войны с их стороны не будет %d мин"
 msgstr "Мир із %s. Нової війни з їхнього боку не буде %d хв"
 
 #. kind: mk
-#: game/diplomacy.gd:82
+#: game/diplomacy.gd:84 game/diplomacy.gd:82
 msgid "%s не ответил: %s"
 msgstr "%s не відповів: %s"
 
 #. kind: mk
-#: game/diplomacy.gd:114
+#: game/diplomacy.gd:127 game/diplomacy.gd:114
 msgid "%s принимает: %s"
 msgstr "%s приймає: %s"
 
 #. kind: mk
-#: game/diplomacy.gd:118 game/diplomacy.gd:901
+#: game/diplomacy.gd:131 game/diplomacy.gd:932 game/diplomacy.gd:118 game/diplomacy.gd:901
 msgid "%s отклоняет: %s"
 msgstr "%s відхиляє: %s"
 
 #. kind: t
-#: game/diplomacy.gd:171
+#: game/diplomacy.gd:202
 msgid "проигрывает"
 msgstr "програє"
 
 #. kind: t
-#: game/diplomacy.gd:171
+#: game/diplomacy.gd:202
 msgid "устала"
 msgstr "утомилася"
 
 #. kind: mk
-#: game/diplomacy.gd:402
+#: game/diplomacy.gd:433 game/diplomacy.gd:402
 msgid "Срок ультиматума истёк: %s"
 msgstr "Строк ультиматуму минув: %s"
 
 #. kind: mk
-#: game/diplomacy.gd:483
+#: game/diplomacy.gd:514 game/diplomacy.gd:483
 msgid "Разведка: известны характеры всех стран (окно «Дипломатия»)"
 msgstr "Розвідка: відомі характери всіх країн (вікно «Дипломатія»)"
 
 #. kind: mk
-#: game/diplomacy.gd:510
+#: game/diplomacy.gd:541 game/diplomacy.gd:510
 msgid "КОАЛИЦИЯ РАСПАЛАСЬ: %s БОЛЬШЕ НЕ ЛИДЕР"
 msgstr "КОАЛІЦІЯ РОЗПАЛАСЯ: %s БІЛЬШЕ НЕ ЛІДЕР"
 
 #. kind: mk
-#: game/diplomacy.gd:516
+#: game/diplomacy.gd:547 game/diplomacy.gd:516
 msgid "%s СЛИШКОМ СИЛЬНА: СОСЕДИ НАСТОРОЖЕ"
 msgstr "%s НАДТО СИЛЬНА: СУСІДИ НАСТОРОЖІ"
 
 #. kind: mk
-#: game/diplomacy.gd:518
+#: game/diplomacy.gd:549 game/diplomacy.gd:518
 msgid "Вы лидер мира: соседи сплачиваются против вас"
 msgstr "Ви лідер світу: сусіди гуртуються проти вас"
 
 #. kind: mk
-#: game/diplomacy.gd:555
+#: game/diplomacy.gd:586 game/diplomacy.gd:555
 msgid "КОАЛИЦИЯ (ЦЕЛЬ — %s): %s"
 msgstr "КОАЛІЦІЯ (ЦІЛЬ — %s): %s"
 
 #. kind: mk
-#: game/diplomacy.gd:710
+#: game/diplomacy.gd:741 game/diplomacy.gd:710
 msgid "Предложение %s уже ждёт ответа"
 msgstr "Пропозиція %s уже чекає відповіді"
 
 #. kind: t,tag
 #. short caps label: keep <= 11 chars (glossary short form)
-#: game/diplomacy.gd:714 game/diplomacy/dip_base.gd:6 ui/ui24/my_state.gd:1189
-#: ui/ui24/my_state.gd:1231 ui/hud/hud_dip.gd:328 ui/ui24/dip_sheet.gd:852
+#: game/diplomacy.gd:745 game/diplomacy/dip_base.gd:6 ui/ui24/my_state.gd:1189
+#: ui/ui24/my_state.gd:1231 game/diplomacy.gd:714 ui/hud/hud_dip.gd:328 ui/ui24/dip_sheet.gd:852
 msgid "ПЕРЕМИРИЕ"
 msgstr "ПЕРЕМИР’Я"
 
 #. kind: t,tag
 #. short caps label: keep <= 5 chars (glossary short form)
-#: game/diplomacy.gd:714 game/diplomacy/dip_base.gd:6 ui/ui24/dip_sheet.gd:858
-#: ui/ui24/dip_sheet.gd:1341 ui/hud/hud_dip.gd:329 ui/ui24/dip_sheet.gd:1519
+#: game/diplomacy.gd:745 game/diplomacy/dip_base.gd:6 ui/ui24/dip_sheet.gd:858
+#: ui/ui24/dip_sheet.gd:1341 game/diplomacy.gd:714 ui/hud/hud_dip.gd:329 ui/ui24/dip_sheet.gd:1519
 msgid "МИР"
 msgstr "МИР"
 
 #. kind: t,tag,table:LOC_TAG
 #. short caps label: keep <= 6 chars (glossary short form)
-#: game/diplomacy.gd:714 game/diplomacy/dip_allies.gd:806 game/diplomacy/dip_base.gd:6
-#: game/diplomacy/dip_base.gd:69 game/diplomacy/dip_base.gd:69 world/labels_layer.gd:899
-#: ui/ui24/dip_sheet.gd:1526 ui/ui24/help_tips.gd:26 ui/ui24/my_state.gd:1447
+#: game/diplomacy.gd:745 game/diplomacy/dip_allies.gd:806 game/diplomacy/dip_base.gd:6
+#: game/diplomacy/dip_base.gd:69 game/diplomacy/dip_base.gd:69 world/labels_layer.gd:906
+#: game/diplomacy.gd:714 ui/ui24/dip_sheet.gd:1526 ui/ui24/help_tips.gd:26 ui/ui24/my_state.gd:1447
 msgid "СОЮЗ"
 msgstr "СОЮЗ"
 
 #. kind: mk
-#: game/diplomacy.gd:716
+#: game/diplomacy.gd:747 game/diplomacy.gd:716
 msgid "%s ПРЕДЛАГАЕТ ВАМ %s"
 msgstr "%s ПРОПОНУЄ ВАМ %s"
 
 #. kind: mk,t
-#: game/diplomacy.gd:717 game/diplomacy.gd:787 game/diplomacy/dip_rules.gd:406
+#: game/diplomacy.gd:748 game/diplomacy.gd:818 game/diplomacy/dip_rules.gd:406 game/diplomacy.gd:717
+#: game/diplomacy.gd:787
 msgid "%s предлагает: %s"
 msgstr "%s пропонує: %s"
 
 #. kind: t
-#: game/diplomacy.gd:732 game/diplomacy/dip_rules.gd:301 game/diplomacy/dip_rules.gd:947
+#: game/diplomacy.gd:763 game/diplomacy/dip_rules.gd:301 game/diplomacy/dip_rules.gd:947
+#: game/diplomacy.gd:732
 msgid "Нет такого договора"
 msgstr "Немає такого договору"
 
 #. kind: t
-#: game/diplomacy.gd:738 game/diplomacy/dip_allies.gd:1320
+#: game/diplomacy.gd:769 game/diplomacy/dip_allies.gd:1320 game/diplomacy.gd:738
 msgid "Внешнюю политику %s решает %s"
 msgstr "Зовнішню політику %s визначає %s"
 
 #. kind: t
-#: game/diplomacy.gd:745
+#: game/diplomacy.gd:776 game/diplomacy.gd:745
 msgid "Договор уже действует"
 msgstr "Договір уже діє"
 
 #. kind: t
-#: game/diplomacy.gd:748
+#: game/diplomacy.gd:779 game/diplomacy.gd:748
 msgid "Не нужно: %s уже включает это"
 msgstr "Не потрібно: %s уже це містить"
 
 #. kind: t
-#: game/diplomacy.gd:752
+#: game/diplomacy.gd:783 game/diplomacy.gd:752
 msgid "Сначала снимите эмбарго"
 msgstr "Спершу зніміть ембарго"
 
 #. kind: t
-#: game/diplomacy.gd:754
+#: game/diplomacy.gd:785 game/diplomacy.gd:754
 msgid "Нет пути для грузов между столицами"
 msgstr "Немає шляху для вантажів між столицями"
 
 #. kind: t
-#: game/diplomacy.gd:758 game/diplomacy.gd:1015 game/diplomacy/dip_rules.gd:1208
-#: game/diplomacy/dip_rules.gd:1215 ui/ui24/trade_sheet.gd:1739
+#: game/diplomacy.gd:789 game/diplomacy.gd:1046 game/diplomacy/dip_rules.gd:1208
+#: game/diplomacy/dip_rules.gd:1215 ui/ui24/trade_sheet.gd:1739 game/diplomacy.gd:758
+#: game/diplomacy.gd:1015
 msgid "Предложение отправлено"
 msgstr "Пропозицію надіслано"
 
 #. kind: t
 #. short caps label: keep <= 10 chars (glossary short form)
-#: game/diplomacy.gd:783 ui/ui24/dip_sheet.gd:565
+#: game/diplomacy.gd:814 game/diplomacy.gd:783 ui/ui24/dip_sheet.gd:565
 msgid "УСТУПИТЬ"
 msgstr "УСТУПИТИ"
 
 #. kind: t
-#: game/diplomacy.gd:794
+#: game/diplomacy.gd:825 game/diplomacy.gd:794
 msgid "%s предлагает право прохода: ваши войска и БПЛА через её землю"
 msgstr "%s пропонує право проходу: ваші війська і БпЛА через її землю"
 
 #. kind: t
-#: game/diplomacy.gd:803
+#: game/diplomacy.gd:834 game/diplomacy.gd:803
 msgid "%s просит право прохода%s: войска и БПЛА через вашу землю"
 msgstr "%s просить право проходу%s: війська і БпЛА через вашу землю"
 
 #. kind: t
-#: game/diplomacy.gd:803 game/diplomacy/dip_rules.gd:884
+#: game/diplomacy.gd:834 game/diplomacy/dip_rules.gd:884 game/diplomacy.gd:803
 msgid " (война с %s)"
 msgstr " (війна з %s)"
 
 #. kind: t
 #. short caps label: keep <= 13 chars (glossary short form)
-#: game/diplomacy.gd:805
+#: game/diplomacy.gd:836 game/diplomacy.gd:805
 msgid "ПРОПУСТИТЬ"
 msgstr "ПРОПУСТИТИ"
 
 #. kind: t
-#: game/diplomacy.gd:808
+#: game/diplomacy.gd:839 game/diplomacy.gd:808
 msgid "%s предлагает: %s. %s"
 msgstr "%s пропонує: %s. %s"
 
 #. kind: t
 #. short caps label: keep <= 11 chars (glossary short form)
-#: game/diplomacy.gd:810
+#: game/diplomacy.gd:841 game/diplomacy.gd:810
 msgid "ПОДПИСАТЬ"
 msgstr "ПІДПИСАТИ"
 
 #. kind: t
-#: game/diplomacy.gd:816
+#: game/diplomacy.gd:847 game/diplomacy.gd:816
 msgid "%s просит %s ×%d по %d"
 msgstr "%s просить %s ×%d по %d"
 
 #. kind: t
 #. short caps label: keep <= 9 chars (glossary short form)
-#: game/diplomacy.gd:818 ui/ui24/trade_sheet.gd:760 ui/ui24/trade_sheet.gd:1258
-#: ui/ui24/trade_sheet.gd:1606 ui/hud/hud_dip.gd:467
+#: game/diplomacy.gd:849 ui/ui24/trade_sheet.gd:760 ui/ui24/trade_sheet.gd:1258
+#: ui/ui24/trade_sheet.gd:1606 game/diplomacy.gd:818 ui/hud/hud_dip.gd:467
 msgid "ПРОДАТЬ"
 msgstr "ПРОДАТИ"
 
-#. kind: t,tag
-#. short caps label: keep <= 5 chars (glossary short form)
-#: game/diplomacy.gd:818 game/game_config.gd:100 game/game_config.gd:124 game/trade331.gd:572
-#: ui/ui24/trade_sheet.gd:1611 ui/flag_editor.gd:742 ui/menus.gd:479 ui/menus.gd:1284
-#: ui/menus.gd:1340
-msgid "НЕТ"
-msgstr "НІ"
-
 #. kind: t
-#: game/diplomacy.gd:870
+#: game/diplomacy.gd:901 game/diplomacy.gd:870
 msgid "Ультиматум устарел"
 msgstr "Ультиматум застарів"
 
 #. kind: mk
-#: game/diplomacy.gd:885
+#: game/diplomacy.gd:916 game/diplomacy.gd:885
 msgid "%s отказывается от права прохода"
 msgstr "%s відмовляється від права проходу"
 
 #. kind: t
-#: game/diplomacy.gd:887 game/diplomacy.gd:895
+#: game/diplomacy.gd:918 game/diplomacy.gd:926 game/diplomacy.gd:887 game/diplomacy.gd:895
 msgid "Война: договор невозможен"
 msgstr "Війна: договір неможливий"
 
 #. kind: t
-#: game/diplomacy.gd:889
+#: game/diplomacy.gd:920 game/diplomacy.gd:889
 msgid "Проход недавно закрыт"
 msgstr "Прохід нещодавно закрито"
 
 #. kind: mk
-#: game/diplomacy.gd:978
+#: game/diplomacy.gd:1009 game/diplomacy.gd:978
 msgid "%s ТОЖЕ ПРЕКРАЩАЕТ ВОЙНУ С %s"
 msgstr "%s ТЕЖ ПРИПИНЯЄ ВІЙНУ З %s"
 
 #. kind: t
-#: game/diplomacy.gd:990
+#: game/diplomacy.gd:1021 game/diplomacy.gd:990
 msgid "Нет такого статуса"
 msgstr "Немає такого статусу"
 
 #. kind: t
-#: game/diplomacy.gd:995 game/diplomacy/dip_rules.gd:469
+#: game/diplomacy.gd:1026 game/diplomacy/dip_rules.gd:469 game/diplomacy.gd:995
 msgid "Уже вассал"
 msgstr "Уже васал"
 
 #. kind: t
-#: game/diplomacy.gd:1002
+#: game/diplomacy.gd:1033 game/diplomacy.gd:1002
 msgid "Рано: война только началась"
 msgstr "Зарано: війна тільки почалася"
 
 #. kind: t
-#: game/diplomacy.gd:1009
+#: game/diplomacy.gd:1040 game/diplomacy.gd:1009
 msgid "%s отказывается сдаться: нужна сила ×%s (сейчас ×%s)"
 msgstr "%s відмовляється здатися: потрібна сила ×%s (зараз ×%s)"
 
 #. kind: t
-#: game/diplomacy.gd:1012
+#: game/diplomacy.gd:1043 game/diplomacy.gd:1012
 msgid "Марионетку только ультиматумом"
 msgstr "Маріонетку — лише ультиматумом"
 
 #. kind: t
-#: game/diplomacy.gd:1019
+#: game/diplomacy.gd:1050 game/diplomacy.gd:1019
 msgid "%s: вы недостаточно сильны (нужно ×%s, сейчас ×%s)"
 msgstr "%s: ви недостатньо сильні (потрібно ×%s, зараз ×%s)"
 
 #. kind: t
-#: game/diplomacy.gd:1022
+#: game/diplomacy.gd:1053 game/diplomacy.gd:1022
 msgid "%s не доверяет вам: отношения %d, нужно от %d"
 msgstr "%s не довіряє вам: відносини %d, потрібно від %d"
 
 #. kind: mk
-#: game/diplomacy.gd:1059
+#: game/diplomacy.gd:1090 game/diplomacy.gd:1059
 msgid "%s просит покровительства: станет вашим вассалом"
 msgstr "%s просить заступництва: стане вашим васалом"
 
 #. kind: mk
-#: game/diplomacy.gd:1117
+#: game/diplomacy.gd:1148 game/diplomacy.gd:1117
 msgid "%s предлагает вам вассалитет"
 msgstr "%s пропонує вам васалітет"
 
 #. kind: mk
-#: game/diplomacy.gd:1179
+#: game/diplomacy.gd:1210 game/diplomacy.gd:1179
 msgid "ПРИЗЫВ К ВОЙНЕ: %s просит вступить в войну с %s"
 msgstr "ЗАКЛИК ДО ВІЙНИ: %s просить вступити у війну з %s"
 
 #. kind: t
-#: game/diplomacy.gd:1223
+#: game/diplomacy.gd:1254 game/diplomacy.gd:1223
 msgid "Вы ни с кем не воюете"
 msgstr "Ви ні з ким не воюєте"
 
 #. kind: t
-#: game/diplomacy.gd:1228
+#: game/diplomacy.gd:1259 game/diplomacy.gd:1228
 msgid "Сначала заключите мир с %s"
 msgstr "Спершу укладіть мир із %s"
 
 #. kind: t
-#: game/diplomacy.gd:1239
+#: game/diplomacy.gd:1270 game/diplomacy.gd:1239
 msgid "%s уже воюет на вашей стороне"
 msgstr "%s уже воює на вашому боці"
 
 #. kind: t
-#: game/diplomacy.gd:1247
+#: game/diplomacy.gd:1278 game/diplomacy.gd:1247
 msgid "%s выбирает сторону: вы или %s — ещё %d с"
 msgstr "%s обирає бік: ви або %s — ще %d с"
 
 #. kind: t
-#: game/diplomacy.gd:1253 game/diplomacy/dip_allies.gd:682
+#: game/diplomacy.gd:1284 game/diplomacy/dip_allies.gd:682 game/diplomacy.gd:1253
 msgid "ПРИЗЫВ СОЮЗНИКА"
 msgstr "ЗАКЛИК СОЮЗНИКА"
 
 #. kind: t
 #. short caps label: keep <= 13 chars (glossary short form)
-#: game/diplomacy.gd:1253 game/diplomacy.gd:1382
+#: game/diplomacy.gd:1284 game/diplomacy.gd:1413 game/diplomacy.gd:1253 game/diplomacy.gd:1382
 msgid "ПО ПРОСЬБЕ"
 msgstr "НА ПРОХАННЯ"
 
 #. kind: t
-#: game/diplomacy.gd:1258
+#: game/diplomacy.gd:1289 game/diplomacy.gd:1258
 msgid "%s не вступит в войну, но прислал помощь"
 msgstr "%s не вступить у війну, але надіслав допомогу"
 
 #. kind: t
-#: game/diplomacy.gd:1268
+#: game/diplomacy.gd:1299 game/diplomacy.gd:1268
 msgid "%s отказывается%s"
 msgstr "%s відмовляється%s"
 
 #. kind: t
-#: game/diplomacy.gd:1280
+#: game/diplomacy.gd:1311 game/diplomacy.gd:1280
 msgid "уже воюет с %s"
 msgstr "уже воює з %s"
 
 #. kind: t
-#: game/diplomacy.gd:1282
+#: game/diplomacy.gd:1313 game/diplomacy.gd:1282
 msgid "выбирает сторону: вы или %s — ещё %d с"
 msgstr "обирає бік: ви або %s — ще %d с"
 
 #. kind: t
-#: game/diplomacy.gd:1292
+#: game/diplomacy.gd:1323 game/diplomacy.gd:1292
 msgid "игрок — ответит сам"
 msgstr "гравець — відповість сам"
 
 #. kind: t
-#: game/diplomacy.gd:1302
+#: game/diplomacy.gd:1333 game/diplomacy.gd:1302
 msgid "воюет за свою жизнь"
 msgstr "воює за своє життя"
 
 #. kind: t
-#: game/diplomacy.gd:1302
+#: game/diplomacy.gd:1333 game/diplomacy.gd:1302
 msgid "уже две войны"
 msgstr "уже дві війни"
 
 #. kind: mk
-#: game/diplomacy.gd:1402
+#: game/diplomacy.gd:1433 game/diplomacy.gd:1402
 msgid "%s предлагает вам вступить в войну с %s"
 msgstr "%s пропонує вам вступити у війну з %s"
 
 #. kind: mk
-#: game/diplomacy.gd:1425
+#: game/diplomacy.gd:1456 game/diplomacy.gd:1425
 msgid "Вы не ответили на призыв %s"
 msgstr "Ви не відповіли на заклик %s"
 
 #. kind: mk
-#: game/diplomacy.gd:1428
+#: game/diplomacy.gd:1459 game/diplomacy.gd:1428
 msgid "%s не ответил на просьбу о войне с %s"
 msgstr "%s не відповів на прохання про війну з %s"
 
 #. kind: t
-#: game/diplomacy.gd:1459
+#: game/diplomacy.gd:1490 game/diplomacy.gd:1459
 msgid "%s предлагает вступить в войну с %s"
 msgstr "%s пропонує вступити у війну з %s"
 
 #. kind: t
-#: game/diplomacy.gd:1459
+#: game/diplomacy.gd:1490 game/diplomacy.gd:1459
 msgid "%s призывает к войне с %s"
 msgstr "%s закликає до війни з %s"
 
 #. kind: t
 #. short caps label: keep <= 8 chars (glossary short form)
-#: game/diplomacy.gd:1461 game/diplomacy.gd:1468
+#: game/diplomacy.gd:1492 game/diplomacy.gd:1499 game/diplomacy.gd:1461 game/diplomacy.gd:1468
 msgid "ПОМОЧЬ"
 msgstr "ДОПОМОГТИ"
 
 #. kind: t
 #. short caps label: keep <= 7 chars (glossary short form)
-#: game/diplomacy.gd:1461
+#: game/diplomacy.gd:1492 game/diplomacy.gd:1461
 msgid "ОТКАЗ"
 msgstr "ВІДМОВА"
 
 #. kind: t
-#: game/diplomacy.gd:1466
+#: game/diplomacy.gd:1497 game/diplomacy.gd:1466
 msgid "НОТА ПРОТЕСТА: %s — нет помощи в войне с %s (%d из 3)"
 msgstr "НОТА ПРОТЕСТУ: %s — немає допомоги у війні з %s (%d з 3)"
 
 #. kind: t
 #. short caps label: keep <= 9 chars (glossary short form)
-#: game/diplomacy.gd:1468 ui/menus.gd:1161 ui/ui24/help_tips.gd:161
+#: game/diplomacy.gd:1499 game/diplomacy.gd:1468 ui/menus.gd:1161 ui/ui24/help_tips.gd:161
 msgid "ПОНЯТНО"
 msgstr "ЗРОЗУМІЛО"
 
 #. kind: t
-#: game/diplomacy.gd:1500 game/diplomacy.gd:1525
+#: game/diplomacy.gd:1531 game/diplomacy.gd:1556 game/diplomacy.gd:1500 game/diplomacy.gd:1525
 msgid "Нужно от 500 денег"
 msgstr "Потрібно від 500 грошей"
 
 #. kind: t
-#: game/diplomacy.gd:1509
+#: game/diplomacy.gd:1540 game/diplomacy.gd:1509
 msgid "%s отказывается вступать в войну с %s"
 msgstr "%s відмовляється вступати у війну з %s"
 
 #. kind: t
-#: game/diplomacy.gd:1511
+#: game/diplomacy.gd:1542 game/diplomacy.gd:1511
 msgid "%s вступает в войну с %s по вашей просьбе"
 msgstr "%s вступає у війну з %s на ваше прохання"
 
 #. kind: t
-#: game/diplomacy.gd:1513
+#: game/diplomacy.gd:1544 game/diplomacy.gd:1513
 msgid "%s не вступит в войну с %s, но прислал помощь"
 msgstr "%s не вступить у війну з %s, але надіслав допомогу"
 
 #. kind: t
-#: game/diplomacy.gd:1517
+#: game/diplomacy.gd:1548 game/diplomacy.gd:1517
 msgid "Призыв устарел"
 msgstr "Заклик застарів"
 
 #. kind: t
-#: game/diplomacy.gd:1532 game/peace_conf.gd:655 ui/ui24/conference_sheet.gd:1258
-#: ui/ui24/dip_sheet.gd:2288
+#: game/diplomacy.gd:1563 game/peace_conf.gd:655 game/diplomacy.gd:1532
+#: ui/ui24/conference_sheet.gd:1258 ui/ui24/dip_sheet.gd:2288
 msgid "Конференция закончилась"
 msgstr "Конференція завершилася"
 
@@ -4293,7 +4292,7 @@ msgstr "Столиця"
 #. kind: t
 #: game/econ_guide.gd:263
 msgid "Тап по свободной земле: вырастет город, рядом сама встанет ТЭЦ и малые залежи руды."
-msgstr "Тап по вільній землі: виросте місто, поруч сама стане ТЕЦ і малі поклади руди."
+msgstr "Торкніться вільної землі: виросте місто, поруч сама стане ТЕЦ і малі поклади руди."
 
 #. kind: t
 #: game/econ_guide.gd:264
@@ -4303,7 +4302,7 @@ msgstr "Столицю засновано"
 #. kind: t
 #: game/econ_guide.gd:271
 msgid "Колхоз: еда"
-msgstr "Колгосп: їжа"
+msgstr "Ферма: їжа"
 
 #. kind: t
 #: game/econ_guide.gd:271
@@ -4313,7 +4312,7 @@ msgstr "Найдешевший дохід: +%d їжі і +%d грошей за �
 #. kind: t
 #: game/econ_guide.gd:272
 msgid "Колхоз построен"
-msgstr "Колгосп збудовано"
+msgstr "Ферму збудовано"
 
 #. kind: t
 #: game/econ_guide.gd:276
@@ -4538,7 +4537,7 @@ msgstr "Покращення: рівень 2"
 #. kind: t
 #: game/econ_guide.gd:403
 msgid "Улучшенный рудник, колхоз или завод даёт выпуск ×%.1f без новой энергии и места. Тап — к лучшему кандидату, кнопка «УР» в карточке."
-msgstr "Покращений рудник, колгосп або завод дає випуск ×%.1f без нової енергії і місця. Тап — до найкращого кандидата, кнопка «РІВ» у картці."
+msgstr "Покращений рудник, ферма або завод дає випуск ×%.1f без нової енергії і місця. Торкніться — до найкращого кандидата, кнопка «РІВ» у картці."
 
 #. kind: t
 #: game/econ_guide.gd:404
@@ -4583,7 +4582,7 @@ msgstr "Підприємства: %d/6"
 #. kind: t
 #: game/econ_guide.gd:413
 msgid "Каждый колхоз, завод товаров, рудник или лесопилка — +25 очков и постоянный доход. Деньги на счету очков не дают."
-msgstr "Кожен колгосп, завод товарів, рудник або лісопилка — +25 очок і постійний дохід. Гроші на рахунку очок не дають."
+msgstr "Кожна ферма, завод товарів, рудник або лісопилка — +25 очок і постійний дохід. Гроші на рахунку очок не дають."
 
 #. kind: t
 #: game/econ_guide.gd:414
@@ -4663,7 +4662,7 @@ msgstr "Покращення: рівень 3"
 #. kind: t
 #: game/econ_guide.gd:453
 msgid "Уровень 3 — выпуск ×%.1f: больше дохода и очков с того же места. Тап — к объекту 2-го уровня, кнопка «УР»."
-msgstr "Рівень 3 — випуск ×%.1f: більше доходу й очок з того самого місця. Тап — до об’єкта 2-го рівня, кнопка «РІВ»."
+msgstr "Рівень 3 — випуск ×%.1f: більше доходу й очок з того самого місця. Торкніться — до об’єкта 2-го рівня, кнопка «РІВ»."
 
 #. kind: t
 #: game/econ_guide.gd:454
@@ -4843,22 +4842,22 @@ msgstr "Їжі вистачає: +%d за хвилину, армія їсть %d
 #. kind: t
 #: game/econ_guide.gd:1149
 msgid "Колхозов нет: еда понадобится армии, а колхоз ещё и приносит деньги."
-msgstr "Колгоспів немає: їжа знадобиться армії, а колгосп ще й приносить гроші."
+msgstr "Ферм немає: їжа знадобиться армії, а ферма ще й приносить гроші."
 
 #. kind: t
 #: game/econ_guide.gd:1152
 msgid "Армия голодает: еды нет — постройте колхоз или купите еду в торговле."
-msgstr "Армія голодує: їжі немає — збудуйте колгосп або купіть їжу в торгівлі."
+msgstr "Армія голодує: їжі немає — збудуйте ферму або купіть їжу в торгівлі."
 
 #. kind: t
 #: game/econ_guide.gd:1155
 msgid "Колхозы на паузе — еда не растёт."
-msgstr "Колгоспи на паузі — їжа не росте."
+msgstr "Ферми на паузі — їжа не росте."
 
 #. kind: t
 #: game/econ_guide.gd:1158
 msgid "Еда убывает (%d в минуту): запаса на ~%d мин — нужен ещё колхоз."
-msgstr "Їжа зменшується (%d за хвилину): запасу на ~%d хв — потрібен ще колгосп."
+msgstr "Їжа зменшується (%d за хвилину): запасу на ~%d хв — потрібна ще ферма."
 
 #. kind: t
 #: game/econ_guide.gd:1160
@@ -4868,7 +4867,7 @@ msgstr "Склад їжі повний: надлишки продаються з
 #. kind: t
 #: game/econ_guide.gd:1163
 msgid "Колхоз → еда → армия"
-msgstr "Колгосп → їжа → армія"
+msgstr "Ферма → їжа → армія"
 
 #. kind: t
 #: game/econ_guide.gd:1170
@@ -5472,7 +5471,7 @@ msgstr "енергія +%d · уран −1 за %d с"
 #. short caps label: keep <= 9 chars (glossary short form)
 #: game/econ_rates.gd:18
 msgid "КОЛХОЗЫ"
-msgstr "КОЛГОСПИ"
+msgstr "ФЕРМИ"
 
 #. kind: tag
 #. short caps label: keep <= 8 chars (glossary short form)
@@ -5550,7 +5549,7 @@ msgstr "ПОРТИ"
 #. kind: tag
 #: game/econ_rates.gd:26 game/economy/eco_base.gd:263 ui/hud/hud_base.gd:454
 msgid "Колхозы"
-msgstr "Колгоспи"
+msgstr "Ферми"
 
 #. kind: tag
 #: game/econ_rates.gd:26 game/economy/eco_base.gd:263 ui/hud/hud_base.gd:454
@@ -5733,92 +5732,93 @@ msgid "уступки"
 msgstr "поступки"
 
 #. kind: mk
-#: game/economy.gd:150
+#: game/economy.gd:158 game/economy.gd:150
 msgid "Месторождение исчерпано: %s"
 msgstr "Родовище вичерпано: %s"
 
 #. kind: t
-#: game/economy.gd:407
+#: game/economy.gd:418 game/economy.gd:407
 msgid "%s готов: запас +%d, добыча ×%.1f"
 msgstr "%s готовий: запас +%d, видобуток ×%.1f"
 
 #. kind: t
-#: game/economy.gd:408
+#: game/economy.gd:419 game/economy.gd:408
 msgid "%s готов: добыча ×%.1f"
 msgstr "%s готовий: видобуток ×%.1f"
 
 #. kind: t
-#: game/economy.gd:416
+#: game/economy.gd:427 game/economy.gd:416
 msgid "Строится «%s»: %d с, запас +%d"
 msgstr "Будується «%s»: %d с, запас +%d"
 
 #. kind: t
-#: game/economy.gd:416
+#: game/economy.gd:427 game/economy.gd:416
 msgid "Строится «%s»: %d с, добыча ×%.1f"
 msgstr "Будується «%s»: %d с, видобуток ×%.1f"
 
 #. kind: t,mk
-#: game/economy.gd:417 game/main.gd:1011
+#: game/economy.gd:428 game/main.gd:1011 game/economy.gd:417
 msgid "Улучшено: %s, уровень %d"
 msgstr "Покращено: %s, рівень %d"
 
 #. kind: t
-#: game/economy.gd:428
+#: game/economy.gd:439 game/economy.gd:428
 msgid "%s · УР %d"
 msgstr "%s · РІВ %d"
 
 #. kind: t
-#: game/economy.gd:436
+#: game/economy.gd:447 game/economy.gd:436
 msgid "Нет месторождения рядом."
 msgstr "Немає родовища поруч."
 
 #. kind: t
-#: game/economy.gd:442
+#: game/economy.gd:453 game/economy.gd:442
 msgid "запас +%d, "
 msgstr "запас +%d, "
 
 #. kind: t
-#: game/economy.gd:449
+#: game/economy.gd:460 game/economy.gd:449
 msgid "Строится «%s»: %sдобыча +%d/мин. Пока идут работы, добыча идёт по-старому."
 msgstr "Будується «%s»: %sвидобуток +%d/хв. Поки тривають роботи, видобуток іде по-старому."
 
 #. kind: t
-#: game/economy.gd:451
+#: game/economy.gd:462 game/economy.gd:451
 msgid "Залежь не иссякает (∞). «%s»: добыча +%d/мин, %d с работ."
 msgstr "Поклад не вичерпується (∞). «%s»: видобуток +%d/хв, %d с робіт."
 
 #. kind: t
-#: game/economy.gd:453
+#: game/economy.gd:464 game/economy.gd:453
 msgid "Залежь исчерпана. «%s» вскроет %s, добыча +%d/мин."
 msgstr "Поклад вичерпано. «%s» розкриє %s, видобуток +%d/хв."
 
 #. kind: t
-#: game/economy.gd:453 ui/ui24/army_dock.gd:1151 ui/ui24/navy_dock.gd:1535 ui/ui24/notif_lane.gd:791
+#: game/economy.gd:464 ui/ui24/army_dock.gd:1151 ui/ui24/navy_dock.gd:1535 ui/ui24/notif_lane.gd:799
+#: game/economy.gd:453 ui/ui24/notif_lane.gd:791
 msgid "ещё %d"
 msgstr "ще %d"
 
 #. kind: t
-#: game/economy.gd:453
+#: game/economy.gd:464 game/economy.gd:453
 msgid "старые горизонты:"
 msgstr "старі горизонти:"
 
 #. kind: t
-#: game/economy.gd:455
+#: game/economy.gd:466 game/economy.gd:455
 msgid "Хватит на ~%d мин. «%s»: %sдобыча +%d/мин, %d с работ."
 msgstr "Вистачить на ~%d хв. «%s»: %sвидобуток +%d/хв, %d с робіт."
 
 #. kind: t
-#: game/economy.gd:457
+#: game/economy.gd:468 game/economy.gd:457
 msgid "Последний уровень. Залежь не иссякает (∞)."
 msgstr "Останній рівень. Поклад не вичерпується (∞)."
 
 #. kind: t
-#: game/economy.gd:459
+#: game/economy.gd:470 game/economy.gd:459
 msgid "Последний уровень. Залежь исчерпана — ищите новые месторождения или покупайте."
 msgstr "Останній рівень. Поклад вичерпано — шукайте нові родовища або купуйте."
 
 #. kind: t
-#: game/economy.gd:460
+#: game/economy.gd:471 game/economy.gd:460
 msgid "Последний уровень. Хватит на ~%d мин — заранее ищите новые залежи или включите автозакупку."
 msgstr "Останній рівень. Вистачить на ~%d хв — заздалегідь шукайте нові поклади або увімкніть автозакупівлю."
 
@@ -6023,7 +6023,7 @@ msgstr "перемир’я з %s — план атаки чекає кінця 
 #. kind: t
 #: game/front_plan.gd:1765
 msgid "нет войны с %s — план атаки начнётся, когда будет война (ПОЛИТ. → объявить войну)"
-msgstr "немає війни з %s — план атаки почнеться, коли буде війна (ПОЛІТ. → оголосити війну)"
+msgstr "немає війни з %s — план атаки почнеться, коли буде війна (ДИПЛОМАТІЯ → оголосити війну)"
 
 #. kind: t
 #: game/front_plan.gd:2366
@@ -6360,8 +6360,9 @@ msgstr "ПОВІЛЬНО"
 
 #. kind: tag
 #. short caps label: keep <= 7 chars (glossary short form)
-#: game/game_config.gd:24 game/game_config.gd:100 game/game_config.gd:124 ui/menus.gd:2267
-#: ui/custom_bots.gd:10 ui/menus.gd:2207 ui/menus.gd:2238
+#: game/game_config.gd:24 game/game_config.gd:108 game/game_config.gd:132 ui/menus.gd:2267
+#: game/game_config.gd:100 game/game_config.gd:124 ui/custom_bots.gd:10 ui/menus.gd:2207
+#: ui/menus.gd:2238
 msgid "НОРМА"
 msgstr "НОРМА"
 
@@ -6399,75 +6400,86 @@ msgstr "НЕСКІНЧЕННІ"
 
 #. kind: tag
 #. short caps label: keep <= 8 chars (glossary short form)
-#: game/game_config.gd:99
+#: game/game_config.gd:107 game/game_config.gd:99
 msgid "БАЛАНС"
 msgstr "БАЛАНС"
 
 #. kind: tag
 #. short caps label: keep <= 6 chars (glossary short form)
-#: game/game_config.gd:99 game/game_config.gd:100 game/game_config.gd:124
+#: game/game_config.gd:107 game/game_config.gd:108 game/game_config.gd:132 game/game_config.gd:99
+#: game/game_config.gd:100 game/game_config.gd:124
 msgid "МАЛО"
 msgstr "МАЛО"
 
 #. kind: tag
 #. short caps label: keep <= 7 chars (glossary short form)
-#: game/game_config.gd:99 game/game_config.gd:100 game/game_config.gd:124
+#: game/game_config.gd:107 game/game_config.gd:108 game/game_config.gd:132 game/game_config.gd:99
+#: game/game_config.gd:100 game/game_config.gd:124
 msgid "МНОГО"
 msgstr "БАГАТО"
 
 #. kind: tag
 #. short caps label: keep <= 6 chars (glossary short form)
-#: game/game_config.gd:99 ui/hud/hud_base.gd:299
+#: game/game_config.gd:107 game/game_config.gd:99 ui/hud/hud_base.gd:299
 msgid "СВОИ"
 msgstr "СВОЇ"
 
+#. kind: tag,t
+#. short caps label: keep <= 5 chars (glossary short form)
+#: game/game_config.gd:108 game/game_config.gd:132 game/trade331.gd:578 ui/ui24/trade_sheet.gd:1611
+#: game/diplomacy.gd:818 game/game_config.gd:100 game/game_config.gd:124 game/trade331.gd:572
+#: ui/flag_editor.gd:742 ui/menus.gd:479
+msgid "НЕТ"
+msgstr "НІ"
+
 #. kind: tag
 #. short caps label: keep <= 14 chars (glossary short form)
-#: game/game_config.gd:100
+#: game/game_config.gd:108 game/game_config.gd:100
 msgid "ОЧЕНЬ МНОГО"
 msgstr "ДУЖЕ БАГАТО"
 
 #. kind: tag
 #. short caps label: keep <= 9 chars (glossary short form)
-#: game/game_config.gd:120 game/game_world/gw_base.gd:46
+#: game/game_config.gd:128 game/game_world/gw_base.gd:48 game/game_config.gd:120
+#: game/game_world/gw_base.gd:46
 msgid "ОБЫЧНАЯ"
 msgstr "ЗВИЧАЙНА"
 
 #. kind: tag
 #. short caps label: keep <= 11 chars (glossary short form)
-#: game/game_config.gd:120 ui/saves_ui.gd:126
+#: game/game_config.gd:128 ui/saves_ui.gd:126 game/game_config.gd:120
 msgid "АРХИПЕЛАГ"
 msgstr "АРХІПЕЛАГ"
 
 #. kind: tag
 #. short caps label: keep <= 9 chars (glossary short form)
-#: game/game_config.gd:120 ui/saves_ui.gd:126 ui/hud/hud_ops.gd:30
+#: game/game_config.gd:128 ui/saves_ui.gd:126 game/game_config.gd:120 ui/hud/hud_ops.gd:30
 msgid "ОСТРОВА"
 msgstr "ОСТРОВИ"
 
 #. kind: tag
 #. short caps label: keep <= 10 chars (glossary short form)
-#: game/game_config.gd:120 ui/saves_ui.gd:126
+#: game/game_config.gd:128 ui/saves_ui.gd:126 game/game_config.gd:120
 msgid "МАТЕРИКИ"
 msgstr "МАТЕРИКИ"
 
 #. kind: tag
-#: game/game_config.gd:121
+#: game/game_config.gd:129 game/game_config.gd:121
 msgid "Большая суша, заливы и острова"
 msgstr "Великий суходіл, затоки й острови"
 
 #. kind: tag
-#: game/game_config.gd:121
+#: game/game_config.gd:129 game/game_config.gd:121
 msgid "Много островов: соседи за морем, нужен десант"
 msgstr "Багато островів: сусіди за морем, потрібен десант"
 
 #. kind: tag
-#: game/game_config.gd:121
+#: game/game_config.gd:129 game/game_config.gd:121
 msgid "Несколько больших островов, на каждом соседи"
 msgstr "Кілька великих островів, на кожному сусіди"
 
 #. kind: tag
-#: game/game_config.gd:121
+#: game/game_config.gd:129 game/game_config.gd:121
 msgid "Два материка за океаном, на каждом свои соседи"
 msgstr "Два материки за океаном, на кожному свої сусіди"
 
@@ -6693,7 +6705,7 @@ msgstr "лідер "
 #. kind: mk
 #: game/military.gd:166
 msgid "Реактивным нужна ВПП дронопорта: тап по дронопорту › ВПП"
-msgstr "Реактивним потрібна ЗПС дронопорту: тап по дронопорту › ЗПС"
+msgstr "Реактивним потрібна ЗПС дронопорту: торкніться дронопорту › ЗПС"
 
 #. kind: mk
 #: game/military.gd:171
@@ -6914,7 +6926,7 @@ msgstr "%d + їжа %d"
 
 #. kind: t
 #. short caps label: keep <= 9 chars (glossary short form)
-#: game/naval.gd:174 ui/hud/hud_cards.gd:802
+#: game/naval.gd:174 ui/hud/hud_cards.gd:805 ui/hud/hud_cards.gd:802
 msgid "КОЛОНИЯ"
 msgstr "КОЛОНІЯ"
 
@@ -7826,8 +7838,8 @@ msgid "огонь через %d с"
 msgstr "вогонь за %d с"
 
 #. kind: t
-#: game/operations.gd:1069 ui/hud.gd:522 ui/hud/hud_dip.gd:234 ui/hud/hud_dock.gd:134
-#: ui/ui24/inbox_sheet.gd:233
+#: game/operations.gd:1069 ui/hud.gd:554 ui/hud/hud_dip.gd:234 ui/hud/hud_dock.gd:134
+#: ui/ui24/inbox_sheet.gd:233 ui/hud.gd:522
 msgid "%d с"
 msgstr "%d с"
 
@@ -8950,7 +8962,7 @@ msgstr "ВЕЛ. ДЕРЖАВА"
 
 #. kind: tag
 #. short caps label: keep <= 9 chars (glossary short form)
-#: game/power_status.gd:33 game/game_world/gw_base.gd:46
+#: game/power_status.gd:33 game/game_world/gw_base.gd:48 game/game_world/gw_base.gd:46
 msgid "ВОЕННАЯ"
 msgstr "ВІЙСЬКОВА"
 
@@ -9000,7 +9012,7 @@ msgstr "У РОЗПАДІ"
 #. short caps label: keep <= 8 chars (glossary short form)
 #: game/power_status.gd:34 game/diplomacy/dip_allies.gd:470 game/diplomacy/dip_allies.gd:522
 #: game/diplomacy/dip_allies.gd:524 game/diplomacy/dip_allies.gd:565
-#: game/diplomacy/dip_allies.gd:804 game/diplomacy/dip_base.gd:455 ui/ui24/dip_page.gd:1262
+#: game/diplomacy/dip_allies.gd:804 game/diplomacy/dip_base.gd:455 ui/ui24/dip_page.gd:1263
 #: ui/ui24/dip_sheet.gd:1901 ui/ui24/dip_sheet.gd:1919
 msgid "ВАССАЛ"
 msgstr "ВАСАЛ"
@@ -9008,9 +9020,9 @@ msgstr "ВАСАЛ"
 #. kind: tag,t,table:LOC_TAG
 #. short caps label: keep <= 13 chars (glossary short form)
 #: game/power_status.gd:34 game/diplomacy/dip_allies.gd:565 game/diplomacy/dip_base.gd:455
-#: ui/ui24/dip_page.gd:1262 ui/ui24/dip_sheet.gd:1901 ui/ui24/dip_sheet.gd:1919
+#: ui/ui24/dip_page.gd:1263 ui/ui24/dip_sheet.gd:1901 ui/ui24/dip_sheet.gd:1919
 #: ui/ui24/dip_sheet.gd:1961 ui/ui24/my_state.gd:755 ui/ui24/my_state.gd:1297
-#: world/labels_layer.gd:899
+#: world/labels_layer.gd:906
 msgid "МАРИОНЕТКА"
 msgstr "МАРІОНЕТКА"
 
@@ -9144,12 +9156,12 @@ msgid "попадание в %s"
 msgstr "влучання в %s"
 
 #. kind: t
-#: game/protect.gd:499 ui/ui24/notif_lane.gd:1500 game/protect.gd:497 ui/ui24/notif_lane.gd:1492
+#: game/protect.gd:499 ui/ui24/notif_lane.gd:1550 game/protect.gd:497 ui/ui24/notif_lane.gd:1492
 msgid "попадание в поле, объектов нет"
 msgstr "влучання в поле, об’єктів немає"
 
 #. kind: t
-#: game/protect.gd:519 ui/ui24/notif_lane.gd:1485 game/protect.gd:517
+#: game/protect.gd:519 ui/ui24/notif_lane.gd:1535 game/protect.gd:517 ui/ui24/notif_lane.gd:1485
 msgid "Наш удар"
 msgstr "Наш удар"
 
@@ -10663,8 +10675,8 @@ msgid "Это ваша страна"
 msgstr "Це ваша країна"
 
 #. kind: t
-#: game/trade331.gd:183 game/trade331.gd:451 game/economy/eco_trade.gd:393
-#: game/economy/eco_trade.gd:430 game/economy/eco_trade.gd:554
+#: game/trade331.gd:183 game/trade331.gd:457 game/economy/eco_trade.gd:393
+#: game/economy/eco_trade.gd:430 game/economy/eco_trade.gd:554 game/trade331.gd:451
 msgid "Этим не торгуют"
 msgstr "Цим не торгують"
 
@@ -10749,313 +10761,322 @@ msgstr[1] "країни"
 msgstr[2] "країн"
 
 #. kind: mk
-#: game/trade331.gd:368
+#: game/trade331.gd:372
+msgid "%s, %s"
+msgstr "%s, %s"
+
+#. kind: mk
+#: game/trade331.gd:374 game/trade331.gd:368
 msgid "Санкции против страны %s: %s"
 msgstr "Санкції проти країни %s: %s"
 
 #. kind: mk
-#: game/trade331.gd:388
+#: game/trade331.gd:394 game/trade331.gd:388
 msgid "САНКЦИИ СНЯТЫ: %s → %s"
 msgstr "САНКЦІЇ ЗНЯТО: %s → %s"
 
 #. kind: mk
-#: game/trade331.gd:389
+#: game/trade331.gd:395 game/trade331.gd:389
 msgid "%s снимает санкции со страны %s: %s"
 msgstr "%s знімає санкції з країни %s: %s"
 
 #. kind: t
-#: game/trade331.gd:437
+#: game/trade331.gd:443 game/trade331.gd:437
 msgid "Только в сетевой партии"
 msgstr "Лише в мережевій партії"
 
 #. kind: t
-#: game/trade331.gd:439
+#: game/trade331.gd:445 game/trade331.gd:439
 msgid "Только с игроком"
 msgstr "Лише з гравцем"
 
 #. kind: t
-#: game/trade331.gd:441
+#: game/trade331.gd:447 game/trade331.gd:441
 msgid "Только для игрока"
 msgstr "Лише для гравця"
 
 #. kind: t
-#: game/trade331.gd:443 game/economy/eco_trade.gd:464 game/economy/eco_trade.gd:619
+#: game/trade331.gd:449 game/economy/eco_trade.gd:464 game/economy/eco_trade.gd:619
+#: game/trade331.gd:443
 msgid "Нет столицы"
 msgstr "Немає столиці"
 
 #. kind: t
-#: game/trade331.gd:446
+#: game/trade331.gd:452 game/trade331.gd:446
 msgid "Война: торговли нет"
 msgstr "Війна: торгівлі немає"
 
 #. kind: t
-#: game/trade331.gd:448 game/economy/eco_trade.gd:15 game/economy/eco_trade.gd:468
+#: game/trade331.gd:454 game/economy/eco_trade.gd:15 game/economy/eco_trade.gd:468
+#: game/trade331.gd:448
 msgid "Эмбарго: торговля закрыта"
 msgstr "Ембарго: торгівлю закрито"
 
 #. kind: t
-#: game/trade331.gd:453 game/economy/eco_trade.gd:470
+#: game/trade331.gd:459 game/economy/eco_trade.gd:470 game/trade331.gd:453
 msgid "Санкции: %s"
 msgstr "Санкції: %s"
 
 #. kind: t
-#: game/trade331.gd:455
+#: game/trade331.gd:461 game/trade331.gd:455
 msgid "Не больше %d контрактов с одной страной"
 msgstr "Не більше %d контрактів з однією країною"
 
 #. kind: t
-#: game/trade331.gd:457
+#: game/trade331.gd:463 game/trade331.gd:457
 msgid "Не больше %d контрактов у игрока"
 msgstr "Не більше %d контрактів у гравця"
 
 #. kind: t
-#: game/trade331.gd:499
+#: game/trade331.gd:505 game/trade331.gd:499
 msgid "Объём: %d…%d, шаг 5"
 msgstr "Обсяг: %d…%d, крок 5"
 
 #. kind: t
-#: game/trade331.gd:501
+#: game/trade331.gd:507 game/trade331.gd:501
 msgid "Срок между поставками: 1, 2, 3 или 5 мин"
 msgstr "Строк між поставками: 1, 2, 3 або 5 хв"
 
 #. kind: t
-#: game/trade331.gd:503
+#: game/trade331.gd:509 game/trade331.gd:503
 msgid "Поставок: %d…%d"
 msgstr "Поставок: %d…%d"
 
 #. kind: t
-#: game/trade331.gd:506
+#: game/trade331.gd:512 game/trade331.gd:506
 msgid "Цена: %d…%d за ед. (рынок %d)"
 msgstr "Ціна: %d…%d за од. (ринок %d)"
 
 #. kind: t
-#: game/trade331.gd:509
+#: game/trade331.gd:515 game/trade331.gd:509
 msgid "Новое предложение — через %d с"
 msgstr "Нова пропозиція — за %d с"
 
 #. kind: t
-#: game/trade331.gd:513 game/trade331.gd:601 game/economy/eco_trade.gd:418
-#: game/economy/eco_trade.gd:452
+#: game/trade331.gd:519 game/trade331.gd:607 game/economy/eco_trade.gd:418
+#: game/economy/eco_trade.gd:452 game/trade331.gd:513 game/trade331.gd:601
 msgid "Нет пути: ни дороги, ни рельсов, ни моря между столицами"
 msgstr "Немає шляху: ні дороги, ні рейок, ні моря між столицями"
 
 #. kind: mk,t
-#: game/trade331.gd:521 game/trade331.gd:565
+#: game/trade331.gd:527 game/trade331.gd:571 game/trade331.gd:521 game/trade331.gd:565
 msgid "%s предлагает контракт: %s"
 msgstr "%s пропонує контракт: %s"
 
 #. kind: mk
-#: game/trade331.gd:522
+#: game/trade331.gd:528 game/trade331.gd:522
 msgid "Контракт предложен стране %s: ждём ответа до 2:00"
 msgstr "Контракт запропоновано країні %s: чекаємо відповіді до 2:00"
 
 #. kind: t
-#: game/trade331.gd:533
+#: game/trade331.gd:539 game/trade331.gd:533
 msgid "%s %s %d × %d · раз в %d мин · %d за ед. (%d)"
 msgstr "%s %s %d × %d · раз на %d хв · %d за од. (%d)"
 
 #. kind: t
 #. short caps label: keep <= 10 chars (glossary short form)
-#: game/trade331.gd:533
+#: game/trade331.gd:539 game/trade331.gd:533
 msgid "ПРОДАЁТЕ"
 msgstr "ПРОДАЄТЕ"
 
 #. kind: t
 #. short caps label: keep <= 11 chars (glossary short form)
-#: game/trade331.gd:533
+#: game/trade331.gd:539 game/trade331.gd:533
 msgid "ПОКУПАЕТЕ"
 msgstr "КУПУЄТЕ"
 
 #. kind: t
 #. short caps label: keep <= 5 chars (glossary short form)
-#: game/trade331.gd:533
+#: game/trade331.gd:539 game/trade331.gd:533
 msgid "ЕДУ"
 msgstr "ЇЖУ"
 
 #. kind: t
-#: game/trade331.gd:570
+#: game/trade331.gd:576 game/trade331.gd:570
 msgid "%s просит расторгнуть контракт без неустойки: %s"
 msgstr "%s просить розірвати контракт без неустойки: %s"
 
 #. kind: t
 #. short caps label: keep <= 14 chars (glossary short form)
-#: game/trade331.gd:572
+#: game/trade331.gd:578 game/trade331.gd:572
 msgid "РАСТОРГНУТЬ"
 msgstr "РОЗІРВАТИ"
 
 #. kind: t
-#: game/trade331.gd:584 game/trade331.gd:628
+#: game/trade331.gd:590 game/trade331.gd:634 game/trade331.gd:584 game/trade331.gd:628
 msgid "расторгнут по согласию"
 msgstr "розірвано за згодою"
 
 #. kind: mk
-#: game/trade331.gd:588
+#: game/trade331.gd:594 game/trade331.gd:588
 msgid "%s против расторжения контракта"
 msgstr "%s проти розірвання контракту"
 
 #. kind: t
-#: game/trade331.gd:593
+#: game/trade331.gd:599 game/trade331.gd:593
 msgid "отказ"
 msgstr "відмова"
 
 #. kind: mk
-#: game/trade331.gd:594
+#: game/trade331.gd:600 game/trade331.gd:594
 msgid "%s отклоняет контракт: %s"
 msgstr "%s відхиляє контракт: %s"
 
 #. kind: t
-#: game/trade331.gd:599
+#: game/trade331.gd:605 game/trade331.gd:599
 msgid "Контракт невозможен: %s"
 msgstr "Контракт неможливий: %s"
 
 #. kind: mk
-#: game/trade331.gd:605
+#: game/trade331.gd:611 game/trade331.gd:605
 msgid "Контракт подписан: %s %d × %d, %d за ед."
 msgstr "Контракт підписано: %s %d × %d, %d за од."
 
 #. kind: t
-#: game/trade331.gd:617
+#: game/trade331.gd:623 game/trade331.gd:617
 msgid "Нет такого контракта"
 msgstr "Немає такого контракту"
 
 #. kind: t
-#: game/trade331.gd:621
+#: game/trade331.gd:627 game/trade331.gd:621
 msgid "предложение отозвано"
 msgstr "пропозицію відкликано"
 
 #. kind: t
-#: game/trade331.gd:625
+#: game/trade331.gd:631 game/trade331.gd:625
 msgid "Контракт уже закрыт"
 msgstr "Контракт уже закрито"
 
 #. kind: t
-#: game/trade331.gd:630
+#: game/trade331.gd:636 game/trade331.gd:630
 msgid "расторгнут в одностороннем порядке"
 msgstr "розірвано в односторонньому порядку"
 
 #. kind: t
-#: game/trade331.gd:633
+#: game/trade331.gd:639 game/trade331.gd:633
 msgid "Уже просили — ждём ответа"
 msgstr "Уже просили — чекаємо відповіді"
 
 #. kind: mk
-#: game/trade331.gd:637
+#: game/trade331.gd:643 game/trade331.gd:637
 msgid "%s просит расторгнуть контракт (%s) — ответ во «Входящих»"
 msgstr "%s просить розірвати контракт (%s) — відповідь у «Вхідних»"
 
 #. kind: t
-#: game/trade331.gd:748
+#: game/trade331.gd:754 game/trade331.gd:748
 msgid "санкций"
 msgstr "санкцій"
 
 #. kind: t,tag
-#: game/trade331.gd:748 game/trade331.gd:45 ui/ui24/dip_page.gd:1289 ui/ui24/dip_page.gd:1844
-#: ui/ui24/dip_sheet.gd:618 ui/ui24/notif_calm.gd:49 ui/ui24/notif_lane.gd:1205
+#: game/trade331.gd:754 game/trade331.gd:45 ui/ui24/dip_page.gd:1290 ui/ui24/dip_page.gd:1845
+#: ui/ui24/dip_sheet.gd:618 game/trade331.gd:748 ui/ui24/dip_page.gd:1289 ui/ui24/dip_page.gd:1844
+#: ui/ui24/notif_calm.gd:49 ui/ui24/notif_lane.gd:1205
 msgid "эмбарго"
 msgstr "ембарго"
 
 #. kind: mk
-#: game/trade331.gd:749
+#: game/trade331.gd:755 game/trade331.gd:749
 msgid "Контракт (%s): разрыв из-за ваших %s: неустойка %d, отношения со страной %s %d"
 msgstr "Контракт (%s): розрив через ваші %s: неустойка %d, відносини з країною %s %d"
 
 #. kind: mk
-#: game/trade331.gd:750
+#: game/trade331.gd:756 game/trade331.gd:750
 msgid "Контракт (%s): разрыв из-за %s страны %s: неустойка +%d вам"
 msgstr "Контракт (%s): розрив через %s країни %s: неустойка +%d вам"
 
 #. kind: mk
-#: game/trade331.gd:752
+#: game/trade331.gd:758 game/trade331.gd:752
 msgid "Контракт (%s) %s: неустойка −%d, отношения со страной %s %d"
 msgstr "Контракт (%s) %s: неустойка −%d, відносини з країною %s %d"
 
 #. kind: mk
-#: game/trade331.gd:753
+#: game/trade331.gd:759 game/trade331.gd:753
 msgid "Контракт (%s) %s по вине страны %s: неустойка +%d"
 msgstr "Контракт (%s) %s з вини країни %s: неустойка +%d"
 
 #. kind: mk
-#: game/trade331.gd:755
+#: game/trade331.gd:761 game/trade331.gd:755
 msgid "Контракт (%s %d/%d): %s"
 msgstr "Контракт (%s %d/%d): %s"
 
 #. kind: t
-#: game/trade331.gd:780
+#: game/trade331.gd:786 game/trade331.gd:780
 msgid "нет ответа"
 msgstr "немає відповіді"
 
 #. kind: mk
-#: game/trade331.gd:782
+#: game/trade331.gd:788 game/trade331.gd:782
 msgid "Нет ответа от страны %s на контракт (%s)"
 msgstr "Немає відповіді від країни %s на контракт (%s)"
 
 #. kind: t
-#: game/trade331.gd:790
+#: game/trade331.gd:796 game/trade331.gd:790
 msgid "остановлен: %s"
 msgstr "зупинено: %s"
 
 #. kind: mk
-#: game/trade331.gd:800
+#: game/trade331.gd:806 game/trade331.gd:800
 msgid "Контракт: через %d с поставка — %s %d, у вас %d. Не будет товара — неустойка"
 msgstr "Контракт: за %d с поставка — %s %d, у вас %d. Не буде товару — неустойка"
 
 #. kind: t
-#: game/trade331.gd:804
+#: game/trade331.gd:810 game/trade331.gd:804
 msgid "сорван: у продавца нет товара"
 msgstr "зірвано: у продавця немає товару"
 
 #. kind: mk
-#: game/trade331.gd:811
+#: game/trade331.gd:817 game/trade331.gd:811
 msgid "Контракт: склад страны %s полон — поставка %d/%d пропущена"
 msgstr "Контракт: склад країни %s повний — поставку %d/%d пропущено"
 
 #. kind: t,tag
-#: game/trade331.gd:813 game/trade331.gd:837 game/trade331.gd:46
+#: game/trade331.gd:819 game/trade331.gd:843 game/trade331.gd:46 game/trade331.gd:813
+#: game/trade331.gd:837
 msgid "выполнен"
 msgstr "виконано"
 
 #. kind: t
-#: game/trade331.gd:816
+#: game/trade331.gd:822 game/trade331.gd:816
 msgid "сорван: покупателю нечем платить"
 msgstr "зірвано: покупцю нічим платити"
 
 #. kind: t
-#: game/trade331.gd:827
+#: game/trade331.gd:833 game/trade331.gd:827
 msgid "остановлен: нет пути"
 msgstr "зупинено: немає шляху"
 
 #. kind: mk
-#: game/trade331.gd:829
+#: game/trade331.gd:835 game/trade331.gd:829
 msgid "Контракт: нет пути между столицами — поставка отложена"
 msgstr "Контракт: немає шляху між столицями — поставку відкладено"
 
 #. kind: mk
-#: game/trade331.gd:835
+#: game/trade331.gd:841 game/trade331.gd:835
 msgid "Контракт: отправлено %s %d (%d/%d) — %s"
 msgstr "Контракт: відправлено %s %d (%d/%d) — %s"
 
 #. kind: t
-#: game/trade331.gd:916 game/diplomacy/dip_allies.gd:1021
+#: game/trade331.gd:922 game/trade331.gd:916 game/diplomacy/dip_allies.gd:1021
 msgid "дроны ×%d"
 msgstr "дрони ×%d"
 
 #. kind: t
-#: game/trade331.gd:921
+#: game/trade331.gd:927 game/trade331.gd:921
 msgid "баллист. ракеты ×%d"
 msgstr "баліст. ракети ×%d"
 
 #. kind: t
-#: game/trade331.gd:928
+#: game/trade331.gd:934 game/trade331.gd:928
 msgid "ракеты ПВО ×%d"
 msgstr "ракети ППО ×%d"
 
 #. kind: mk
-#: game/trade331.gd:939
+#: game/trade331.gd:945 game/trade331.gd:939
 msgid "ПОСТАВКА: %s → %s (%s)"
 msgstr "ПОСТАВКА: %s → %s (%s)"
 
 #. kind: mk
-#: game/trade331.gd:940
+#: game/trade331.gd:946 game/trade331.gd:940
 msgid "Плановая поставка от страны %s: %s"
 msgstr "Планова поставка від країни %s: %s"
 
@@ -11106,9 +11127,9 @@ msgstr "Скарбниця: утримання армії −{n}/хв, грош�
 
 #. kind: table:LOC_CLASS,tag,table:LOC_TUT337_SECTIONS,t
 #. short caps label: keep <= 5 chars (glossary short form)
-#: game/upkeep335.gd:62 game/game_world/gw_base.gd:46 ui/hud/hud_base.gd:194
-#: ui/ui24/tutorial_feed.gd:32 world/strat_modes.gd:563 ui/menus.gd:984 ui/tutorial.gd:43
-#: ui/ui24/army_budget.gd:16 ui/ui24/build_panel.gd:13 ui/ui24/dip_page.gd:1424
+#: game/upkeep335.gd:62 game/game_world/gw_base.gd:48 ui/hud/hud_base.gd:194
+#: ui/ui24/tutorial_feed.gd:32 world/strat_modes.gd:563 game/game_world/gw_base.gd:46
+#: ui/menus.gd:984 ui/tutorial.gd:43 ui/ui24/army_budget.gd:16 ui/ui24/build_panel.gd:13
 msgid "ПВО"
 msgstr "ППО"
 
@@ -11895,7 +11916,7 @@ msgstr "уранова шахта на рідкісному покладі (зе
 #. kind: tag
 #: game/economy/eco_base.gd:317
 msgid "колхоз"
-msgstr "колгосп"
+msgstr "ферма"
 
 #. kind: tag
 #: game/economy/eco_base.gd:317 game/economy/eco_base.gd:327
@@ -11910,7 +11931,7 @@ msgstr "НПЗ (потрібна нафта)"
 #. kind: tag
 #: game/economy/eco_base.gd:318
 msgid "доход городов, колхозов, заводов и торговли"
-msgstr "дохід міст, колгоспів, заводів і торгівлі"
+msgstr "дохід міст, ферм, заводів і торгівлі"
 
 #. kind: tag
 #: game/economy/eco_base.gd:324
@@ -11945,12 +11966,12 @@ msgstr "уранова шахта або купіть на ринку"
 #. kind: tag
 #: game/economy/eco_base.gd:326
 msgid "колхоз или купите еду на рынке"
-msgstr "колгосп або купіть їжу на ринку"
+msgstr "ферма або купіть їжу на ринку"
 
 #. kind: tag
 #: game/economy/eco_base.gd:327
 msgid "доход: заводы товаров, колхозы, торговля"
-msgstr "дохід: заводи товарів, колгоспи, торгівля"
+msgstr "дохід: заводи товарів, ферми, торгівля"
 
 #. kind: tag
 #: game/economy/eco_base.gd:337 game/military/mil_base.gd:138
@@ -12038,72 +12059,74 @@ msgid "Эмбарго: груз (%s %d) развёрнут, деньги воз�
 msgstr "Ембарго: вантаж (%s %d) розвернуто, гроші повернуто"
 
 #. kind: t
-#: game/economy/eco_core.gd:1748 game/economy/eco_trade.gd:1261 game/military/mil_build.gd:249
+#: game/economy/eco_core.gd:1790 game/economy/eco_trade.gd:1261 game/military/mil_build.gd:249
+#: game/economy/eco_core.gd:1748
 msgid "нефтевышку"
 msgstr "нафтову вишку"
 
 #. kind: t
-#: game/economy/eco_core.gd:1748
+#: game/economy/eco_core.gd:1790 game/economy/eco_core.gd:1748
 msgid "урановую шахту"
 msgstr "уранову шахту"
 
 #. kind: t
-#: game/economy/eco_core.gd:1748 game/economy/eco_trade.gd:1261 game/military/mil_build.gd:249
+#: game/economy/eco_core.gd:1790 game/economy/eco_trade.gd:1261 game/military/mil_build.gd:249
+#: game/economy/eco_core.gd:1748
 msgid "рудник"
 msgstr "рудник"
 
 #. kind: t
-#: game/economy/eco_core.gd:1751
+#: game/economy/eco_core.gd:1793 game/economy/eco_core.gd:1751
 msgid "%s: залежь исчерпана."
 msgstr "%s: поклад вичерпано."
 
 #. kind: t
-#: game/economy/eco_core.gd:1756
+#: game/economy/eco_core.gd:1798 game/economy/eco_core.gd:1756
 msgid "%s: здесь ваш объект — %s, уровень %d. Улучшение ускоряет добычу."
 msgstr "%s: тут ваш об’єкт — %s, рівень %d. Покращення пришвидшує видобуток."
 
 #. kind: t
-#: game/economy/eco_core.gd:1758
+#: game/economy/eco_core.gd:1800 game/economy/eco_core.gd:1758
 msgid "%s: залежь разрабатывает %s. Купите у неё в торговле или захватите город рядом."
 msgstr "%s: поклад розробляє %s. Купіть у неї в торгівлі або захопіть місто поруч."
 
 #. kind: t
-#: game/economy/eco_core.gd:1758
+#: game/economy/eco_core.gd:1800 game/economy/eco_core.gd:1758
 msgid "другая страна"
 msgstr "інша країна"
 
 #. kind: t
-#: game/economy/eco_core.gd:1760
+#: game/economy/eco_core.gd:1802 game/economy/eco_core.gd:1760
 msgid "%s: поставьте %s прямо на залежь."
 msgstr "%s: поставте %s просто на поклад."
 
 #. kind: t
-#: game/economy/eco_core.gd:1764
+#: game/economy/eco_core.gd:1806 game/economy/eco_core.gd:1764
 msgid "Нужна своя земля — расширяйте границы: основайте город рядом."
 msgstr "Потрібна своя земля — розширюйте кордони: заснуйте місто поруч."
 
 #. kind: t
-#: game/economy/eco_core.gd:1767
+#: game/economy/eco_core.gd:1809 game/economy/eco_core.gd:1767
 msgid "Это земля страны %s: торгуйте с ней или захватите город рядом."
 msgstr "Це земля країни %s: торгуйте з нею або захопіть місто поруч."
 
 #. kind: t
-#: game/economy/eco_core.gd:1768
+#: game/economy/eco_core.gd:1810 game/economy/eco_core.gd:1768
 msgid "Запас: %s%s."
 msgstr "Запас: %s%s."
 
 #. kind: t
-#: game/economy/eco_core.gd:1768
+#: game/economy/eco_core.gd:1810 game/economy/eco_core.gd:1768
 msgid " из "
 msgstr " з "
 
 #. kind: t
-#: game/economy/eco_core.gd:1768
+#: game/economy/eco_core.gd:1810 game/economy/eco_core.gd:1768
 msgid " — залежь не иссякает"
 msgstr " — поклад не вичерпується"
 
 #. kind: t
-#: game/economy/eco_core.gd:1768
+#: game/economy/eco_core.gd:1810 game/economy/eco_core.gd:1768
 msgid " (малая залежь)"
 msgstr " (малий поклад)"
 
@@ -12775,7 +12798,7 @@ msgstr "%s. Інакше — %s"
 #. short caps label: keep <= 7 chars (glossary short form)
 #: game/diplomacy/dip_allies.gd:407 game/diplomacy/dip_base.gd:6 game/diplomacy/dip_rules.gd:433
 #: ui/menus.gd:1164 ui/hud/hud_dip.gd:207 ui/hud/hud_dip.gd:238 ui/hud/hud_dip.gd:334
-#: ui/ui24/my_state.gd:1231 ui/ui24/trade_sheet.gd:1672 world/labels_layer.gd:899
+#: ui/ui24/my_state.gd:1231 ui/ui24/trade_sheet.gd:1672 world/labels_layer.gd:906
 msgid "ВОЙНА"
 msgstr "ВІЙНА"
 
@@ -12824,8 +12847,8 @@ msgid "%s — %s: дань %d %% их дохода, воюют на вашей �
 msgstr "%s — %s: данина %d %% їхнього доходу, воюють на вашому боці"
 
 #. kind: t
-#: game/diplomacy/dip_allies.gd:484 ui/ui24/dip_page.gd:1215 ui/ui24/dip_sheet.gd:2047
-#: ui/ui24/dip_sheet.gd:2036
+#: game/diplomacy/dip_allies.gd:484 ui/ui24/dip_page.gd:1216 ui/ui24/dip_sheet.gd:2047
+#: ui/ui24/dip_page.gd:1215 ui/ui24/dip_sheet.gd:2036
 msgid "ваш вассал"
 msgstr "ваш васал"
 
@@ -13851,112 +13874,112 @@ msgstr "%s вступає у війну з %s на вашому боці"
 
 #. kind: tag,table:LOC_TUT337_SECTIONS
 #. short caps label: keep <= 10 chars (glossary short form)
-#: game/game_world/gw_base.gd:46 ui/ui24/tutorial_feed.gd:32 ui/tutorial.gd:68 ui/tutorial.gd:70
-#: ui/ui24/tutorial_feed.gd:30 ui/ui24/tutorial_feed.gd:33
+#: game/game_world/gw_base.gd:48 ui/ui24/tutorial_feed.gd:32 game/game_world/gw_base.gd:46
+#: ui/tutorial.gd:68 ui/tutorial.gd:70 ui/ui24/tutorial_feed.gd:30 ui/ui24/tutorial_feed.gd:33
 msgid "ПОЛИТИКА"
-msgstr "ПОЛІТИКА"
+msgstr "ДИПЛОМАТІЯ"
 
 #. kind: tag
 #. short caps label: keep <= 11 chars (glossary short form)
-#: game/game_world/gw_base.gd:46
+#: game/game_world/gw_base.gd:48 game/game_world/gw_base.gd:46
 msgid "МОЯ ЗЕМЛЯ"
 msgstr "МОЯ ЗЕМЛЯ"
 
 #. kind: tag
 #. short caps label: keep <= 6 chars (glossary short form)
-#: game/game_world/gw_base.gd:46 ui/menus.gd:1380
+#: game/game_world/gw_base.gd:48 game/game_world/gw_base.gd:46 ui/menus.gd:1380
 msgid "РУДЫ"
 msgstr "РУДИ"
 
 #. kind: tag
 #. short caps label: keep <= 11 chars (glossary short form)
-#: game/game_world/gw_base.gd:46
+#: game/game_world/gw_base.gd:48 game/game_world/gw_base.gd:46
 msgid "ЛОГИСТИКА"
 msgstr "ЛОГІСТИКА"
 
 #. kind: tag
 #. short caps label: keep <= 9 chars (glossary short form)
-#: game/game_world/gw_base.gd:46 ui/menus.gd:1392
+#: game/game_world/gw_base.gd:48 game/game_world/gw_base.gd:46 ui/menus.gd:1392
 msgid "АЛЬЯНСЫ"
 msgstr "АЛЬЯНСИ"
 
 #. kind: tag
-#: game/game_world/gw_base.gd:49
+#: game/game_world/gw_base.gd:51 game/game_world/gw_base.gd:49
 msgid "Обычная карта"
 msgstr "Звичайна карта"
 
 #. kind: tag
-#: game/game_world/gw_base.gd:49
+#: game/game_world/gw_base.gd:51 game/game_world/gw_base.gd:49
 msgid "Местность, города и границы стран"
 msgstr "Місцевість, міста й кордони країн"
 
 #. kind: tag
-#: game/game_world/gw_base.gd:50
+#: game/game_world/gw_base.gd:52 game/game_world/gw_base.gd:50
 msgid "Политическая карта"
 msgstr "Політична карта"
 
 #. kind: tag
-#: game/game_world/gw_base.gd:50
+#: game/game_world/gw_base.gd:52 game/game_world/gw_base.gd:50
 msgid "Страны крупно своими цветами, местность бледная"
 msgstr "Країни великим планом своїми кольорами, місцевість бліда"
 
 #. kind: tag
-#: game/game_world/gw_base.gd:51
+#: game/game_world/gw_base.gd:53 game/game_world/gw_base.gd:51
 msgid "Моя земля"
 msgstr "Моя земля"
 
 #. kind: tag
-#: game/game_world/gw_base.gd:51
+#: game/game_world/gw_base.gd:53 game/game_world/gw_base.gd:51
 msgid "Только ваша страна, всё чужое серое"
 msgstr "Лише ваша країна, усе чуже сіре"
 
 #. kind: tag
-#: game/game_world/gw_base.gd:52
+#: game/game_world/gw_base.gd:54 game/game_world/gw_base.gd:52
 msgid "Карта руд"
 msgstr "Карта руд"
 
 #. kind: tag
-#: game/game_world/gw_base.gd:52
+#: game/game_world/gw_base.gd:54 game/game_world/gw_base.gd:52
 msgid "Залежи по видам: яркие — свободные, тусклые — заняты"
 msgstr "Поклади за видами: яскраві — вільні, тьмяні — зайняті"
 
 #. kind: tag
-#: game/game_world/gw_base.gd:53
+#: game/game_world/gw_base.gd:55 game/game_world/gw_base.gd:53
 msgid "Логистика"
 msgstr "Логістика"
 
 #. kind: tag
-#: game/game_world/gw_base.gd:53
+#: game/game_world/gw_base.gd:55 game/game_world/gw_base.gd:53
 msgid "Дороги, ЖД, мосты, станции, грузовики, поезда, корабли и торговые пути"
 msgstr "Дороги, залізниця, мости, станції, вантажівки, потяги, кораблі й торгові шляхи"
 
 #. kind: tag
-#: game/game_world/gw_base.gd:54
+#: game/game_world/gw_base.gd:56 game/game_world/gw_base.gd:54
 msgid "Военная карта"
 msgstr "Військова карта"
 
 #. kind: tag
-#: game/game_world/gw_base.gd:54
+#: game/game_world/gw_base.gd:56 game/game_world/gw_base.gd:54
 msgid "Объекты стран по типам, зоны ПВО, линии фронта"
 msgstr "Об’єкти країн за типами, зони ППО, лінії фронту"
 
 #. kind: tag
-#: game/game_world/gw_base.gd:55
+#: game/game_world/gw_base.gd:57 game/game_world/gw_base.gd:55
 msgid "Альянсы"
 msgstr "Альянси"
 
 #. kind: tag
-#: game/game_world/gw_base.gd:55
+#: game/game_world/gw_base.gd:57 game/game_world/gw_base.gd:55
 msgid "Цвет, знак и название альянса; вне альянсов — серые"
 msgstr "Колір, знак і назва альянсу; поза альянсами — сірі"
 
 #. kind: tag
-#: game/game_world/gw_base.gd:56
+#: game/game_world/gw_base.gd:58 game/game_world/gw_base.gd:56
 msgid "Покрытие ПВО"
 msgstr "Покриття ППО"
 
 #. kind: tag
-#: game/game_world/gw_base.gd:56
+#: game/game_world/gw_base.gd:58 game/game_world/gw_base.gd:56
 msgid "Где стреляет ПВО: ваша всегда, чужая — только разведанная"
 msgstr "Де стріляє ППО: ваша завжди, чужа — лише розвідана"
 
@@ -14006,42 +14029,42 @@ msgid "Мост восстановлен"
 msgstr "Міст відновлено"
 
 #. kind: mk
-#: game/game_world/gw_states.gd:299
+#: game/game_world/gw_states.gd:306 game/game_world/gw_states.gd:299
 msgid "Это чужая территория"
 msgstr "Це чужа територія"
 
 #. kind: mk
-#: game/game_world/gw_states.gd:303
+#: game/game_world/gw_states.gd:310 game/game_world/gw_states.gd:303
 msgid "Слишком близко к другому городу"
 msgstr "Надто близько до іншого міста"
 
 #. kind: mk
-#: game/game_world/gw_states.gd:306
+#: game/game_world/gw_states.gd:313 game/game_world/gw_states.gd:306
 msgid "Слишком далеко от своей страны (макс. %d м)"
 msgstr "Надто далеко від своєї країни (макс. %d м)"
 
 #. kind: mk
-#: game/game_world/gw_states.gd:309
+#: game/game_world/gw_states.gd:316 game/game_world/gw_states.gd:309
 msgid "Не хватает денег: город стоит %d"
 msgstr "Бракує грошей: місто коштує %d"
 
 #. kind: mk
-#: game/game_world/gw_states.gd:407
+#: game/game_world/gw_states.gd:414 game/game_world/gw_states.gd:407
 msgid "Слишком близко к другой столице"
 msgstr "Надто близько до іншої столиці"
 
 #. kind: t
-#: game/game_world/gw_states.gd:449
+#: game/game_world/gw_states.gd:456 game/game_world/gw_states.gd:449
 msgid "Дрон не найден"
 msgstr "Дрон не знайдено"
 
 #. kind: mk
-#: game/game_world/gw_states.gd:761
+#: game/game_world/gw_states.gd:768 game/game_world/gw_states.gd:761
 msgid "%s ЗАХВАТЫВАЕТ %s%s"
 msgstr "%s ЗАХОПЛЮЄ %s%s"
 
 #. kind: t
-#: game/game_world/gw_states.gd:761
+#: game/game_world/gw_states.gd:768 game/game_world/gw_states.gd:761
 msgid " (БЫВШАЯ СТОЛИЦА)"
 msgstr " (КОЛИШНЯ СТОЛИЦЯ)"
 
@@ -14163,7 +14186,7 @@ msgstr "Сонячні панелі"
 #. kind: tag
 #: game/military/mil_base.gd:137
 msgid "Колхоз"
-msgstr "Колгосп"
+msgstr "Ферма"
 
 #. kind: tag
 #: game/military/mil_base.gd:137
@@ -14920,12 +14943,12 @@ msgid "Пуск крылатых ракет"
 msgstr "Пуск крилатих ракет"
 
 #. kind: t
-#: game/main/main_core.gd:440 ui/hud/hud_cards.gd:699 game/air.gd:1234
+#: game/main/main_core.gd:440 ui/hud/hud_cards.gd:702 game/air.gd:1234 ui/hud/hud_cards.gd:699
 msgid "Удар КАБ"
 msgstr "Удар КАБ"
 
 #. kind: t
-#: game/main/main_core.gd:440 ui/hud/hud_cards.gd:699
+#: game/main/main_core.gd:440 ui/hud/hud_cards.gd:702 ui/hud/hud_cards.gd:699
 msgid "Авиаподдержка"
 msgstr "Авіапідтримка"
 
@@ -14965,7 +14988,7 @@ msgid "Ракета"
 msgstr "Ракета"
 
 #. kind: t
-#: game/main/main_core.gd:476 ui/hud/hud_cards.gd:773
+#: game/main/main_core.gd:476 ui/hud/hud_cards.gd:776 ui/hud/hud_cards.gd:773
 msgid "Разведданные: %s"
 msgstr "Розвіддані: %s"
 
@@ -15118,7 +15141,7 @@ msgstr "Наказ: %s"
 #. kind: mk
 #: game/main/main_input.gd:202
 msgid "Это объявит войну: %s. Тап ещё раз"
-msgstr "Це оголосить війну: %s. Тап ще раз"
+msgstr "Це оголосить війну: %s. Торкніться ще раз"
 
 #. kind: mk
 #: game/main/main_input.gd:230
@@ -15360,91 +15383,172 @@ msgid "ФЛАГ И НАЗВАНИЕ · ИЗМЕНИТЬ"
 msgstr "ПРАПОР І НАЗВА · ЗМІНИТИ"
 
 #. kind: t
-#: ui/flag_editor.gd:465
+#: ui/flag_editor.gd:472 ui/flag_editor.gd:465
 msgid "УЗОР: %s · цветов: %d"
 msgstr "УЗІР: %s · кольорів: %d"
 
 #. kind: t
-#: ui/flag_editor.gd:636
+#: ui/flag_editor.gd:643 ui/flag_editor.gd:636
 msgid "Цвета с × выбрали другие страны партии"
 msgstr "Кольори з × вибрали інші країни партії"
 
 #. kind: t
-#: ui/flag_editor.gd:636
+#: ui/flag_editor.gd:643 ui/flag_editor.gd:636
 msgid "Боты этой партии возьмут другие цвета"
 msgstr "Боти цієї партії візьмуть інші кольори"
 
 #. kind: t
-#: ui/flag_editor.gd:661
+#: ui/flag_editor.gd:668 ui/flag_editor.gd:661
 msgid "Этот цвет уже у страны %s"
 msgstr "Цей колір уже в країни %s"
 
 #. kind: t
-#: ui/flag_editor.gd:774
+#: ui/flag_editor.gd:781 ui/flag_editor.gd:774
 msgid "ЭМБЛЕМА: %s"
 msgstr "ЕМБЛЕМА: %s"
 
 #. kind: t
 #. short caps label: keep <= 7 chars (glossary short form)
-#: ui/flag_editor.gd:790
+#: ui/flag_editor.gd:797
 msgctxt "emblem"
 msgid "МЕСТО"
 msgstr "МІСЦЕ"
 
 #. kind: t
+#. short caps label: keep <= 5 chars (glossary short form)
+#: ui/hud.gd:64
+msgctxt "key"
+msgid "ТЭЦ"
+msgstr "ТЕЦ"
+
+#. kind: t
+#. short caps label: keep <= 8 chars (glossary short form)
+#: ui/hud.gd:64
+msgctxt "key"
+msgid "СОЛНЦЕ"
+msgstr "СЕС"
+
+#. kind: t
+#. short caps label: keep <= 5 chars (glossary short form)
+#: ui/hud.gd:64
+msgctxt "offer"
+msgid "НЕТ"
+msgstr "ВІДХИЛИТИ"
+
+#. kind: t
+#: ui/hud.gd:64
+msgctxt "group"
+msgid "Дивизия"
+msgstr "Дивізія"
+
+#. kind: t
+#: ui/hud.gd:64
+msgctxt "group"
+msgid "Резерв"
+msgstr "Резерв"
+
+#. kind: t
+#: ui/hud.gd:65
+msgctxt "group"
+msgid "Бригада"
+msgstr "Бригада"
+
+#. kind: t
+#: ui/hud.gd:65
+msgctxt "group"
+msgid "Полк"
+msgstr "Полк"
+
+#. kind: t
+#: ui/hud.gd:65
+msgctxt "group"
+msgid "Корпус"
+msgstr "Корпус"
+
+#. kind: t
+#: ui/hud.gd:65
+msgctxt "group"
+msgid "Батальон"
+msgstr "Батальйон"
+
+#. kind: t
+#: ui/hud.gd:66
+msgctxt "group"
+msgid "Гвардия"
+msgstr "Гвардія"
+
+#. kind: t
+#: ui/hud.gd:66
+msgctxt "group"
+msgid "Штурм"
+msgstr "Штурм"
+
+#. kind: t
+#: ui/hud.gd:66
+msgctxt "group"
+msgid "Танки"
+msgstr "Танки"
+
+#. kind: t
+#: ui/hud.gd:66
+msgctxt "group"
+msgid "Тыл"
+msgstr "Тил"
+
+#. kind: t
 #. short caps label: keep <= 6 chars (glossary short form)
-#: ui/hud.gd:393
+#: ui/hud.gd:425 ui/hud.gd:393
 msgid "НЕТ "
 msgstr "НЕМАЄ "
 
 #. kind: t
 #. short caps label: keep <= 7 chars (glossary short form)
-#: ui/hud.gd:393
+#: ui/hud.gd:425 ui/hud.gd:393
 msgid "МАЛО "
 msgstr "МАЛО "
 
 #. kind: t
 #. short caps label: keep <= 8 chars (glossary short form)
-#: ui/hud.gd:393
+#: ui/hud.gd:425 ui/hud.gd:393
 msgid "ДЕРЕВА"
 msgstr "ДЕРЕВИНИ"
 
 #. kind: t
 #. short caps label: keep <= 10 chars (glossary short form)
-#: ui/hud.gd:393 ui/ui24/res_sheet.gd:16
+#: ui/hud.gd:425 ui/hud.gd:393 ui/ui24/res_sheet.gd:16
 msgid "ДРАГМЕТ."
 msgstr "ДОРОГОЦ."
 
 #. kind: t
 #. short caps label: keep <= 7 chars (glossary short form)
-#: ui/hud.gd:393
+#: ui/hud.gd:425 ui/hud.gd:393
 msgid "СЫРЬЯ"
 msgstr "СИРОВИНИ"
 
 #. kind: t
 #. short caps label: keep <= 7 chars (glossary short form)
-#: ui/hud.gd:393 ui/ui24/trade_sheet.gd:1012 ui/hud.gd:143 ui/hud/hud_base.gd:232
+#: ui/hud.gd:425 ui/ui24/trade_sheet.gd:1012 ui/hud.gd:143 ui/hud.gd:393 ui/hud/hud_base.gd:232
 #: ui/ui24/econ_hub.gd:21 ui/ui24/hold_tip.gd:88
 msgid "СКЛАД"
 msgstr "СКЛАД"
 
 #. kind: mk
-#: ui/hud.gd:423
+#: ui/hud.gd:455 ui/hud.gd:423
 msgid "%s хочет купить %s %d — ТОРГОВЛЯ"
 msgstr "%s хоче купити %s %d — ТОРГІВЛЯ"
 
 #. kind: t
-#: ui/hud.gd:435
+#: ui/hud.gd:467 ui/hud.gd:435
 msgid "вы лидер"
 msgstr "ви лідер"
 
 #. kind: t
-#: ui/hud.gd:435
+#: ui/hud.gd:467 ui/hud.gd:435
 msgid "лидер"
 msgstr "лідер"
 
 #. kind: t
-#: ui/hud.gd:436
+#: ui/hud.gd:468 ui/hud.gd:436
 msgid "%s %s/%d тыс."
 msgstr "%s %s/%d тис."
 
@@ -15551,32 +15655,32 @@ msgid "Звук"
 msgstr "Звук"
 
 #. kind: t
-#: ui/menus.gd:2316 ui/menus.gd:2256
+#: ui/menus.gd:2320 ui/menus.gd:2256
 msgid "  · РАЗРАБОТЧИК"
 msgstr "  · РОЗРОБНИК"
 
 #. kind: t
-#: ui/menus.gd:2357 ui/menus.gd:2297
+#: ui/menus.gd:2361 ui/menus.gd:2297
 msgid "ЗВУКИ %d%% · МУЗЫКА %d%%"
 msgstr "ЗВУКИ %d%% · МУЗИКА %d%%"
 
 #. kind: t
-#: ui/menus.gd:2362 ui/menus.gd:2302 ui/hud/hud_base.gd:211
+#: ui/menus.gd:2366 ui/menus.gd:2302 ui/hud/hud_base.gd:211
 msgid "Пауза"
 msgstr "Пауза"
 
 #. kind: t
-#: ui/menus.gd:2365 ui/menus.gd:2305
+#: ui/menus.gd:2369 ui/menus.gd:2305
 msgid "Очки: %d · место %d из %d"
 msgstr "Очки: %d · місце %d з %d"
 
 #. kind: t
-#: ui/menus.gd:2367 ui/menus.gd:2307
+#: ui/menus.gd:2371 ui/menus.gd:2307
 msgid "Рейтинговый бой · осталось %s"
 msgstr "Рейтинговий бій · залишилося %s"
 
 #. kind: t
-#: ui/menus.gd:2369 ui/menus.gd:2309
+#: ui/menus.gd:2373 ui/menus.gd:2309
 msgid ""
 "\n"
 "Цель: %d очков"
@@ -15585,7 +15689,7 @@ msgstr ""
 "Ціль: %d очок"
 
 #. kind: t
-#: ui/menus.gd:2371 ui/menus.gd:2311
+#: ui/menus.gd:2375 ui/menus.gd:2311
 msgid ""
 "\n"
 "Осталось: %s"
@@ -15594,7 +15698,7 @@ msgstr ""
 "Залишилося: %s"
 
 #. kind: t
-#: ui/menus.gd:2371 ui/menus.gd:2311
+#: ui/menus.gd:2375 ui/menus.gd:2311
 msgid ""
 "\n"
 "Без лимита времени · цель: %d очков"
@@ -15603,7 +15707,7 @@ msgstr ""
 "Без ліміту часу · ціль: %d очок"
 
 #. kind: t
-#: ui/menus.gd:2373 ui/menus.gd:2313
+#: ui/menus.gd:2377 ui/menus.gd:2313
 msgid ""
 "\n"
 "Захватите все столицы"
@@ -15612,68 +15716,68 @@ msgstr ""
 "Захопіть усі столиці"
 
 #. kind: t
-#: ui/menus.gd:2375 ui/menus.gd:2315
+#: ui/menus.gd:2379 ui/menus.gd:2315
 msgid " · осталось %s"
 msgstr " · залишилося %s"
 
 #. kind: t
 #. short caps label: keep <= 8 chars (glossary short form)
-#: ui/menus.gd:2380 ui/menus.gd:2320
+#: ui/menus.gd:2384 ui/menus.gd:2320
 msgid "В ИГРУ"
 msgstr "У ГРУ"
 
 #. kind: t
 #. short caps label: keep <= 13 chars (glossary short form)
-#: ui/menus.gd:2380 ui/menus.gd:867 ui/menus.gd:2320 ui/saves_ui.gd:433
+#: ui/menus.gd:2384 ui/menus.gd:867 ui/menus.gd:2320 ui/saves_ui.gd:433
 msgid "ПРОДОЛЖИТЬ"
 msgstr "ПРОДОВЖИТИ"
 
 #. kind: t
 #. short caps label: keep <= 10 chars (glossary short form)
-#: ui/menus.gd:2390 ui/ui24/tutorial_feed.gd:289 ui/menus.gd:862 ui/menus.gd:869 ui/menus.gd:2330
+#: ui/menus.gd:2394 ui/ui24/tutorial_feed.gd:289 ui/menus.gd:862 ui/menus.gd:869 ui/menus.gd:2330
 msgid "ОБУЧЕНИЕ"
 msgstr "НАВЧАННЯ"
 
 #. kind: t
 #. short caps label: keep <= 8 chars (glossary short form)
-#: ui/menus.gd:2390 ui/menus.gd:2330
+#: ui/menus.gd:2394 ui/menus.gd:2330
 msgid "ЗАНОВО"
 msgstr "ЗАНОВО"
 
 #. kind: t
-#: ui/menus.gd:2452 ui/menus.gd:2392
+#: ui/menus.gd:2456 ui/menus.gd:2392
 msgid " (вы)"
 msgstr " (ви)"
 
 #. kind: t
 #. short caps label: keep <= 9 chars (glossary short form)
-#: ui/menus.gd:2481 ui/menus.gd:2421
+#: ui/menus.gd:2485 ui/menus.gd:2421
 msgid "ПОБЕДА!"
 msgstr "ПЕРЕМОГА!"
 
 #. kind: t
 #. short caps label: keep <= 11 chars (glossary short form)
-#: ui/menus.gd:2481 ui/saves_ui.gd:443 ui/menus.gd:2421 ui/menus.gd:3608
+#: ui/menus.gd:2485 ui/saves_ui.gd:443 ui/menus.gd:2421 ui/menus.gd:3608
 msgid "ПОРАЖЕНИЕ"
 msgstr "ПОРАЗКА"
 
 #. kind: t
-#: ui/menus.gd:2489 ui/menus.gd:2429
+#: ui/menus.gd:2493 ui/menus.gd:2429
 msgid "%s побеждает"
 msgstr "%s перемагає"
 
 #. kind: t
-#: ui/menus.gd:2489 ui/menus.gd:2429
+#: ui/menus.gd:2493 ui/menus.gd:2429
 msgid "Ваша страна — лидер мира"
 msgstr "Ваша країна — лідер світу"
 
 #. kind: t
-#: ui/menus.gd:2490 ui/menus.gd:2430
+#: ui/menus.gd:2494 ui/menus.gd:2430
 msgid "Время партии: %s"
 msgstr "Час партії: %s"
 
 #. kind: t
-#: ui/menus.gd:2494 ui/menus.gd:2434
+#: ui/menus.gd:2498 ui/menus.gd:2434
 msgid ""
 "Заработано: %d · уничтожено: %d\n"
 "Захвачено городов: %d · потеряно: %d"
@@ -15682,40 +15786,40 @@ msgstr ""
 "Захоплено міст: %d · втрачено: %d"
 
 #. kind: t
-#: ui/menus.gd:2496 ui/menus.gd:2436
+#: ui/menus.gd:2500 ui/menus.gd:2436
 msgid "СМОТРЕТЬ ДАЛЬШЕ"
 msgstr "ДИВИТИСЯ ДАЛІ"
 
 #. kind: t
 #. short caps label: keep <= 16 chars (glossary short form)
-#: ui/menus.gd:2496 ui/menus.gd:2436
+#: ui/menus.gd:2500 ui/menus.gd:2436
 msgid "ИГРАТЬ ДАЛЬШЕ"
 msgstr "ГРАТИ ДАЛІ"
 
 #. kind: tag
 #: ui/menus.gd:12
-msgid "Быстрее: расчёт границ и анклавов на 29% быстрее — меньше нагрузка на больших картах"
-msgstr "Швидше: розрахунок кордонів і анклавів на 29% швидший — менше навантаження на великих картах"
+msgid "НОВОЕ: игра на трёх языках — русский, украинский, английский. Выбор при первом запуске и в Настройках"
+msgstr "НОВЕ: гра трьома мовами — російська, українська, англійська. Вибір під час першого запуску та в Налаштуваннях"
 
 #. kind: tag
 #: ui/menus.gd:13
-msgid "ОНЛАЙН: выигранный матч засчитывается; кнопки после победы — двойным тапом; «НЕТ СВЯЗИ С ХОСТОМ» в чате"
-msgstr "ОНЛАЙН: виграний матч зараховується; кнопки після перемоги — подвійним тапом; «НЕМАЄ ЗВ’ЯЗКУ З ХОСТОМ» у чаті"
+msgid "НОВОЕ: обучение (22 ролика) тоже на трёх языках"
+msgstr "НОВЕ: навчання (22 ролики) теж трьома мовами"
 
 #. kind: tag
 #: ui/menus.gd:14
-msgid "Внутри: большой порядок в коде (армия, экономика, мир, главный экран разделены на части, лишний код удалён) — игра не изменилась"
-msgstr "Усередині: великий лад у коді (армія, економіка, світ, головний екран розділено на частини, зайвий код видалено) — гра не змінилася"
+msgid "Язык можно сменить прямо во время партии; сохранения открываются на любом языке"
+msgstr "Мову можна змінити просто під час партії; збереження відкриваються будь-якою мовою"
 
 #. kind: tag
 #: ui/menus.gd:15
-msgid "Для тестеров: скрытый замер производительности (режим разработчика в настройках)"
-msgstr "Для тестерів: прихований замір продуктивності (режим розробника в налаштуваннях)"
+msgid "Исправлены склонения и мелкие тексты по всей игре"
+msgstr "Виправлено відмінювання та дрібні тексти в усій грі"
 
 #. kind: tag
 #: ui/menus.gd:16
-msgid "Всё из 0.31.6: онлайн-исправления, защита от вылетов при касаниях, обучение (22 ролика), новый баланс армии и ПВО"
-msgstr "Усе з 0.31.6: онлайн-виправлення, захист від вильотів при дотиках, навчання (22 ролики), новий баланс армії і ППО"
+msgid "Всё из 0.31.7: ускорение расчёта границ, онлайн-исправления, новый баланс армии и ПВО"
+msgstr "Усе з 0.31.7: пришвидшення розрахунку кордонів, онлайн-виправлення, новий баланс армії і ППО"
 
 #. kind: tag
 #. short caps label: keep <= 7 chars (glossary short form)
@@ -16113,7 +16217,7 @@ msgstr "УДАР"
 #. short caps label: keep <= 8 chars (glossary short form)
 #: ui/hud/hud_base.gd:194 ui/ui24/build_panel.gd:13
 msgid "ПОЛИТ."
-msgstr "ПОЛІТ."
+msgstr "ДИПЛ."
 
 #. kind: tag,table:LOC_TUT337_SECTIONS
 #. short caps label: keep <= 6 chars (glossary short form)
@@ -16165,7 +16269,7 @@ msgstr "Заснувати столицю"
 #. kind: tag
 #: ui/hud/hud_base.gd:234
 msgid "Тап по свободной земле: вырастет город и ТЭЦ"
-msgstr "Тап по вільній землі: виросте місто і ТЕЦ"
+msgstr "Торкніться вільної землі: виросте місто і ТЕЦ"
 
 #. kind: tag
 #. short caps label: keep <= 10 chars (glossary short form)
@@ -16177,7 +16281,7 @@ msgstr "АЕРОДРОМ"
 #. short caps label: keep <= 8 chars (glossary short form)
 #: ui/hud/hud_base.gd:255 ui/tutorial.gd:28
 msgid "КОЛХОЗ"
-msgstr "КОЛГОСП"
+msgstr "ФЕРМА"
 
 #. kind: tag
 #. short caps label: keep <= 7 chars (glossary short form)
@@ -16187,7 +16291,7 @@ msgstr "ЗАВОД"
 
 #. kind: tag,t
 #. short caps label: keep <= 8 chars (glossary short form)
-#: ui/hud/hud_base.gd:255 ui/hud/hud_cards.gd:766 ui/tutorial.gd:34
+#: ui/hud/hud_base.gd:255 ui/hud/hud_cards.gd:769 ui/tutorial.gd:34 ui/hud/hud_cards.gd:766
 msgid "РУДНИК"
 msgstr "РУДНИК"
 
@@ -16277,14 +16381,14 @@ msgid "ТАП ПО КАРТЕ = ЦЕЛЬ"
 msgstr "ТАП ПО КАРТІ = ЦІЛЬ"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:65 ui/hud/hud_cards.gd:104 ui/hud/hud_cards.gd:684
+#: ui/hud/hud_cards.gd:65 ui/hud/hud_cards.gd:104 ui/hud/hud_cards.gd:687 ui/hud/hud_cards.gd:684
 msgid ""
 "ЦЕЛЬ %.1f КМ · ПОЛЁТ %s\n"
 msgstr ""
 "ЦІЛЬ %.1f КМ · ПОЛІТ %s\n"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:69 ui/hud/hud_cards.gd:108 ui/hud/hud_cards.gd:686
+#: ui/hud/hud_cards.gd:69 ui/hud/hud_cards.gd:108 ui/hud/hud_cards.gd:689 ui/hud/hud_cards.gd:686
 msgid "ВНЕ ДАЛЬНОСТИ: МАКС %.1f КМ"
 msgstr "ПОЗА ДАЛЬНІСТЮ: МАКС %.1f КМ"
 
@@ -16484,7 +16588,7 @@ msgstr "РАКЕТ %d/2 · НА СКЛАДІ %d%s"
 #. kind: t
 #: ui/hud/hud_cards.gd:193
 msgid "Ракеты делает ракетный завод (тип «Баллист.»). Тап по своей земле — переезд."
-msgstr "Ракети робить ракетний завод (тип «Баліст.»). Тап по своїй землі — переїзд."
+msgstr "Ракети робить ракетний завод (тип «Баліст.»). Торкніться своєї землі — переїзд."
 
 #. kind: t
 #: ui/hud/hud_cards.gd:196
@@ -16777,7 +16881,7 @@ msgstr "НОВА"
 
 #. kind: t
 #. short caps label: keep <= 11 chars (glossary short form)
-#: ui/hud/hud_cards.gd:338 ui/hud/hud_cards.gd:509
+#: ui/hud/hud_cards.gd:338 ui/hud/hud_cards.gd:512 ui/hud/hud_cards.gd:509
 msgid ""
 "\n"
 "ДЕСАНТ: "
@@ -16797,7 +16901,7 @@ msgstr "АРМІЯ ФОРМУЄТЬСЯ · %d/%d"
 
 #. kind: t
 #. short caps label: keep <= 9 chars (glossary short form)
-#: ui/hud/hud_cards.gd:358 ui/hud/hud_cards.gd:530
+#: ui/hud/hud_cards.gd:358 ui/hud/hud_cards.gd:533 ui/hud/hud_cards.gd:530
 msgid ""
 "РЕЖИМ:\n"
 msgstr ""
@@ -16935,11 +17039,6 @@ msgid "РАЗРУШИТЬ"
 msgstr "ЗРУЙНУВАТИ"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:458
-msgid "ГРУППА %d·%s"
-msgstr "ГРУПА %d·%s"
-
-#. kind: t
 #. short caps label: keep <= 13 chars (glossary short form)
 #: ui/hud/hud_cards.gd:458 ui/ui24/army_dock.gd:649 ui/ui24/cmd_sheet.gd:506
 #: ui/ui24/navy_dock.gd:1718
@@ -16947,33 +17046,38 @@ msgid "БЕЗ ГРУППЫ"
 msgstr "БЕЗ ГРУПИ"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:460 ui/ui24/army_ux.gd:1318
+#: ui/hud/hud_cards.gd:461 ui/hud/hud_cards.gd:458
+msgid "ГРУППА %d·%s"
+msgstr "ГРУПА %d·%s"
+
+#. kind: t
+#: ui/hud/hud_cards.gd:463 ui/ui24/army_ux.gd:1318 ui/hud/hud_cards.gd:460
 msgid "АРМИЯ №%d · %s"
 msgstr "АРМІЯ №%d · %s"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:486
+#: ui/hud/hud_cards.gd:489 ui/hud/hud_cards.gd:486
 msgid "%s: %d из %d"
 msgstr "%s: %d з %d"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:488
+#: ui/hud/hud_cards.gd:491 ui/hud/hud_cards.gd:488
 msgid "%d/%d · СИЛА %d%%"
 msgstr "%d/%d · СИЛА %d%%"
 
 #. kind: t
 #. short caps label: keep <= 10 chars (glossary short form)
-#: ui/hud/hud_cards.gd:498
+#: ui/hud/hud_cards.gd:501 ui/hud/hud_cards.gd:498
 msgid "СЕЙЧАС: "
 msgstr "ЗАРАЗ: "
 
 #. kind: t
-#: ui/hud/hud_cards.gd:498
+#: ui/hud/hud_cards.gd:501 ui/hud/hud_cards.gd:498
 msgid "нет бойцов"
 msgstr "немає бійців"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:506
+#: ui/hud/hud_cards.gd:509 ui/hud/hud_cards.gd:506
 msgid ""
 "\n"
 "В ОКОПАХ: %d/%d"
@@ -16983,12 +17087,13 @@ msgstr ""
 
 #. kind: t
 #. short caps label: keep <= 6 chars (glossary short form)
-#: ui/hud/hud_cards.gd:553 ui/ui24/trade_sheet.gd:1229 ui/ui24/trade_sheet.gd:1231
+#: ui/hud/hud_cards.gd:556 ui/ui24/trade_sheet.gd:1229 ui/ui24/trade_sheet.gd:1231
+#: ui/hud/hud_cards.gd:553
 msgid "МАКС"
 msgstr "МАКС"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:570
+#: ui/hud/hud_cards.gd:573 ui/hud/hud_cards.gd:570
 msgid ""
 "ИДЁТ\n"
 "%s"
@@ -16997,28 +17102,28 @@ msgstr ""
 "%s"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:589
+#: ui/hud/hud_cards.gd:592 ui/hud/hud_cards.gd:589
 msgid "%s %s → %s %s/МИН"
 msgstr "%s %s → %s %s/ХВ"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:591
+#: ui/hud/hud_cards.gd:594 ui/hud/hud_cards.gd:591
 msgid "%s %s/МИН"
 msgstr "%s %s/ХВ"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:593
+#: ui/hud/hud_cards.gd:596 ui/hud/hud_cards.gd:593
 msgid "ДОХОД +%d/МИН"
 msgstr "ДОХІД +%d/ХВ"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:595
+#: ui/hud/hud_cards.gd:598 ui/hud/hud_cards.gd:595
 msgid "НА СКЛАДЕ %d"
 msgstr "НА СКЛАДІ %d"
 
 #. kind: t
 #. short caps label: keep <= 14 chars (glossary short form)
-#: ui/hud/hud_cards.gd:598
+#: ui/hud/hud_cards.gd:601 ui/hud/hud_cards.gd:598
 msgid ""
 "\n"
 "СЕЙЧАС 0: "
@@ -17027,7 +17132,7 @@ msgstr ""
 "ЗАРАЗ 0: "
 
 #. kind: t
-#: ui/hud/hud_cards.gd:609
+#: ui/hud/hud_cards.gd:612 ui/hud/hud_cards.gd:609
 msgid ""
 "УР %d\n"
 "МАКС"
@@ -17036,12 +17141,12 @@ msgstr ""
 "МАКС"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:610
+#: ui/hud/hud_cards.gd:613 ui/hud/hud_cards.gd:610
 msgid "Максимальный уровень."
 msgstr "Максимальний рівень."
 
 #. kind: t
-#: ui/hud/hud_cards.gd:611
+#: ui/hud/hud_cards.gd:614 ui/hud/hud_cards.gd:611
 msgid ""
 "УР %d→%d\n"
 "%d"
@@ -17050,22 +17155,22 @@ msgstr ""
 "%d"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:614
+#: ui/hud/hud_cards.gd:617 ui/hud/hud_cards.gd:614
 msgid "Улучшение до уровня %d: %s.%s%s"
 msgstr "Покращення до рівня %d: %s.%s%s"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:614
+#: ui/hud/hud_cards.gd:617 ui/hud/hud_cards.gd:614
 msgid " Выпуск станет +%d/мин."
 msgstr " Випуск стане +%d/хв."
 
 #. kind: t
-#: ui/hud/hud_cards.gd:614
+#: ui/hud/hud_cards.gd:617 ui/hud/hud_cards.gd:614
 msgid " Не хватает: "
 msgstr " Бракує: "
 
 #. kind: t
-#: ui/hud/hud_cards.gd:620
+#: ui/hud/hud_cards.gd:623 ui/hud/hud_cards.gd:620
 msgid ""
 "+СОЛНЦЕ\n"
 "%d"
@@ -17074,49 +17179,49 @@ msgstr ""
 "%d"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:626
+#: ui/hud/hud_cards.gd:629 ui/hud/hud_cards.gd:626
 msgid " · УР %d"
 msgstr " · РІВ %d"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:634
+#: ui/hud/hud_cards.gd:637 ui/hud/hud_cards.gd:634
 msgid " · КР %d/%d"
 msgstr " · КР %d/%d"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:637
+#: ui/hud/hud_cards.gd:640 ui/hud/hud_cards.gd:637
 msgid " · КАБ %d · НАР %d · В-В %d"
 msgstr " · КАБ %d · НАР %d · П-П %d"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:640
+#: ui/hud/hud_cards.gd:643 ui/hud/hud_cards.gd:640
 msgid " · РАКЕТ В-В %d/%d"
 msgstr " · РАКЕТ П-П %d/%d"
 
 #. kind: t
 #. short caps label: keep <= 10 chars (glossary short form)
-#: ui/hud/hud_cards.gd:643
+#: ui/hud/hud_cards.gd:646 ui/hud/hud_cards.gd:643
 msgid " · ПУШКА"
 msgstr " · ГАРМАТА"
 
 #. kind: t
 #. short caps label: keep <= 14 chars (glossary short form)
-#: ui/hud/hud_cards.gd:644
+#: ui/hud/hud_cards.gd:647 ui/hud/hud_cards.gd:644
 msgid " · ЗАПРАВКА"
 msgstr " · ЗАПРАВКА"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:646
+#: ui/hud/hud_cards.gd:649 ui/hud/hud_cards.gd:646
 msgid " · ПОДВЕС %s %d"
 msgstr " · ПІДВІС %s %d"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:648
+#: ui/hud/hud_cards.gd:651 ui/hud/hud_cards.gd:648
 msgid "ТОПЛИВО %d%%%s%s%s"
 msgstr "ПАЛЬНЕ %d%%%s%s%s"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:657
+#: ui/hud/hud_cards.gd:660 ui/hud/hud_cards.gd:657
 msgid ""
 "УЛУЧШИТЬ\n"
 "%d"
@@ -17125,42 +17230,42 @@ msgstr ""
 "%d"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:688
+#: ui/hud/hud_cards.gd:691 ui/hud/hud_cards.gd:688
 msgid "НЕТ КРЫЛАТЫХ РАКЕТ"
 msgstr "НЕМАЄ КРИЛАТИХ РАКЕТ"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:690
+#: ui/hud/hud_cards.gd:693 ui/hud/hud_cards.gd:690
 msgid "НА БОРТУ %d"
 msgstr "НА БОРТУ %d"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:699
+#: ui/hud/hud_cards.gd:702 ui/hud/hud_cards.gd:699
 msgid "Штурмовик №%d · %s"
 msgstr "Штурмовик №%d · %s"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:699
+#: ui/hud/hud_cards.gd:702 ui/hud/hud_cards.gd:699
 msgid "НАР %d · ПУШКА"
 msgstr "НАР %d · ГАРМАТА"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:699
+#: ui/hud/hud_cards.gd:702 ui/hud/hud_cards.gd:699
 msgid "КАБ %d · СКЛАД %d"
 msgstr "КАБ %d · СКЛАД %d"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:714
+#: ui/hud/hud_cards.gd:717 ui/hud/hud_cards.gd:714
 msgid "ДАЛЕКО: НЕ ХВАТИТ ТОПЛИВА ВЕРНУТЬСЯ (ДО %.1f КМ)"
 msgstr "ДАЛЕКО: НЕ ВИСТАЧИТЬ ПАЛЬНОГО ПОВЕРНУТИСЯ (ДО %.1f КМ)"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:717
+#: ui/hud/hud_cards.gd:720 ui/hud/hud_cards.gd:717
 msgid "РАЙОН %.1f КМ · ПОДЛЁТ ~%s%s"
 msgstr "РАЙОН %.1f КМ · ПІДЛІТ ~%s%s"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:717
+#: ui/hud/hud_cards.gd:720 ui/hud/hud_cards.gd:717
 msgid ""
 "\n"
 "НАРОВ НЕТ — ТОЛЬКО ПУШКА"
@@ -17169,17 +17274,17 @@ msgstr ""
 "НАР НЕМАЄ — ЛИШЕ ГАРМАТА"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:721
+#: ui/hud/hud_cards.gd:724 ui/hud/hud_cards.gd:721
 msgid "ТАПЫ ПО ЦЕЛЯМ: ДО %d (1 КАБ НА ЦЕЛЬ). СБРОС С %.1f КМ — САМОЛЁТ ЛЕТИТ К ЦЕЛИ"
 msgstr "ТАПИ ПО ЦІЛЯХ: ДО %d (1 КАБ НА ЦІЛЬ). СКИДАННЯ З %.1f КМ — ЛІТАК ЛЕТИТЬ ДО ЦІЛІ"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:723
+#: ui/hud/hud_cards.gd:726 ui/hud/hud_cards.gd:723
 msgid "ЦЕЛИ %d/%d · %d ДАЛЕКО: ТОПЛИВА ДО %.1f КМ — УБЕРИТЕ (ТАП ПО НОМЕРУ)"
 msgstr "ЦІЛІ %d/%d · %d ДАЛЕКО: ПАЛЬНОГО ДО %.1f КМ — ПРИБЕРІТЬ (ТАП ПО НОМЕРУ)"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:728
+#: ui/hud/hud_cards.gd:731 ui/hud/hud_cards.gd:728
 msgid ""
 "ЦЕЛИ %d/%d · СБРОС ЗА %d М ОТ ЦЕЛИ\n"
 "ДО ДАЛЬНЕЙ ЦЕЛИ %.1f КМ · КАБ СБИВАЮТ ТОЛЬКО ЗЕНИТНЫЕ ПУШКИ"
@@ -17188,111 +17293,112 @@ msgstr ""
 "ДО НАЙДАЛЬШОЇ ЦІЛІ %.1f КМ · КАБ ЗБИВАЮТЬ ЛИШЕ ЗЕНІТНІ ГАРМАТИ"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:750
+#: ui/hud/hud_cards.gd:753 ui/hud/hud_cards.gd:750
 msgid "Залежь: %s"
 msgstr "Поклад: %s"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:750
+#: ui/hud/hud_cards.gd:753 ui/hud/hud_cards.gd:750
 msgid "Малая залежь"
 msgstr "Малий поклад"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:750
+#: ui/hud/hud_cards.gd:753 ui/hud/hud_cards.gd:750
 msgid "Месторождение"
 msgstr "Родовище"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:751
+#: ui/hud/hud_cards.gd:754 ui/hud/hud_cards.gd:751
 msgid "ЗАПАС %s"
 msgstr "ЗАПАС %s"
 
 #. kind: t
 #. short caps label: keep <= 13 chars (glossary short form)
-#: ui/hud/hud_cards.gd:755
+#: ui/hud/hud_cards.gd:758 ui/hud/hud_cards.gd:755
 msgid "ВАША ЗЕМЛЯ"
 msgstr "ВАША ЗЕМЛЯ"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:755
+#: ui/hud/hud_cards.gd:758 ui/hud/hud_cards.gd:755
 msgid "ЗЕМЛЯ: %s"
 msgstr "ЗЕМЛЯ: %s"
 
 #. kind: t
 #. short caps label: keep <= 14 chars (glossary short form)
-#: ui/hud/hud_cards.gd:755
+#: ui/hud/hud_cards.gd:758 ui/hud/hud_cards.gd:755
 msgid "НИЧЬЯ ЗЕМЛЯ"
 msgstr "НІЧИЯ ЗЕМЛЯ"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:757
+#: ui/hud/hud_cards.gd:760 ui/hud/hud_cards.gd:757
 msgid " · УЖЕ ДОБЫВАЕТСЯ"
 msgstr " · УЖЕ РОЗРОБЛЯЄТЬСЯ"
 
 #. kind: t
 #. short caps label: keep <= 13 chars (glossary short form)
-#: ui/hud/hud_cards.gd:766
+#: ui/hud/hud_cards.gd:769 ui/hud/hud_cards.gd:766
 msgid "НЕФТЕВЫШКА"
 msgstr "НАФТ. ВИШКА"
 
 #. kind: t
 #. short caps label: keep <= 13 chars (glossary short form)
-#: ui/hud/hud_cards.gd:766
+#: ui/hud/hud_cards.gd:769 ui/hud/hud_cards.gd:766
 msgid "УРАН.ШАХТА"
 msgstr "УРАН.ШАХТА"
 
 #. kind: t
 #. short caps label: keep <= 15 chars (glossary short form)
-#: ui/hud/hud_cards.gd:776
+#: ui/hud/hud_cards.gd:779 ui/hud/hud_cards.gd:776
 msgid "ВИДНО СЕЙЧАС"
 msgstr "ВИДНО ЗАРАЗ"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:776
+#: ui/hud/hud_cards.gd:779 ui/hud/hud_cards.gd:776
 msgid "ПОСЛЕДНИЙ РАЗ ВИДЕЛИ %s НАЗАД"
 msgstr "ВОСТАННЄ БАЧИЛИ %s ТОМУ"
 
 #. kind: t
 #. short caps label: keep <= 14 chars (glossary short form)
-#: ui/hud/hud_cards.gd:776
+#: ui/hud/hud_cards.gd:779 ui/hud/hud_cards.gd:776
 msgid " · РАЗРУШЕН"
 msgstr " · ЗРУЙНОВАНО"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:778
+#: ui/hud/hud_cards.gd:781 ui/hud/hud_cards.gd:778
 msgid ". Отметка стоит там, где объект видели последний раз; мобильные комплексы могли уехать."
 msgstr ". Позначка стоїть там, де об’єкт бачили востаннє; мобільні комплекси могли поїхати."
 
 #. kind: t
-#: ui/hud/hud_cards.gd:788
+#: ui/hud/hud_cards.gd:791 ui/hud/hud_cards.gd:788
 msgid " · НАЙДЕНО %d"
 msgstr " · ЗНАЙДЕНО %d"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:800
+#: ui/hud/hud_cards.gd:803 ui/hud/hud_cards.gd:800
 msgid "УРОВЕНЬ %d · %s"
 msgstr "РІВЕНЬ %d · %s"
 
 #. kind: t
 #. short caps label: keep <= 11 chars (glossary short form)
-#: ui/hud/hud_cards.gd:800
+#: ui/hud/hud_cards.gd:803 ui/hud/hud_cards.gd:800
 msgid "СВЕТ ЕСТЬ"
 msgstr "СВІТЛО Є"
 
 #. kind: t
 #. short caps label: keep <= 11 chars (glossary short form)
-#: ui/hud/hud_cards.gd:800
+#: ui/hud/hud_cards.gd:803 ui/hud/hud_cards.gd:800
 msgid "БЕЗ СВЕТА"
 msgstr "БЕЗ СВІТЛА"
 
 #. kind: t
-#: ui/hud/hud_cards.gd:807
+#: ui/hud/hud_cards.gd:810 ui/hud/hud_cards.gd:807
 msgid " · ВЫСОТОК %d"
 msgstr " · ВИСОТОК %d"
 
 #. kind: tag
 #. short caps label: keep <= 8 chars (glossary short form)
-#: ui/hud/hud_cards.gd:532 ui/tutorial.gd:56 ui/ui24/dip_page.gd:1590 ui/ui24/hold_tip.gd:29
+#: ui/hud/hud_cards.gd:535 ui/tutorial.gd:56 ui/hud/hud_cards.gd:532 ui/ui24/dip_page.gd:1590
+#: ui/ui24/hold_tip.gd:29
 msgid "ГРУППА"
 msgstr "ГРУПА"
 
@@ -17375,7 +17481,7 @@ msgid "ТОЧНО ВОЙНА?"
 msgstr "ТОЧНО ВІЙНА?"
 
 #. kind: t
-#: ui/hud/hud_dip.gd:334 ui/ui24/dip_page.gd:1758
+#: ui/hud/hud_dip.gd:334 ui/ui24/dip_page.gd:1759 ui/ui24/dip_page.gd:1758
 msgid "ВОЙНА (ВЕРОЛОМНО)"
 msgstr "ВІЙНА (ВІРОЛОМНО)"
 
@@ -17529,7 +17635,7 @@ msgstr "казарми самі поповнюють втрати цієї ар�
 #. kind: t
 #: ui/hud/hud_econ.gd:28
 msgid "потери не восполняются; тап — включить"
-msgstr "втрати не поповнюються; тап — увімкнути"
+msgstr "втрати не поповнюються; торкніться, щоб увімкнути"
 
 #. kind: t
 #. short caps label: keep <= 14 chars (glossary short form)
@@ -17565,12 +17671,12 @@ msgstr "ТРИВАЄ"
 #. kind: t
 #: ui/hud/hud_econ.gd:35
 msgid "казармы не набирают новых бойцов; тап — снова набирать"
-msgstr "казарми не набирають нових бійців; тап — знову набирати"
+msgstr "казарми не набирають нових бійців; торкніться, щоб знову набирати"
 
 #. kind: t
 #: ui/hud/hud_econ.gd:35
 msgid "казармы набирают бойцов в армию; тап — остановить"
-msgstr "казарми набирають бійців до армії; тап — зупинити"
+msgstr "казарми набирають бійців до армії; торкніться, щоб зупинити"
 
 #. kind: t
 #. short caps label: keep <= 9 chars (glossary short form)
@@ -17741,12 +17847,12 @@ msgstr "%s · ~%d за 100 м, 3–5 хв"
 #. kind: t
 #: ui/hud/hud_kit.gd:75
 msgid "%s (второй тап по месту)"
-msgstr "%s (другий тап по місцю)"
+msgstr "%s (торкніться місця ще раз)"
 
 #. kind: t
 #: ui/hud/hud_kit.gd:110
 msgid "Замена: %s — второй тап по месту"
-msgstr "Заміна: %s — другий тап по місцю"
+msgstr "Заміна: %s — торкніться місця ще раз"
 
 #. kind: t
 #. short caps label: keep <= 13 chars (glossary short form)
@@ -17794,12 +17900,12 @@ msgstr "ПРЯМО, ЗАГРОЗ НЕ ЗНАЄМО"
 #. kind: t
 #: ui/hud/hud_lane.gd:48
 msgid "тап — к линии фронта"
-msgstr "тап — до лінії фронту"
+msgstr "торкніться — до лінії фронту"
 
 #. kind: t
 #: ui/hud/hud_lane.gd:50
 msgid "тап — к месту боя"
-msgstr "тап — до місця бою"
+msgstr "торкніться — до місця бою"
 
 #. kind: t
 #: ui/hud/hud_lane.gd:298
@@ -17971,7 +18077,7 @@ msgstr "ЗРК/ПРО «Щит»"
 #. kind: table:LOC_COL_SHORT
 #: ui/ui24/ad_rules_sheet.gd:32
 msgid "Реактив."
-msgstr "Реактив."
+msgstr "Реактивні"
 
 #. kind: table:LOC_COL_SHORT
 #: ui/ui24/ad_rules_sheet.gd:32 ui/ui24/ad_rules_sheet.gd:33
@@ -18596,7 +18702,7 @@ msgstr "ГРУПА %d · %s"
 #. kind: t
 #: ui/ui24/army_dock.gd:1887
 msgid "Тап или линия пальцем"
-msgstr "Тап або лінія пальцем"
+msgstr "Торкніться або проведіть пальцем"
 
 #. kind: t
 #: ui/ui24/army_dock.gd:1887
@@ -18782,7 +18888,7 @@ msgstr "СИЛА %d%% · %d/%d%s"
 #. kind: t
 #: ui/ui24/army_ux.gd:900
 msgid "АРМИЯ №%d — тап: её карточка"
-msgstr "АРМІЯ №%d — тап: її картка"
+msgstr "АРМІЯ №%d — торкніться: її картка"
 
 #. kind: t
 #: ui/ui24/army_ux.gd:952
@@ -19121,7 +19227,7 @@ msgstr "№%d піде з %s"
 #. kind: t
 #: ui/ui24/army_ux.gd:1968
 msgid "Выбрано %d · тап по армии на карте или по фишке"
-msgstr "Вибрано %d · тап по армії на карті або по фішці"
+msgstr "Вибрано %d · торкніться армії на карті або фішки"
 
 #. kind: t
 #: ui/ui24/army_ux.gd:1970
@@ -19378,8 +19484,9 @@ msgstr "радше надішле допомогу"
 
 #. kind: t,tag
 #. short caps label: keep <= 11 chars (glossary short form)
-#: ui/ui24/dip_chat_view.gd:202 ui/ui24/dip_page.gd:1617 ui/ui24/dip_chat_view.gd:163
-#: ui/ui24/dip_page.gd:1611 ui/ui24/dip_sheet.gd:2044 ui/ui24/dip_sheet.gd:2193
+#: ui/ui24/dip_chat_view.gd:202 ui/ui24/dip_page.gd:1618 ui/ui24/dip_chat_view.gd:163
+#: ui/ui24/dip_page.gd:1611 ui/ui24/dip_page.gd:1617 ui/ui24/dip_sheet.gd:2044
+#: ui/ui24/dip_sheet.gd:2193
 msgid "ОТПРАВИТЬ"
 msgstr "ВІДПРАВИТИ"
 
@@ -19423,12 +19530,12 @@ msgstr "у мережі · відповідає сам, до 2:00"
 #. kind: t
 #: ui/ui24/dip_page.gd:379 ui/ui24/my_state.gd:1238
 msgid "сильнее ×%s"
-msgstr "сильніші ×%s"
+msgstr "сильніша ×%s"
 
 #. kind: t
 #: ui/ui24/dip_page.gd:382 ui/ui24/my_state.gd:1241
 msgid "слабее ×%s"
-msgstr "слабші ×%s"
+msgstr "слабша ×%s"
 
 #. kind: t
 #: ui/ui24/dip_page.gd:400
@@ -19497,672 +19604,676 @@ msgid "ПРОСЯТ: %s%s"
 msgstr "ПРОСЯТЬ: %s%s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:860
+#: ui/ui24/dip_page.gd:861 ui/ui24/dip_page.gd:860
 msgid "ОБЪЯВИТЬ ВОЙНУ: %s"
 msgstr "ОГОЛОСИТИ ВІЙНУ: %s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:860
+#: ui/ui24/dip_page.gd:861 ui/ui24/dip_page.gd:860
 msgid "В ИХ ВОЙНУ: %s"
 msgstr "У ЇХНЮ ВІЙНУ: %s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:861
+#: ui/ui24/dip_page.gd:862 ui/ui24/dip_page.gd:861
 msgid "ЗАКРЫТЬ НЕБО: %s"
 msgstr "ЗАКРИТИ НЕБО: %s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:861
+#: ui/ui24/dip_page.gd:862 ui/ui24/dip_page.gd:861
 msgid "ПРЕКРАТИТЬ ВОЙНУ: %s"
 msgstr "ПРИПИНИТИ ВІЙНУ: %s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1207
+#: ui/ui24/dip_page.gd:1208 ui/ui24/dip_page.gd:1207
 msgid "вы вместе"
 msgstr "ви разом"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1207
+#: ui/ui24/dip_page.gd:1208 ui/ui24/dip_page.gd:1207
 msgid "в альянсе"
 msgstr "в альянсі"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1209
+#: ui/ui24/dip_page.gd:1210 ui/ui24/dip_page.gd:1209
 msgid "можно основать"
 msgstr "можна заснувати"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1211
+#: ui/ui24/dip_page.gd:1212 ui/ui24/dip_page.gd:1211
 msgid "можно пригласить"
 msgstr "можна запросити"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1217
+#: ui/ui24/dip_page.gd:1218 ui/ui24/dip_page.gd:1217
 msgid "вы — вассал"
 msgstr "ви — васал"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1220
+#: ui/ui24/dip_page.gd:1221 ui/ui24/dip_page.gd:1220
 msgid "вассал: нельзя"
 msgstr "васал: не можна"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1267
+#: ui/ui24/dip_page.gd:1268 ui/ui24/dip_page.gd:1267
 msgid "%s СЛЕДУЕТ ЗА ВАМИ"
 msgstr "%s ІДЕ ЗА ВАМИ"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1269
+#: ui/ui24/dip_page.gd:1270 ui/ui24/dip_page.gd:1269
 msgid "ВОЮЕТ ВМЕСТЕ С ВАМИ"
 msgstr "ВОЮЄ РАЗОМ ІЗ ВАМИ"
 
 #. kind: t
 #. short caps label: keep <= 18 chars (glossary short form)
-#: ui/ui24/dip_page.gd:1269
+#: ui/ui24/dip_page.gd:1270 ui/ui24/dip_page.gd:1269
 msgid "ВАШИХ ВОЙН НЕТ"
 msgstr "ВАШИХ ВОЄН НЕМАЄ"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1269
+#: ui/ui24/dip_page.gd:1270 ui/ui24/dip_page.gd:1269
 msgid "войны: %s"
 msgstr "війни: %s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1269
+#: ui/ui24/dip_page.gd:1270 ui/ui24/dip_page.gd:1269
 msgid "мир — вместе с вами"
 msgstr "мир — разом із вами"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1273
+#: ui/ui24/dip_page.gd:1274 ui/ui24/dip_page.gd:1273
 msgid "%s — ещё нет: %s"
 msgstr "%s — ще ні: %s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1281
+#: ui/ui24/dip_page.gd:1282 ui/ui24/dip_page.gd:1281
 msgid "мира требуют: %d"
 msgstr "миру вимагають: %d"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1289
+#: ui/ui24/dip_page.gd:1290 ui/ui24/dip_page.gd:1289
 msgid "санкции: %s"
 msgstr "санкції: %s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1312
+#: ui/ui24/dip_page.gd:1313 ui/ui24/dip_page.gd:1312
 msgid "наши войска уходят к границе: %d осталось"
 msgstr "наші війська йдуть до кордону: %d залишилося"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1314 ui/ui24/dip_page.gd:1341
+#: ui/ui24/dip_page.gd:1315 ui/ui24/dip_page.gd:1342 ui/ui24/dip_page.gd:1314
+#: ui/ui24/dip_page.gd:1341
 msgid "союзники проходят свободно%s"
 msgstr "союзники проходять вільно%s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1314
+#: ui/ui24/dip_page.gd:1315 ui/ui24/dip_page.gd:1314
 msgid " · наших отрядов там: %d"
 msgstr " · наших загонів там: %d"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1317
+#: ui/ui24/dip_page.gd:1318 ui/ui24/dip_page.gd:1317
 msgid "есть · наших отрядов там: %d"
 msgstr "є · наших загонів там: %d"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1320
+#: ui/ui24/dip_page.gd:1321 ui/ui24/dip_page.gd:1320
 msgid "Отказаться от прохода?%s%s −%d к отношениям."
 msgstr "Відмовитися від проходу?%s%s −%d до відносин."
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1320
+#: ui/ui24/dip_page.gd:1321 ui/ui24/dip_page.gd:1320
 msgid " Наши %d отр. уйдут к границе."
 msgstr " Наші %d заг. підуть до кордону."
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1321
+#: ui/ui24/dip_page.gd:1322 ui/ui24/dip_page.gd:1321
 msgid " Их проход через нашу землю тоже закроется."
 msgstr " Їхній прохід через нашу землю теж закриється."
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1339
+#: ui/ui24/dip_page.gd:1340 ui/ui24/dip_page.gd:1339
 msgid "отозвано · их войска уходят к границе: %d осталось"
 msgstr "відкликано · їхні війська йдуть до кордону: %d залишилося"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1341
+#: ui/ui24/dip_page.gd:1342 ui/ui24/dip_page.gd:1341
 msgid " · их отрядов у нас: %d"
 msgstr " · їхніх загонів у нас: %d"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1344
+#: ui/ui24/dip_page.gd:1345 ui/ui24/dip_page.gd:1344
 msgid "есть · их отрядов у нас: %d"
 msgstr "є · їхніх загонів у нас: %d"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1347
+#: ui/ui24/dip_page.gd:1348 ui/ui24/dip_page.gd:1347
 msgid "Их %d отр. уйдут к ближайшей границе. "
 msgstr "Їхні %d заг. підуть до найближчого кордону. "
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1347
+#: ui/ui24/dip_page.gd:1348 ui/ui24/dip_page.gd:1347
 msgid "−%d к отношениям."
 msgstr "−%d до відносин."
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1349
+#: ui/ui24/dip_page.gd:1350 ui/ui24/dip_page.gd:1349
 msgid "Закрыть проход в обе стороны? −%d к отношениям."
 msgstr "Закрити прохід в обидва боки? −%d до відносин."
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1356
+#: ui/ui24/dip_page.gd:1357 ui/ui24/dip_page.gd:1356
 msgid "их отрядов у нас без права: %d"
 msgstr "їхніх загонів у нас без права: %d"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1384
+#: ui/ui24/dip_page.gd:1385 ui/ui24/dip_page.gd:1384
 msgid "ваши ПВО на их земле — без войны"
 msgstr "ваша ППО на їхній землі — без війни"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1388
+#: ui/ui24/dip_page.gd:1389 ui/ui24/dip_page.gd:1388
 msgid "только с союзником или альянсом"
 msgstr "лише із союзником або альянсом"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1399
+#: ui/ui24/dip_page.gd:1400 ui/ui24/dip_page.gd:1399
 msgid "закрыто вами · ваших ПВО там: %d%s"
 msgstr "закрито вами · вашої ППО там: %d%s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1399
+#: ui/ui24/dip_page.gd:1400 ui/ui24/dip_page.gd:1399
 msgid " · %d/мин"
 msgstr " · %d/хв"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1402
+#: ui/ui24/dip_page.gd:1403 ui/ui24/dip_page.gd:1402
 msgid "Снять небо? Их земля снова открыта ракетам и дронам врага. %s"
 msgstr "Зняти небо? Їхня земля знову відкрита ракетам і дронам ворога. %s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1402
+#: ui/ui24/dip_page.gd:1403 ui/ui24/dip_page.gd:1402
 msgid "Ваши ПВО (%d) не разбираются — едут на вашу землю."
 msgstr "Ваша ППО (%d) не демонтується — їде на вашу землю."
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1402
+#: ui/ui24/dip_page.gd:1403 ui/ui24/dip_page.gd:1402
 msgid "Ваших ПВО там нет."
 msgstr "Вашої ППО там немає."
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1410
+#: ui/ui24/dip_page.gd:1411 ui/ui24/dip_page.gd:1410
 msgid "предложено · ждём ответа %s"
 msgstr "запропоновано · чекаємо відповіді %s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1418
+#: ui/ui24/dip_page.gd:1419 ui/ui24/dip_page.gd:1418
 msgid "открыто · ваши ПВО прикроют их без войны"
 msgstr "відкрито · ваша ППО прикриє їх без війни"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1424
+#: ui/ui24/dip_page.gd:1425 ui/ui24/dip_page.gd:1424
 msgid "сворачивается и едет домой"
 msgstr "згортається і їде додому"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1424
+#: ui/ui24/dip_page.gd:1425 ui/ui24/dip_page.gd:1424
 msgid "колонна едет домой · уязвима в пути"
 msgstr "колона їде додому · вразлива в дорозі"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1427
+#: ui/ui24/dip_page.gd:1428 ui/ui24/dip_page.gd:1427
 msgid "ваше на их земле%s"
 msgstr "ваше на їхній землі%s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1427
+#: ui/ui24/dip_page.gd:1428 ui/ui24/dip_page.gd:1427
 msgid " · разрушено"
 msgstr " · зруйновано"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1434
+#: ui/ui24/dip_page.gd:1435 ui/ui24/dip_page.gd:1434
 msgid "закрыто ими · их ПВО у вас: %d"
 msgstr "закрито ними · їхньої ППО у вас: %d"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1437
+#: ui/ui24/dip_page.gd:1438 ui/ui24/dip_page.gd:1437
 msgid "Отказаться от их неба? Ваша земля останется без их прикрытия, их ПВО (%d) уедут к ним домой."
 msgstr "Відмовитися від їхнього неба? Ваша земля залишиться без їхнього прикриття, їхня ППО (%d) поїде до них додому."
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1440
+#: ui/ui24/dip_page.gd:1441 ui/ui24/dip_page.gd:1440
 msgid "просьба отправлена · ждём ответа %s"
 msgstr "прохання надіслано · чекаємо відповіді %s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1448
+#: ui/ui24/dip_page.gd:1449 ui/ui24/dip_page.gd:1448
 msgid "открыто"
 msgstr "відкрито"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1483
+#: ui/ui24/dip_page.gd:1484 ui/ui24/dip_page.gd:1483
 msgid "Небо закрыто: выберите ПВО и поставьте на земле страны %s"
 msgstr "Небо закрито: виберіть ППО й поставте на землі країни %s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1507
+#: ui/ui24/dip_page.gd:1508 ui/ui24/dip_page.gd:1507
 msgid "враг: %s%s · без войны"
 msgstr "ворог: %s%s · без війни"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1507
+#: ui/ui24/dip_page.gd:1508 ui/ui24/dip_page.gd:1507
 msgid "без вступления в войну"
 msgstr "без вступу у війну"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1514
+#: ui/ui24/dip_page.gd:1515 ui/ui24/dip_page.gd:1514
 msgid "%s · отрядов: %d%s"
 msgstr "%s · загонів: %d%s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1514
+#: ui/ui24/dip_page.gd:1515 ui/ui24/dip_page.gd:1514
 msgid "стоит по вашей просьбе"
 msgstr "стоїть на ваше прохання"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1514
+#: ui/ui24/dip_page.gd:1515 ui/ui24/dip_page.gd:1514
 msgid "защищает вас"
 msgstr "захищає вас"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1515 ui/ui24/my_state.gd:764
+#: ui/ui24/dip_page.gd:1516 ui/ui24/my_state.gd:764 ui/ui24/dip_page.gd:1515
 msgid " · ещё %s"
 msgstr " · ще %s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1517
+#: ui/ui24/dip_page.gd:1518 ui/ui24/dip_page.gd:1517
 msgid "Отозвать разрешение? Их отряды (%d) уйдут к границе; враг сможет тронуть вас без их ответа."
 msgstr "Відкликати дозвіл? Їхні загони (%d) підуть до кордону; ворог зможе зачепити вас без їхньої відповіді."
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1523
+#: ui/ui24/dip_page.gd:1524 ui/ui24/dip_page.gd:1523
 msgid " · право ещё %s"
 msgstr " · право ще %s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1527
+#: ui/ui24/dip_page.gd:1528 ui/ui24/dip_page.gd:1527
 msgid "на их земле · отрядов: %d · вы управляете%s"
 msgstr "на їхній землі · загонів: %d · ви керуєте%s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1527
+#: ui/ui24/dip_page.gd:1528 ui/ui24/dip_page.gd:1527
 msgid "идёт к ним · вы управляете ею%s"
 msgstr "іде до них · ви нею керуєте%s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1532
+#: ui/ui24/dip_page.gd:1533 ui/ui24/dip_page.gd:1532
 msgid "Растяжка: тронет её враг — вы вступите в войну."
 msgstr "Розтяжка: зачепить її ворог — ви вступите у війну."
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1532 ui/ui24/dip_page.gd:1572
+#: ui/ui24/dip_page.gd:1533 ui/ui24/dip_page.gd:1532 ui/ui24/dip_page.gd:1572
 msgid "Агрессор может объявить вам войну — бот решает сам, не всегда."
 msgstr "Агресор може оголосити вам війну — бот вирішує сам, не завжди."
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1534
+#: ui/ui24/dip_page.gd:1535 ui/ui24/dip_page.gd:1534
 msgid "ждут ваши войска"
 msgstr "чекають на ваші війська"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1534
+#: ui/ui24/dip_page.gd:1535 ui/ui24/dip_page.gd:1534
 msgid "армия ещё не отправлена"
 msgstr "армію ще не відправлено"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1557
+#: ui/ui24/dip_page.gd:1558 ui/ui24/dip_page.gd:1557
 msgid "нужно их согласие · %s"
 msgstr "потрібна їхня згода · %s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1590
+#: ui/ui24/dip_page.gd:1591 ui/ui24/dip_page.gd:1590
 msgid "армий: %d · солдат: %d"
 msgstr "армій: %d · солдатів: %d"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1590
+#: ui/ui24/dip_page.gd:1591 ui/ui24/dip_page.gd:1590
 msgid "нет солдат — сначала наберите"
 msgstr "немає солдатів — спершу наберіть"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1601
+#: ui/ui24/dip_page.gd:1602 ui/ui24/dip_page.gd:1601
 msgid "солдат: %d%s"
 msgstr "солдатів: %d%s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1601
+#: ui/ui24/dip_page.gd:1602 ui/ui24/dip_page.gd:1601
 msgid " · занята"
 msgstr " · зайнята"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1605
+#: ui/ui24/dip_page.gd:1606 ui/ui24/dip_page.gd:1605
 msgid "агрессор"
 msgstr "агресор"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1615
+#: ui/ui24/dip_page.gd:1616 ui/ui24/dip_page.gd:1615
 msgid "«%s» → %s: защита без войны, вы управляете армией там. Враг (%s) может объявить вам войну."
 msgstr "«%s» → %s: захист без війни, ви керуєте армією там. Ворог (%s) може оголосити вам війну."
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1616
+#: ui/ui24/dip_page.gd:1617 ui/ui24/dip_page.gd:1616
 msgid " Армия бьёт всех нападающих на их земле."
 msgstr " Армія б’є всіх, хто нападає на їхній землі."
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1619
+#: ui/ui24/dip_page.gd:1620 ui/ui24/dip_page.gd:1619
 msgid "Армия идёт на защиту: %s"
 msgstr "Армія йде на захист: %s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1641 ui/ui24/dip_api.gd:197 ui/ui24/dip_api.gd:238 ui/ui24/dip_api.gd:308
-#: ui/ui24/dip_page.gd:1870
+#: ui/ui24/dip_page.gd:1642 ui/ui24/dip_api.gd:197 ui/ui24/dip_api.gd:238 ui/ui24/dip_api.gd:308
+#: ui/ui24/dip_page.gd:1641 ui/ui24/dip_page.gd:1870
 msgid "скоро"
 msgstr "скоро"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1641
+#: ui/ui24/dip_page.gd:1642 ui/ui24/dip_page.gd:1641
 msgid "нет у вас"
 msgstr "у вас немає"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1641
+#: ui/ui24/dip_page.gd:1642 ui/ui24/dip_page.gd:1641
 msgid "%d · место %d"
 msgstr "%d · місце %d"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1705
+#: ui/ui24/dip_page.gd:1706 ui/ui24/dip_page.gd:1705
 msgid "перемирие: %s"
 msgstr "перемир’я: %s"
 
 #. kind: t
 #. short caps label: keep <= 18 chars (glossary short form)
-#: ui/ui24/dip_page.gd:1758
+#: ui/ui24/dip_page.gd:1759 ui/ui24/dip_page.gd:1758
 msgid "ВОЙНА СОЮЗНИКУ"
 msgstr "ВІЙНА СОЮЗНИКУ"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1813
+#: ui/ui24/dip_page.gd:1814 ui/ui24/dip_page.gd:1813
 msgid "ИХ ЖЕРТВА: %s"
 msgstr "ЇХНЯ ЖЕРТВА: %s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1822
+#: ui/ui24/dip_page.gd:1823 ui/ui24/dip_page.gd:1822
 msgid "отказали · повтор через %s"
 msgstr "відмовили · повтор за %s"
 
 #. kind: t
 #. short caps label: keep <= 13 chars (glossary short form)
-#: ui/ui24/dip_page.gd:1822
+#: ui/ui24/dip_page.gd:1823 ui/ui24/dip_page.gd:1822
 msgid "К САНКЦИЯМ"
 msgstr "ДО САНКЦІЙ"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1830
+#: ui/ui24/dip_page.gd:1831 ui/ui24/dip_page.gd:1830
 msgid "ваш партнёр · прогноз: %s"
 msgstr "ваш партнер · прогноз: %s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1846
+#: ui/ui24/dip_page.gd:1847 ui/ui24/dip_page.gd:1846
 msgid "Уже давят: %s"
 msgstr "Уже тиснуть: %s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1893
+#: ui/ui24/dip_page.gd:1894 ui/ui24/dip_page.gd:1893
 msgid "дефицит"
 msgstr "дефіцит"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1895
+#: ui/ui24/dip_page.gd:1896 ui/ui24/dip_page.gd:1895
 msgid "снять"
 msgstr "зняти"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:1895
+#: ui/ui24/dip_page.gd:1896 ui/ui24/dip_page.gd:1895
 msgid "ввести"
 msgstr "ввести"
 
 #. kind: t
 #. short caps label: keep <= 11 chars (glossary short form)
-#: ui/ui24/dip_page.gd:1944
+#: ui/ui24/dip_page.gd:1945 ui/ui24/dip_page.gd:1944
 msgid "ПРИМЕНИТЬ"
 msgstr "ЗАСТОСУВАТИ"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2005
+#: ui/ui24/dip_page.gd:2006 ui/ui24/dip_page.gd:2005
 msgid "Санкции: первый материал −%d к отношениям, следующие −%d; эмбарго −20. «Дефицит» бьёт сильнее."
 msgstr "Санкції: перший матеріал −%d до відносин, наступні −%d; ембарго −20. «Дефіцит» б’є сильніше."
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2028 ui/ui24/dip_page.gd:2205
+#: ui/ui24/dip_page.gd:2029 ui/ui24/dip_page.gd:2206 ui/ui24/dip_page.gd:2028
+#: ui/ui24/dip_page.gd:2205
 msgid "ждёт ответа · %s"
 msgstr "чекає відповіді · %s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2032
+#: ui/ui24/dip_page.gd:2033 ui/ui24/dip_page.gd:2032
 msgid "предлагают вам · ответ до %s"
 msgstr "пропонують вам · відповідь до %s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2047
+#: ui/ui24/dip_page.gd:2048 ui/ui24/dip_page.gd:2047
 msgid "%d/%d · далее через %s"
 msgstr "%d/%d · далі за %s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2052
+#: ui/ui24/dip_page.gd:2053 ui/ui24/dip_page.gd:2052
 msgid "%s · ждём согласия на разрыв"
 msgstr "%s · чекаємо згоди на розрив"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2064
+#: ui/ui24/dip_page.gd:2065 ui/ui24/dip_page.gd:2064
 msgid "Попросить их согласия — бесплатно (ответ до 1:00). Разорвать сразу — неустойка %d и отношения хуже."
 msgstr "Попросити їхньої згоди — безкоштовно (відповідь до 1:00). Розірвати одразу — неустойка %d і відносини гірші."
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2077
+#: ui/ui24/dip_page.gd:2078 ui/ui24/dip_page.gd:2077
 msgid "РАЗОРВАТЬ · %d"
 msgstr "РОЗІРВАТИ · %d"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2090
+#: ui/ui24/dip_page.gd:2091 ui/ui24/dip_page.gd:2090
 msgid "ещё %d — во «Входящих»"
 msgstr "ще %d — у «Вхідних»"
 
 #. kind: t
 #. short caps label: keep <= 11 chars (glossary short form)
-#: ui/ui24/dip_page.gd:2098
+#: ui/ui24/dip_page.gd:2099 ui/ui24/dip_page.gd:2098
 msgid "ПРОДАЮ ИМ"
 msgstr "ПРОДАЮ ЇМ"
 
 #. kind: t
 #. short caps label: keep <= 16 chars (glossary short form)
-#: ui/ui24/dip_page.gd:2098
+#: ui/ui24/dip_page.gd:2099 ui/ui24/dip_page.gd:2098
 msgid "ПОКУПАЮ У НИХ"
 msgstr "КУПУЮ В НИХ"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2127
+#: ui/ui24/dip_page.gd:2128 ui/ui24/dip_page.gd:2127
 msgid "%d/мин"
 msgstr "%d/хв"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2127
+#: ui/ui24/dip_page.gd:2128 ui/ui24/dip_page.gd:2127
 msgid "по %d"
 msgstr "по %d"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2127
+#: ui/ui24/dip_page.gd:2128 ui/ui24/dip_page.gd:2127
 msgid "рынок %d"
 msgstr "ринок %d"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2127 ui/ui24/inbox_sheet.gd:233 ui/ui24/my_state.gd:1341
+#: ui/ui24/dip_page.gd:2128 ui/ui24/inbox_sheet.gd:233 ui/ui24/my_state.gd:1341
+#: ui/ui24/dip_page.gd:2127
 msgid "%d мин"
 msgstr "%d хв"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2160
+#: ui/ui24/dip_page.gd:2161 ui/ui24/dip_page.gd:2160
 msgid "у вас %d"
 msgstr "у вас %d"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2160
+#: ui/ui24/dip_page.gd:2161 ui/ui24/dip_page.gd:2160
 msgid "место у вас %d"
 msgstr "місце у вас %d"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2218
+#: ui/ui24/dip_page.gd:2219 ui/ui24/dip_page.gd:2218
 msgid "игрок ответит сам, до 2:00"
 msgstr "гравець відповість сам, до 2:00"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2218
+#: ui/ui24/dip_page.gd:2219 ui/ui24/dip_page.gd:2218
 msgid "бот отвечает сразу"
 msgstr "бот відповідає одразу"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2287
+#: ui/ui24/dip_page.gd:2288 ui/ui24/dip_page.gd:2287
 msgid "Если согласятся — %s запомнит, кто подтолкнул к войне."
 msgstr "Якщо погодяться — %s запам’ятає, хто підштовхнув до війни."
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2289
+#: ui/ui24/dip_page.gd:2290 ui/ui24/dip_page.gd:2289
 msgid "Если согласятся — вступят в вашу войну (враг: %s)."
 msgstr "Якщо погодяться — вступлять у вашу війну (ворог: %s)."
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2291
+#: ui/ui24/dip_page.gd:2292 ui/ui24/dip_page.gd:2291
 msgid "Их ПВО прикроют страну %s; её враги могут сбивать эти ПВО — это не война."
 msgstr "Їхня ППО прикриє країну %s; її вороги можуть збивати цю ППО — це не війна."
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2297
+#: ui/ui24/dip_page.gd:2298 ui/ui24/dip_page.gd:2297
 msgid "Их армия встанет у вас на %d мин; тронет её враг — они вступят в войну."
 msgstr "Їхня армія стане у вас на %d хв; зачепить її ворог — вони вступлять у війну."
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2301
+#: ui/ui24/dip_page.gd:2302 ui/ui24/dip_page.gd:2301
 msgid "После «да» выберите армию (ВОЕННОЕ). Она бьёт врага только на их земле. Враг (%s) может объявить вам войну."
 msgstr "Після «так» виберіть армію (ВІЙСЬКОВЕ). Вона б’є ворога лише на їхній землі. Ворог (%s) може оголосити вам війну."
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2326
+#: ui/ui24/dip_page.gd:2327 ui/ui24/dip_page.gd:2326
 msgid "игрок ответит сам"
 msgstr "гравець відповість сам"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2326
+#: ui/ui24/dip_page.gd:2327 ui/ui24/dip_page.gd:2326
 msgid "50 на 50"
 msgstr "50 на 50"
 
 #. kind: t
 #. short caps label: keep <= 9 chars (glossary short form)
-#: ui/ui24/dip_page.gd:2343
+#: ui/ui24/dip_page.gd:2344 ui/ui24/dip_page.gd:2343
 msgid "НАД КЕМ"
 msgstr "НАД КИМ"
 
 #. kind: t
 #. short caps label: keep <= 9 chars (glossary short form)
-#: ui/ui24/dip_page.gd:2343
+#: ui/ui24/dip_page.gd:2344 ui/ui24/dip_page.gd:2343
 msgid "ОТ КОГО"
 msgstr "ВІД КОГО"
 
 #. kind: t
 #. short caps label: keep <= 14 chars (glossary short form)
-#: ui/ui24/dip_page.gd:2343
+#: ui/ui24/dip_page.gd:2344 ui/ui24/dip_page.gd:2343
 msgid "ПРОТИВ КОГО"
 msgstr "ПРОТИ КОГО"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2361 ui/ui24/dip_page.gd:2652
+#: ui/ui24/dip_page.gd:2362 ui/ui24/dip_page.gd:2653 ui/ui24/dip_page.gd:2361
+#: ui/ui24/dip_page.gd:2652
 msgid "Не больше 3 просьб за 2 мин — следующая через %s."
 msgstr "Не більше 3 прохань за 2 хв — наступне за %s."
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2369
+#: ui/ui24/dip_page.gd:2370 ui/ui24/dip_page.gd:2369
 msgid "%s Серые нельзя: причина под именем. Удержание — показать на карте."
 msgstr "%s Сірі не можна: причина під назвою. Утримання — показати на карті."
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2390
+#: ui/ui24/dip_page.gd:2391 ui/ui24/dip_page.gd:2390
 msgid "нельзя: они ни с кем не воюют"
 msgstr "не можна: вони ні з ким не воюють"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2390
+#: ui/ui24/dip_page.gd:2391 ui/ui24/dip_page.gd:2390
 msgid "нельзя: защищают только жертву войны"
 msgstr "не можна: захищають лише жертву війни"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2390
+#: ui/ui24/dip_page.gd:2391 ui/ui24/dip_page.gd:2390
 msgid "нельзя: войны против ваших партнёров нет"
 msgstr "не можна: війни проти ваших партнерів немає"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2393
+#: ui/ui24/dip_page.gd:2394 ui/ui24/dip_page.gd:2393
 msgid "согласие не нужно — ВОЕННОЕ → АРМИЯ НА ЗАЩИТУ"
 msgstr "згода не потрібна — ВІЙСЬКОВЕ → АРМІЯ НА ЗАХИСТ"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2393
+#: ui/ui24/dip_page.gd:2394 ui/ui24/dip_page.gd:2393
 msgid "согласие уже есть — ВОЕННОЕ → АРМИЯ НА ЗАЩИТУ"
 msgstr "згода вже є — ВІЙСЬКОВЕ → АРМІЯ НА ЗАХИСТ"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2498
+#: ui/ui24/dip_page.gd:2499 ui/ui24/dip_page.gd:2498
 msgid " · игрок"
 msgstr " · гравець"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2591
+#: ui/ui24/dip_page.gd:2592 ui/ui24/dip_page.gd:2591
 msgid "%s · отпустите — назад"
 msgstr "%s · відпустіть — назад"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2621
+#: ui/ui24/dip_page.gd:2622 ui/ui24/dip_page.gd:2621
 msgid "просим: %s (%s, %s)"
 msgstr "просимо: %s (%s, %s)"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2642
+#: ui/ui24/dip_page.gd:2643 ui/ui24/dip_page.gd:2642
 msgid "%s — ваш соперник: не станет помогать вам"
 msgstr "%s — ваш суперник: не допомагатиме вам"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2647
+#: ui/ui24/dip_page.gd:2648 ui/ui24/dip_page.gd:2647
 msgid "Игрок ответит во «Входящих», до 2:00."
 msgstr "Гравець відповість у «Вхідних», до 2:00."
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2647
+#: ui/ui24/dip_page.gd:2648 ui/ui24/dip_page.gd:2647
 msgid "Бот отвечает сразу. Отказ отношения почти не портит; повтор — позже."
 msgstr "Бот відповідає одразу. Відмова відносини майже не псує; повтор — пізніше."
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2658
+#: ui/ui24/dip_page.gd:2659 ui/ui24/dip_page.gd:2658
 msgid "ОТПРАВИТЬ ПРОСЬБУ"
 msgstr "НАДІСЛАТИ ПРОХАННЯ"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2739
+#: ui/ui24/dip_page.gd:2740 ui/ui24/dip_page.gd:2739
 msgid "Да: %s"
 msgstr "Так: %s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2741
+#: ui/ui24/dip_page.gd:2742 ui/ui24/dip_page.gd:2741
 msgid "Нет: %s"
 msgstr "Ні: %s"
 
 #. kind: t
-#: ui/ui24/dip_page.gd:2794
+#: ui/ui24/dip_page.gd:2795 ui/ui24/dip_page.gd:2794
 msgid "ЧАТ · %s"
 msgstr "ЧАТ · %s"
 
@@ -20173,28 +20284,31 @@ msgstr "відповідь до "
 
 #. kind: tag
 #. short caps label: keep <= 10 chars (glossary short form)
-#: ui/ui24/dip_page.gd:1535 ui/ui24/dip_page.gd:1542
+#: ui/ui24/dip_page.gd:1536 ui/ui24/dip_page.gd:1543 ui/ui24/dip_page.gd:1535
+#: ui/ui24/dip_page.gd:1542
 msgid "СВЕРНУТЬ"
 msgstr "ЗГОРНУТИ"
 
 #. kind: tag
 #. short caps label: keep <= 10 chars (glossary short form)
-#: ui/ui24/dip_page.gd:1535 ui/ui24/dip_page.gd:1542
+#: ui/ui24/dip_page.gd:1536 ui/ui24/dip_page.gd:1543 ui/ui24/dip_page.gd:1535
+#: ui/ui24/dip_page.gd:1542
 msgid "ВЫБРАТЬ…"
 msgstr "ВИБРАТИ…"
 
 #. kind: tag
-#: ui/ui24/dip_page.gd:1707
+#: ui/ui24/dip_page.gd:1708 ui/ui24/dip_page.gd:1707
 msgid "перемирие: "
 msgstr "перемир’я: "
 
 #. kind: tag
-#: ui/ui24/dip_page.gd:1831 ui/ui24/dip_page.gd:2658
+#: ui/ui24/dip_page.gd:1832 ui/ui24/dip_page.gd:1831 ui/ui24/dip_page.gd:2658
 msgid "ПОТРЕБОВАТЬ МИРА"
 msgstr "ВИМАГАТИ МИРУ"
 
 #. kind: tag
-#: ui/ui24/dip_page.gd:2362 ui/ui24/dip_page.gd:2654
+#: ui/ui24/dip_page.gd:2363 ui/ui24/dip_page.gd:2655 ui/ui24/dip_page.gd:2362
+#: ui/ui24/dip_page.gd:2654
 msgid "Не больше 3 просьб за 2 мин — следующая через "
 msgstr "Не більше 3 прохань за 2 хв — наступне за "
 
@@ -20647,7 +20761,7 @@ msgstr "%s (%s тому)"
 #. kind: t
 #: ui/ui24/econ_hub.gd:1411
 msgid "Тап по строке — кто делает, кто тратит, рынок."
-msgstr "Тап по рядку — хто робить, хто витрачає, ринок."
+msgstr "Торкніться рядка — хто робить, хто витрачає, ринок."
 
 #. kind: t
 #. short caps label: keep <= 13 chars (glossary short form)
@@ -21347,7 +21461,7 @@ msgstr "автовогонь 260 м"
 #. kind: t
 #: ui/ui24/navy_yard.gd:771
 msgid "тап — выбрать модуль"
-msgstr "тап — вибрати модуль"
+msgstr "торкніться, щоб вибрати модуль"
 
 #. kind: t
 #: ui/ui24/navy_yard.gd:789
@@ -21401,23 +21515,23 @@ msgstr "чекає"
 
 #. kind: t
 #. short caps label: keep <= 16 chars (glossary short form)
-#: ui/ui24/notif_lane.gd:1149 ui/ui24/my_state.gd:713
+#: ui/ui24/notif_lane.gd:1199 ui/ui24/my_state.gd:713 ui/ui24/notif_lane.gd:1149
 msgid "СТАТУС СТРАНЫ"
 msgstr "СТАТУС КРАЇНИ"
 
 #. kind: t
 #. short caps label: keep <= 16 chars (glossary short form)
-#: ui/ui24/notif_lane.gd:1149
+#: ui/ui24/notif_lane.gd:1199 ui/ui24/notif_lane.gd:1149
 msgid "МИРОВАЯ АРЕНА"
 msgstr "СВІТОВА АРЕНА"
 
 #. kind: t
-#: ui/ui24/notif_lane.gd:1499 ui/ui24/notif_lane.gd:1491
+#: ui/ui24/notif_lane.gd:1549 ui/ui24/notif_lane.gd:1491
 msgid "Удар"
 msgstr "Удар"
 
 #. kind: t
-#: ui/ui24/notif_lane.gd:1500 ui/ui24/notif_lane.gd:1492
+#: ui/ui24/notif_lane.gd:1550 ui/ui24/notif_lane.gd:1492
 msgid "мимо"
 msgstr "повз"
 
@@ -21631,12 +21745,12 @@ msgstr "СПОВІЛЬНЕНО: %s"
 #. kind: t
 #: ui/ui24/status_watch.gd:86 ui/ui24/status_watch.gd:159
 msgid "Кризис · тап — паспорт страны"
-msgstr "Криза · тап — паспорт країни"
+msgstr "Криза · торкніться — паспорт країни"
 
 #. kind: t
 #: ui/ui24/status_watch.gd:86
 msgid "Зависимость · тап — паспорт страны"
-msgstr "Залежність · тап — паспорт країни"
+msgstr "Залежність · торкніться — паспорт країни"
 
 #. kind: t
 #: ui/ui24/status_watch.gd:159 ui/ui24/status_watch.gd:161
@@ -22076,7 +22190,7 @@ msgstr "угода під забороною"
 #. kind: t
 #: ui/ui24/trade_sheet.gd:1334
 msgid "тап — подробно"
-msgstr "тап — докладно"
+msgstr "торкніться — докладно"
 
 #. kind: t
 #: ui/ui24/trade_sheet.gd:1336
@@ -22092,7 +22206,7 @@ msgstr "не можна"
 #. kind: t
 #: ui/ui24/trade_sheet.gd:1337
 msgid "тап — почему"
-msgstr "тап — чому"
+msgstr "торкніться — чому"
 
 #. kind: t
 #: ui/ui24/trade_sheet.gd:1391 ui/ui24/trade_sheet.gd:1760
@@ -22522,7 +22636,7 @@ msgstr "СТРАТЕГІЧНИЙ МАСШТАБ"
 #. kind: t
 #: world/strat_layer.gd:301
 msgid "двойной тап — к месту"
-msgstr "подвійний тап — до місця"
+msgstr "подвійний дотик — до місця"
 
 #. kind: t
 #. short caps label: keep <= 4 chars (glossary short form)
@@ -22564,6 +22678,11 @@ msgstr "чужі"
 #: world/trade_layer.gd:121
 msgid "БЛОКАДА · %s"
 msgstr "БЛОКАДА · %s"
+
+#. kind: t
+#: core/name_gen.gd:149
+msgid "Минимум %d буквы"
+msgstr "Мінімум %d літери"
 
 #. kind: mk
 #: core/sfx.gd:1134
@@ -23090,12 +23209,12 @@ msgstr "Немає вільної піхоти поруч (казарми)"
 #. cat=static zone=ui uses=1
 #: game/main.gd:630
 msgid "Тап по карте добавит точку маршрута"
-msgstr "Тап по карті додасть точку маршруту"
+msgstr "Дотик до карти додасть точку маршруту"
 
 #. cat=static zone=ui uses=1
 #: game/main.gd:630
 msgid "Тап по карте задаёт новую цель"
-msgstr "Тап по карті задає нову ціль"
+msgstr "Дотик до карти задає нову ціль"
 
 #. cat=static zone=ui uses=1
 #: game/main.gd:783
@@ -24286,6 +24405,31 @@ msgstr "Режим оборони: піхота сама займає окопи
 #: ui/loading.gd:23
 msgid "Выбранный объект виден слева. Красный крестик — отменить выбор."
 msgstr "Вибраний об’єкт видно ліворуч. Червоний хрестик — скасувати вибір."
+
+#. cat=static zone=ui uses=1
+#: ui/menus.gd:12
+msgid "Быстрее: расчёт границ и анклавов на 29% быстрее — меньше нагрузка на больших картах"
+msgstr "Швидше: розрахунок кордонів і анклавів на 29% швидший — менше навантаження на великих картах"
+
+#. cat=static zone=ui uses=1
+#: ui/menus.gd:13
+msgid "ОНЛАЙН: выигранный матч засчитывается; кнопки после победы — двойным тапом; «НЕТ СВЯЗИ С ХОСТОМ» в чате"
+msgstr "ОНЛАЙН: виграний матч зараховується; кнопки після перемоги — подвійним дотиком; «НЕМАЄ ЗВ’ЯЗКУ З ХОСТОМ» у чаті"
+
+#. cat=static zone=ui uses=1
+#: ui/menus.gd:14
+msgid "Внутри: большой порядок в коде (армия, экономика, мир, главный экран разделены на части, лишний код удалён) — игра не изменилась"
+msgstr "Усередині: великий лад у коді (армія, економіка, світ, головний екран розділено на частини, зайвий код видалено) — гра не змінилася"
+
+#. cat=static zone=ui uses=1
+#: ui/menus.gd:15
+msgid "Для тестеров: скрытый замер производительности (режим разработчика в настройках)"
+msgstr "Для тестерів: прихований замір продуктивності (режим розробника в налаштуваннях)"
+
+#. cat=static zone=ui uses=1
+#: ui/menus.gd:16
+msgid "Всё из 0.31.6: онлайн-исправления, защита от вылетов при касаниях, обучение (22 ролика), новый баланс армии и ПВО"
+msgstr "Усе з 0.31.6: онлайн-виправлення, захист від вильотів при дотиках, навчання (22 ролики), новий баланс армії і ППО"
 
 #. cat=formatted zone=ui uses=1
 #: ui/menus.gd:152
@@ -26316,7 +26460,7 @@ msgstr "Наземна армія"
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_base.gd:191
 msgid "Политика, торговля, экономика"
-msgstr "Політика, торгівля, економіка"
+msgstr "Дипломатія, торгівля, економіка"
 
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_base.gd:191
@@ -26376,7 +26520,7 @@ msgstr "Швидкість часу"
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_base.gd:212
 msgid "Тап — выбор скорости: x½, x1, x2, x5, x10, x20"
-msgstr "Тап — вибір швидкості: x½, x1, x2, x5, x10, x20"
+msgstr "Торкніться — вибір швидкості: x½, x1, x2, x5, x10, x20"
 
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_base.gd:213
@@ -26437,7 +26581,7 @@ msgstr "УДАР КР"
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_base.gd:218
 msgid "Все корабли с УВП: тапы по целям, ещё тап = +1, ПУСК. Удар по стране без войны начнёт войну"
-msgstr "Усі кораблі з УВП: тапи по цілях, ще тап = +1, ПУСК. Удар по країні без війни почне війну"
+msgstr "Усі кораблі з УВП: торкайтеся цілей, ще дотик = +1, ПУСК. Удар по країні без війни почне війну"
 
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_base.gd:220
@@ -26477,7 +26621,7 @@ msgstr "Віддалити карту"
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_base.gd:224
 msgid "Щипок двумя пальцами или двойной тап и вести вверх"
-msgstr "Щипок двома пальцями або подвійний тап і вести вгору"
+msgstr "Щипок двома пальцями або подвійний дотик і вести вгору"
 
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_base.gd:225
@@ -26492,7 +26636,7 @@ msgstr "Наблизити карту"
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_base.gd:225
 msgid "Щипок двумя пальцами или двойной тап и вести вниз"
-msgstr "Щипок двома пальцями або подвійний тап і вести вниз"
+msgstr "Щипок двома пальцями або подвійний дотик і вести вниз"
 
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_base.gd:227
@@ -26522,7 +26666,7 @@ msgstr "Режими карти"
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_base.gd:228
 msgid "Обычная, политика, моя земля, руды, логистика, военная, ПВО"
-msgstr "Звичайна, політика, моя земля, руди, логістика, військова, ППО"
+msgstr "Звичайна, дипломатія, моя земля, руди, логістика, військова, ППО"
 
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_base.gd:229
@@ -26637,7 +26781,7 @@ msgstr "ПУСК БПЛА"
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_base.gd:239
 msgid "Тап по цели на карте, затем ПУСК"
-msgstr "Тап по цілі на карті, потім ПУСК"
+msgstr "Торкніться цілі на карті, потім ПУСК"
 
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_base.gd:240
@@ -26647,7 +26791,7 @@ msgstr "Маршрут дронів"
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_base.gd:240
 msgid "Точки в обход ПВО: тап по карте"
-msgstr "Точки в обхід ППО: тап по карті"
+msgstr "Точки в обхід ППО: торкніться карти"
 
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_base.gd:241
@@ -26677,7 +26821,7 @@ msgstr "Наступ"
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_base.gd:243
 msgid "Тап по вражескому городу — армия идёт на штурм"
-msgstr "Тап по ворожому місту — армія йде на штурм"
+msgstr "Торкніться ворожого міста — армія йде на штурм"
 
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_base.gd:244
@@ -26777,7 +26921,7 @@ msgstr "Що збиває кожен вид ППО — для всієї кра�
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_base.gd:251
 msgid "ДИПЛОМАТ."
-msgstr "ДИПЛОМАТ."
+msgstr "ДИПЛОМАТІЯ"
 
 #. cat=static zone=ui uses=2
 #: ui/hud/hud_base.gd:251 ui/hud/hud_dip.gd:78
@@ -27167,12 +27311,12 @@ msgstr "Селище"
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_cards.gd:829
 msgid "ЗАНЯТЬ ДОМ"
-msgstr "ЗАЙНЯТИ ДІМ"
+msgstr "ГАРНІЗОН"
 
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_cards.gd:831
 msgid "ЗАНЯТЬ ДОМ — тапните дом или высотку (у себя, у врага в войне, у союзника или с правом прохода): до 4 бойцов (стрелки, ПТУР, штурмовики) займут его; урон по ним −60…70 %"
-msgstr "ЗАЙНЯТИ ДІМ — торкніться будинку або висотки (у себе, у ворога у війні, у союзника або з правом проходу): до 4 бійців (стрільці, ПТРК, штурмовики) займуть його; шкода по них −60…70 %"
+msgstr "ГАРНІЗОН — торкніться будинку або висотки (у себе, у ворога у війні, у союзника або з правом проходу): до 4 бійців (стрільці, ПТРК, штурмовики) займуть його; шкода по них −60…70 %"
 
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_dip.gd:106
@@ -27384,7 +27528,7 @@ msgstr "ПЛАН"
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_lane.gd:87
 msgid "Армии внизу · ещё тап по АРМИЯ — постройки"
-msgstr "Армії внизу · ще тап по АРМІЯ — будівлі"
+msgstr "Армії внизу · торкніться АРМІЯ ще раз — будівлі"
 
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_lane.gd:312
@@ -27434,7 +27578,7 @@ msgstr "ДРОНІВ"
 #. cat=static zone=ui uses=2
 #: ui/hud/hud_stack.gd:129 ui/ui24/res_sheet.gd:153
 msgid "ЗАЛЕЖИ"
-msgstr "ПОКЛАДИ"
+msgstr "РУДИ"
 
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_stack.gd:397
@@ -27454,7 +27598,7 @@ msgstr "ПАНЕЛЬ ЗГОРНУТО"
 #. cat=static zone=ui uses=1
 #: ui/hud/hud_stack.gd:783
 msgid "Тап по вкладке — снова открыть"
-msgstr "Тап по вкладці — знову відкрити"
+msgstr "Торкніться вкладки, щоб знову відкрити"
 
 #. cat=static zone=ui uses=1
 #: ui/ui24/ally_sheet.gd:94
@@ -27671,7 +27815,7 @@ msgstr "Стрілка замінить план"
 #. cat=static zone=ui uses=1
 #: ui/ui24/army_dock.gd:1895
 msgid "Тап — фронт: у границы по ней, внутри страны — через точку к врагу. Палец — свой фронт. Карта — двумя пальцами"
-msgstr "Тап — фронт: біля кордону вздовж нього, усередині країни — через точку до ворога. Палець — свій фронт. Карта — двома пальцями"
+msgstr "Торкніться — фронт: біля кордону вздовж нього, усередині країни — через точку до ворога. Палець — свій фронт. Карта — двома пальцями"
 
 #. cat=static zone=ui uses=1
 #: ui/ui24/army_dock.gd:2005
@@ -27955,7 +28099,7 @@ msgstr "+ АРМІЯ"
 #. cat=static zone=ui uses=1
 #: ui/ui24/army_ux.gd:1228
 msgid "добавить армии тапом по карте"
-msgstr "додати армії тапом по карті"
+msgstr "додати армії дотиком до карти"
 
 #. cat=static zone=ui uses=1
 #: ui/ui24/army_ux.gd:1240
@@ -28175,7 +28319,7 @@ msgstr "на складі"
 #. cat=static zone=ui uses=1
 #: ui/ui24/cmd_sheet.gd:146
 msgid "Штаб"
-msgstr "Штаб"
+msgstr "ШТАБ"
 
 #. cat=static zone=ui uses=1
 #: ui/ui24/cmd_sheet.gd:255
@@ -28195,7 +28339,7 @@ msgstr "ВІЙНА:"
 #. cat=static zone=ui uses=1
 #: ui/ui24/cmd_sheet.gd:459
 msgid "АРМИИ ПО ГРУППАМ · тап — открыть в «Армиях»"
-msgstr "АРМІЇ ЗА ГРУПАМИ · тап — відкрити в «Арміях»"
+msgstr "АРМІЇ ЗА ГРУПАМИ · торкніться, щоб відкрити в «Арміях»"
 
 #. cat=static zone=ui uses=1
 #: ui/ui24/cmd_sheet.gd:604
@@ -29251,7 +29395,7 @@ msgstr "ПРОХІД?"
 #. cat=static zone=ui uses=1
 #: ui/ui24/dip_sheet.gd:623
 msgid "ЗАКАЗ"
-msgstr "ЗАМОВЛ."
+msgstr "ЗАКУПІВЛЯ"
 
 #. cat=static zone=ui uses=2
 #: ui/ui24/dip_sheet.gd:712 ui/ui24/inbox_sheet.gd:376
@@ -29512,7 +29656,7 @@ msgstr "Енергія"
 #. cat=static zone=ui uses=2
 #: ui/ui24/econ_hub.gd:29 ui/ui24/econ_hub.gd:40
 msgid "Драгмет."
-msgstr "Дорогоц."
+msgstr "Дорогоцінні"
 
 #. cat=formatted zone=ui uses=6
 #: ui/ui24/econ_hub.gd:314 ui/ui24/econ_hub.gd:736 ui/ui24/res_sheet.gd:247 ui/ui24/res_sheet.gd:256
@@ -29624,7 +29768,7 @@ msgstr "Ціна не вища"
 #. cat=static zone=ui uses=1
 #: ui/ui24/help_tips.gd:20
 msgid "Армии воюют сами, по своему РЕЖИМУ. Соберите их в группу (АРМИЯ) и нарисуйте линию фронта — так граница держится без лишних тапов."
-msgstr "Армії воюють самі, за своїм РЕЖИМОМ. Зберіть їх у групу (АРМІЯ) і намалюйте лінію фронту — так кордон тримається без зайвих тапів."
+msgstr "Армії воюють самі, за своїм РЕЖИМОМ. Зберіть їх у групу (АРМІЯ) і намалюйте лінію фронту — так кордон тримається без зайвих дотиків."
 
 #. cat=static zone=ui uses=1
 #: ui/ui24/help_tips.gd:21
@@ -29649,7 +29793,7 @@ msgstr "ОТРК, дронопорти й літаки б’ють по точк
 #. cat=static zone=ui uses=1
 #: ui/ui24/help_tips.gd:24
 msgid "Тап по морбазе — верфь: корпус и модули, цена и время внизу. Готовый корабль спускают на воду рядом."
-msgstr "Тап по морбазі — верф: корпус і модулі, ціна й час унизу. Готовий корабель спускають на воду поруч."
+msgstr "Торкніться морбази — верф: корпус і модулі, ціна й час унизу. Готовий корабель спускають на воду поруч."
 
 #. cat=static zone=ui uses=1
 #: ui/ui24/help_tips.gd:25
@@ -29679,7 +29823,7 @@ msgstr "АЕС дає +40 енергії й спалює 1 уран за 90 с. 
 #. cat=static zone=ui uses=1
 #: ui/ui24/help_tips.gd:33
 msgid "Тап по стране — договоры, торговля, ультиматум. Полоска — мнение о вас: ниже нуля — ждите претензий. Сверху — запросы, ждущие ответа."
-msgstr "Тап по країні — договори, торгівля, ультиматум. Смужка — думка про вас: нижче нуля — чекайте претензій. Угорі — запити, що чекають відповіді."
+msgstr "Торкніться країни — договори, торгівля, ультиматум. Смужка — думка про вас: нижче нуля — чекайте претензій. Угорі — запити, що чекають відповіді."
 
 #. cat=static zone=ui uses=1
 #: ui/ui24/help_tips.gd:34
@@ -29689,7 +29833,7 @@ msgstr "Позначте армії й дайте наказ: РЕЖИМ, ШВИ
 #. cat=static zone=ui uses=1
 #: ui/ui24/help_tips.gd:35
 msgid "Сводка войн и угроз, автоматика для всех армий и приказы командования. Тап по группе — она в списке армий."
-msgstr "Зведення воєн і загроз, автоматика для всіх армій і накази командування. Тап по групі — вона в списку армій."
+msgstr "Зведення воєн і загроз, автоматика для всіх армій і накази командування. Торкніться групи — вона в списку армій."
 
 #. cat=static zone=ui uses=1
 #: ui/ui24/help_tips.gd:36
@@ -29704,7 +29848,7 @@ msgstr "ВЕРФ"
 #. cat=static zone=ui uses=1
 #: ui/ui24/help_tips.gd:37
 msgid "Корпус + модули = корабль; цена и время внизу. Слева все ваши верфи: тап — переход к ней."
-msgstr "Корпус + модулі = корабель; ціна й час унизу. Ліворуч усі ваші верфі: тап — перехід до неї."
+msgstr "Корпус + модулі = корабель; ціна й час унизу. Ліворуч усі ваші верфі: торкніться, щоб перейти до неї."
 
 #. cat=static zone=ui uses=1
 #: ui/ui24/help_tips.gd:38
@@ -29723,7 +29867,7 @@ msgid ""
 "Покупка оплачивается сразу, продажа — когда груз доедет. Серая кнопка или цена с замком — тапните, скажет почему. Удерживайте КУПИТЬ — сделка повторяется.\n"
 "В ПУТИ — что и когда приедет. ДОГОВОРЫ — излишки уходят соседям сами."
 msgstr ""
-"Тап по ресурсу — унизу кількість і КУПИТИ або ПРОДАТИ. Ціна в рядку — уже для цієї угоди: у сусіда дешевше, через порт імпорт ×1,6, експорт ×0,7.\n"
+"Торкніться ресурсу — унизу кількість і КУПИТИ або ПРОДАТИ. Ціна в рядку — уже для цієї угоди: у сусіда дешевше, через порт імпорт ×1,6, експорт ×0,7.\n"
 "Купівля оплачується одразу, продаж — коли вантаж доїде. Сіра кнопка або ціна із замком — торкніться, підкаже чому. Утримуйте КУПИТИ — угода повторюється.\n"
 "У ДОРОЗІ — що й коли приїде. ДОГОВОРИ — надлишки йдуть сусідам самі."
 
@@ -29760,7 +29904,7 @@ msgstr "ЯКА АРМІЯ ЗАЙМЕ:"
 #. cat=static zone=ui uses=1
 #: ui/ui24/hold_tip.gd:21
 msgid "Тап или линия пальцем по карте — выбранные армии пойдут туда"
-msgstr "Тап або лінія пальцем по карті — вибрані армії підуть туди"
+msgstr "Торкніться або проведіть пальцем по карті — вибрані армії підуть туди"
 
 #. cat=static zone=ui uses=1
 #: ui/ui24/hold_tip.gd:22
@@ -29940,7 +30084,7 @@ msgstr "Наступний рівень об’єкта: більший випу
 #. cat=static zone=ui uses=1
 #: ui/ui24/hold_tip.gd:57
 msgid "Тап или линия пальцем по карте — армия идёт туда и воюет сама"
-msgstr "Тап або лінія пальцем по карті — армія йде туди й воює сама"
+msgstr "Торкніться або проведіть пальцем по карті — армія йде туди й воює сама"
 
 #. cat=static zone=ui uses=1
 #: ui/ui24/hold_tip.gd:58
@@ -30215,7 +30359,7 @@ msgstr "Казарми перестають набирати бійців (ек�
 #. cat=static zone=ui uses=1
 #: ui/ui24/hold_tip.gd:103
 msgid "Тап по морю или линия пальцем — корабли идут туда"
-msgstr "Тап по морю або лінія пальцем — кораблі йдуть туди"
+msgstr "Торкніться моря або проведіть пальцем — кораблі йдуть туди"
 
 #. cat=static zone=ui uses=1
 #: ui/ui24/hold_tip.gd:104
@@ -31739,12 +31883,12 @@ msgstr "КОЛІЯ: ВЕДІТЬ ПАЛЬЦЕМ ВІД СВОГО ВОКЗАЛУ
 #. cat=static zone=ui uses=1
 #: ui/ui24/rail_build.gd:99
 msgid "Сначала тап по своему вокзалу (или ведите от него)"
-msgstr "Спершу тап по своєму вокзалу (або ведіть від нього)"
+msgstr "Спершу торкніться свого вокзалу (або ведіть від нього)"
 
 #. cat=static zone=ui uses=1
 #: ui/ui24/res_sheet.gd:29
 msgid "Колхозов нет. Ключ «КОЛХОЗ» на вкладке ГОРОДА — на любую свою землю."
-msgstr "Колгоспів немає. Ключ «КОЛГОСП» на вкладці МІСТА — на будь-яку свою землю."
+msgstr "Ферм немає. Ключ «ФЕРМА» на вкладці МІСТА — на будь-яку свою землю."
 
 #. cat=static zone=ui uses=1
 #: ui/ui24/res_sheet.gd:30
@@ -31889,22 +32033,22 @@ msgstr "ТРИМАЄ"
 #. cat=static zone=ui uses=2
 #: ui/ui24/status_watch.gd:83 ui/ui24/status_watch.gd:161
 msgid "Новый статус · тап — паспорт страны"
-msgstr "Новий статус · тап — паспорт країни"
+msgstr "Новий статус · торкніться — паспорт країни"
 
 #. cat=static zone=ui uses=2
 #: ui/ui24/status_watch.gd:89 ui/ui24/status_watch.gd:165
 msgid "Кризис позади · тап — паспорт страны"
-msgstr "Кризу позаду · тап — паспорт країни"
+msgstr "Кризу позаду · торкніться — паспорт країни"
 
 #. cat=static zone=ui uses=2
 #: ui/ui24/status_watch.gd:92 ui/ui24/status_watch.gd:163
 msgid "Статус понижен · тап — что растить"
-msgstr "Статус знижено · тап — що розвивати"
+msgstr "Статус знижено · торкніться — що розвивати"
 
 #. cat=static zone=ui uses=2
 #: ui/ui24/status_watch.gd:107 ui/ui24/status_watch.gd:181
 msgid "Мировая арена · тап — их страница"
-msgstr "Світова арена · тап — їхня сторінка"
+msgstr "Світова арена · торкніться — їхня сторінка"
 
 #. cat=static zone=ui uses=1
 #: ui/ui24/strike_sheet.gd:204
@@ -32372,11 +32516,6 @@ msgstr "ВЕЛ."
 #: core/name_gen.gd:66
 msgid "Новый посёлок"
 msgstr ""
-
-#. cat=formatted zone=core uses=1
-#: core/name_gen.gd:149
-msgid "Минимум %d буквы"
-msgstr "Мінімум %d літери"
 
 #. cat=logic zone=core uses=3
 #. LOGIC: compared/looked up in code - replace by a code before translating
@@ -33491,6 +33630,14 @@ msgstr "Інша версія гри в хоста: оновіть гру"
 msgid "Хост закрыл комнату"
 msgstr "Хост закрив кімнату"
 
+#: r340_l345_msgids.txt
+msgid "ЧАСТОТА КАДРОВ"
+msgstr "ЧАСТОТА КАДРІВ"
+
+#: r340_l345_msgids.txt
+msgid "ЭНЕРГОСБЕРЕЖЕНИЕ · 30 FPS"
+msgstr "ЕНЕРГОЗБЕРЕЖЕННЯ · 30 FPS"
+
 #: game/diplomacy/dip_allies.gd:957
 msgid "Союза с %s больше нет: %d ваш%s объект%s на их земле отош%s им%s"
 msgstr "Союзу з %s більше немає: %d ваш%s об’єкт%s на їхній землі відійш%s їм%s"
@@ -34218,3 +34365,80 @@ msgstr "Steam не створив лобі"
 
 msgid "Не удалось войти в лобби Steam"
 msgstr "Не вдалося увійти в лобі Steam"
+
+#: ui/menus.gd:12
+msgid "Android: плавнее на слабых и средних телефонах — тяжёлые расчёты разнесены по кадрам"
+msgstr "Android: плавніше на слабких і середніх телефонах — важкі розрахунки рознесені по кадрах"
+
+#: ui/menus.gd:12
+msgid "Настройки: новая строка «Частота кадров» — 30 / 60 / МАКС"
+msgstr "Налаштування: новий рядок «Частота кадрів» — 30 / 60 / МАКС"
+
+#: ui/menus.gd:12
+msgid "Английский и украинский: исправлены термины, обрезанные подписи и формат чисел; уведомления меняют язык вместе с игрой"
+msgstr "Англійська та українська: виправлено терміни, обрізані підписи та формат чисел; сповіщення змінюють мову разом із грою"
+
+#: ui/menus.gd:12
+msgid "Всё из 0.32.0: игра и обучение на трёх языках"
+msgstr "Усе з 0.32.0: гра й навчання трьома мовами"
+
+#: game/diplomacy/dip_base.gd
+msgid "Нельзя: войны нет, а вассалитет её не допускает"
+msgstr "Не можна: війни немає, а васальна залежність її не допускає"
+
+#: game/save.gd
+msgid "Сохранять пока нечего"
+msgstr "Поки нічого зберігати"
+
+#: game/save.gd
+msgid "Эта партия не сохраняется"
+msgstr "Ця партія не зберігається"
+
+#: game/save.gd
+msgid "Обучение не сохраняется"
+msgstr "Навчання не зберігається"
+
+#: game/save.gd
+msgid "Страна разгромлена — сохранять нечего"
+msgstr "Країну розгромлено — нічого зберігати"
+
+#: ui/menus.gd:12
+msgid "Исправлен вылет в долгих партиях"
+msgstr "Виправлено виліт у довгих партіях"
+
+#: ui/menus.gd:12
+msgid "Оптимизация: 60 FPS по умолчанию — меньше нагрев и расход батареи; 30 FPS в меню и на паузе; меньше фризов в поздней игре"
+msgstr "Оптимізація: 60 FPS за замовчуванням — менше нагрівання та витрати батареї; 30 FPS у меню й на паузі; менше фризів у пізній грі"
+
+#: ui/menus.gd:12
+msgid "Одинаковый расчёт на iPhone и Android — основа для кросс-плея"
+msgstr "Однаковий розрахунок на iPhone і Android — основа для кросплею"
+
+#: ui/menus.gd:12
+msgid "Армия: приказы больше не теряются («в резерве»), ровнее маршруты, адекватное авто-командование штаба"
+msgstr "Армія: накази більше не губляться («у резерві»), рівніші маршрути, адекватне авто-командування штабу"
+
+#: ui/menus.gd:12
+msgid "Исправлено: сохранение после конца партии и «поставьте столицу», окно ультиматума, туман войны, «Страны нет», осколки погибших стран, удары вассала без войны, музыка в обучении"
+msgstr "Виправлено: збереження після кінця партії та «встановіть столицю», вікно ультиматуму, туман війни, «Країни немає», уламки загиблих країн, удари васала без війни, музика в навчанні"
+
+#: ui/menus.gd:12
+msgid "Английский и украинский: исправлены термины, подписи и формат чисел"
+msgstr "Англійська та українська: виправлено терміни, підписи та формат чисел"
+
+#: ui/menus.gd:12
+msgid "Онлайн: новый быстрый сетевой модуль, восстановление пароля по почте, баннер игрока в лобби"
+msgstr "Онлайн: новий швидкий мережевий модуль, відновлення пароля поштою, банер гравця в лобі"
+
+#: ui/menus.gd (R347)
+msgid "РАЗМЕР ИНТЕРФЕЙСА"
+msgstr "РОЗМІР ІНТЕРФЕЙСУ"
+
+#: ui/menus.gd:12
+msgid "Исправлено: фронты против соседа без войны больше не исчезают; аэродромы, порты и склады дронопортов после ударов восстанавливаются — порты снова принимают корабли"
+msgstr "Виправлено: фронти проти сусіда без війни більше не зникають; аеродроми, порти й склади дронопортів відновлюються після ударів — порти знову приймають кораблі"
+
+#: ui/menus.gd:12
+msgid "НОВОЕ: настройка «Размер интерфейса» (80–100%) в разделе «Графика»; очередь верфи прокручивается"
+msgstr "НОВЕ: налаштування «Розмір інтерфейсу» (80–100%) у розділі «Графіка»; черга верфі прокручується"
+

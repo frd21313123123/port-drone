@@ -289,7 +289,7 @@ func covers() -> Array:
 		return out
 	for f: Facility in gw.mil.facilities:
 		var i: int = f.id
-		if i >= _known.size() or _known[i] != 0 or f.moving or f.is_line() or friend(f.country_id):
+		if i >= _known.size() or (_known[i] != 0 and (i >= _shown.size() or _shown[i] != 0)) or f.moving or f.is_line() or friend(f.country_id):
 			continue
 		var k: int = f.kind
 		if Defense.is_ad(k) or k == Facility.Kind.AD_RADAR or k == Facility.Kind.AD_EW or k == Facility.Kind.TEL or STATIC_KINDS.has(k):

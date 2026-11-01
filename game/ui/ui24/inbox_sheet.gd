@@ -243,7 +243,8 @@ func _rebuild_log() -> void:
 	var jl: Array = []
 	var ln: Variant = hud.get("lane")
 	if ln is Node and is_instance_valid(ln):
-		jl = (ln as Node).get("journal")
+		var jv: Variant = (ln as Node).get("journal")
+		jl = jv if jv is Array else []
 	if jl.is_empty():
 		return
 	var newest: float = float(jl[jl.size() - 1]["t"])

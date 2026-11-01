@@ -147,6 +147,11 @@ func _nm() -> String:
 	return String(_v("n"))
 
 
+
+func _shown_nm() -> String:
+	return Loc.name(_nm())
+
+
 func _put(k: String, v: Variant) -> void:
 	if who >= 0 and who < GameConfig.cb_list.size():
 		(GameConfig.cb_list[who] as Dictionary)[k] = v
@@ -354,7 +359,7 @@ func _name_row(vb: VBoxContainer) -> void:
 	nr.add_theme_constant_override("separation", 6)
 	vb.add_child(nr)
 	var ne: = LineEdit.new()
-	ne.text = _nm()
+	ne.text = _shown_nm()
 	ne.max_length = NameGen.NAME_MAX
 	ne.placeholder_text = "Название страны"
 	ne.custom_minimum_size = Vector2(0, 44)
@@ -365,6 +370,8 @@ func _name_row(vb: VBoxContainer) -> void:
 	ne.add_theme_font_size_override("font_size", 16)
 	ne.add_theme_color_override("font_placeholder_color", UiKit.MUTED)
 	ne.text_changed.connect(func(t: String) -> void:
+		if t == _shown_nm():
+			return
 		var cl: String = NameGen.clean_country(t)
 		if cl != t and cl.to_lower() != t.strip_edges().to_lower():
 			var cpos: int = ne.caret_column
@@ -386,7 +393,7 @@ func _name_row(vb: VBoxContainer) -> void:
 	dice.pressed.connect(func() -> void:
 		_push()
 		_put("n", CustomBots.free_name(who))
-		ne.text = _nm()
+		ne.text = _shown_nm()
 		_hint("")
 		_changed(false))
 	nr.add_child(dice)
@@ -407,9 +414,9 @@ func _commit_name() -> void:
 	if name_edit == null or not is_instance_valid(name_edit):
 		return
 	var cl: String = NameGen.clean_country(name_edit.text)
-	if CustomBots.name_error(cl, who) == "":
+	if name_edit.text != _shown_nm() and CustomBots.name_error(cl, who) == "":
 		_put("n", cl)
-	name_edit.text = _nm()
+	name_edit.text = _shown_nm()
 	_hint("")
 	Save.save_prefs()
 	for p: Callable in paints:
@@ -837,7 +844,7 @@ func _undo() -> void:
 			sp = FlagMaker.decode(String(e[1]))
 			_put("l", int(e[2]) if e.size() > 2 else int(_v("l")))
 			if name_edit != null and is_instance_valid(name_edit):
-				name_edit.text = _nm()
+				name_edit.text = _shown_nm()
 			_hint("")
 			_changed(true, false)
 			return

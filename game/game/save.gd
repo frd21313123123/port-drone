@@ -39,7 +39,7 @@ const GENERIC: Array = ["defense", "diplo", "ai", "session"]
 const CFG: Array = ["bots", "difficulty", "aggression", "victory", "target_i", "time_i", "size_i", "tutorial", "fog", "ore_preset", "ore_custom", "creative", "expand_i", "reserves_i", "ai_autodig", "alliances", "limit_i"]
 
 
-const PREFS: Array = ["night", "hints", "econ_fx", "clouds", "fx_level", "ground_detail", "day_grade", "perf_hud", "confirm_actions", "dev_mode", "arch_i", "opening", "notif_mode", "plan_pos", "power_save", "my_name", "my_flag", "my_land", "cb_on", "cb_list", "my_money", "lang", "pseudo_loc", "reserves_i"]
+const PREFS: Array = ["night", "hints", "econ_fx", "clouds", "fx_level", "ground_detail", "day_grade", "perf_hud", "confirm_actions", "dev_mode", "arch_i", "opening", "notif_mode", "plan_pos", "power_save", "my_name", "my_flag", "my_land", "cb_on", "cb_list", "my_money", "lang", "pseudo_loc", "fps_i", "ui_scale_i", "reserves_i"]
 static var prefs_path: String = "user://settings.cfg"
 
 const DELAY_OK: Array = ["_apply_strike", "_grow_initial"]
@@ -130,9 +130,27 @@ static func can_save(m: Node) -> bool:
 	if m == null or bool(m.get("in_menu")):
 		return false
 	var gw: GameWorld = m.get("world")
-	return gw != null and gw.data != null and gw.player != null and gw.player.capital_id >= 0 and not GameConfig.tutorial and gw.session != null and not gw.session.ended and not gw.player.eliminated and not gw.net_driven and not GameConfig.no_save
+	return why_not(m) == ""
 
 
+
+
+
+static func why_not(m: Node) -> String:
+	if m == null or bool(m.get("in_menu")):
+		return "Сохранять пока нечего"
+	var gw: GameWorld = m.get("world")
+	if gw == null or gw.data == null or gw.player == null or gw.session == null:
+		return "Сохранять пока нечего"
+	if gw.net_driven or GameConfig.no_save:
+		return "Эта партия не сохраняется"
+	if GameConfig.tutorial:
+		return "Обучение не сохраняется"
+	if gw.player.eliminated or gw.player.city_ids.is_empty():
+		return "Страна разгромлена — сохранять нечего"
+	if gw.player.capital_id < 0:
+		return "Сохранять пока нечего: поставьте столицу"
+	return ""
 
 
 
@@ -172,6 +190,9 @@ static func tick(m: Node, delta: float) -> void:
 
 static func autosave(m: Node) -> bool:
 	if not can_save(m):
+		return false
+	var gwe: GameWorld = m.get("world")
+	if gwe.session.ended and bool(m.get("_paused")):
 		return false
 	if _task >= 0:
 		if not WorkerThreadPool.is_task_completed(_task):
@@ -315,6 +336,8 @@ static func _load_pack(m: Node, pack: Dictionary, net: bool) -> bool:
 	_load_systems(gw, body.get("sys", {}))
 	if not net:
 		Military.unpave_cells(gw, gw.data.dirty_cells.duplicate())
+		if gw.mil != null:
+			gw.mil.heal_partial(true)
 	var t6: int = Time.get_ticks_usec()
 	mm.loading.set_progress(0.88, Loc.t("Готовим карту..."))
 	await m.get_tree().process_frame
@@ -447,13 +470,19 @@ static func enc(v: Variant) -> Variant:
 			var out: Array = []
 			out.resize(a.size())
 			for i in a.size():
-				out[i] = enc(a[i])
+				var e: Variant = a[i]
+				var te: int = typeof(e)
+				out[i] = e if te < TYPE_RID or te > TYPE_ARRAY else enc(e)
 			return out
 		TYPE_DICTIONARY:
 			var d: Dictionary = v
 			var out2: Dictionary = {}
 			for k: Variant in d:
-				out2[enc(k)] = enc(d[k])
+				var dv: Variant = d[k]
+				var tk: int = typeof(k)
+				var tv: int = typeof(dv)
+
+				out2[k if tk < TYPE_RID or tk > TYPE_ARRAY else enc(k)] = dv if tv < TYPE_RID or tv > TYPE_ARRAY else enc(dv)
 			return out2
 		TYPE_CALLABLE, TYPE_SIGNAL, TYPE_RID:
 			return null
@@ -680,6 +709,8 @@ static func _snapshot(m: Node) -> Array:
 	header["difficulty"] = GameConfig.difficulty
 	header["cb_on"] = GameConfig.cb_on
 	header["creative"] = GameConfig.creative
+	if gw.session.ended:
+		header["end"] = SaveSlots.END_WIN if gw.session.winner == p.id else SaveSlots.END_LOSS
 	last["entities"] = ents.size()
 	_ents = []
 	_ent_ix = {}
@@ -869,6 +900,7 @@ static func set_seen_version(v: String) -> void:
 static func load_prefs() -> void:
 	var cf: = ConfigFile.new()
 	if cf.load(prefs_path) != OK:
+		apply_power_save()
 		Loc.boot()
 		return
 	for n: String in PREFS:
@@ -881,6 +913,7 @@ static func load_prefs() -> void:
 	GameConfig.fx_level = clampi(GameConfig.fx_level, 0, 2)
 	GameConfig.notif_mode = clampi(GameConfig.notif_mode, 0, 2)
 	apply_power_save()
+	apply_ui_scale()
 	Loc.boot()
 	if cf.has_section_key("prefs", "news_on"):
 		Hud.news_on = bool(cf.get_value("prefs", "news_on", true))
@@ -888,8 +921,37 @@ static func load_prefs() -> void:
 
 
 
+
+
+static var fps_idle: bool = false
+const IDLE_FPS: int = 30
+
+
+
+
+static func apply_ui_scale() -> void:
+	GameConfig.ui_scale_i = clampi(GameConfig.ui_scale_i, 0, GameConfig.UI_SCALES.size() - 1)
+	var k: float = float(GameConfig.UI_SCALES[GameConfig.ui_scale_i])
+	var st: SceneTree = Engine.get_main_loop() as SceneTree
+	if st == null or st.root == null:
+		return
+	st.root.content_scale_factor = 1.0
+	var v1: Vector2 = st.root.get_visible_rect().size
+	if v1.x > 1.0 and v1.y > 1.0:
+		k = minf(k, minf(v1.x / 360.0, v1.y / 640.0))
+	k = maxf(k, 0.5)
+	st.root.content_scale_factor = k
+	MapCamera.set_ui_k(k, st.root.get_camera_2d())
+
+
 static func apply_power_save() -> void:
-	Engine.max_fps = 45 if GameConfig.power_save else 0
+	GameConfig.fps_i = clampi(GameConfig.fps_i, 0, GameConfig.FPS_CAPS.size() - 1)
+	var cap: int = int(GameConfig.FPS_CAPS[GameConfig.fps_i])
+	if GameConfig.power_save:
+		cap = 30 if GameConfig.android else 45
+	if fps_idle and (cap == 0 or cap > IDLE_FPS):
+		cap = IDLE_FPS
+	Engine.max_fps = cap
 
 
 static func _set_cfg(cfg: Dictionary) -> void:

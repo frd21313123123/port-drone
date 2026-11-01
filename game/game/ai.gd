@@ -7,6 +7,8 @@ extends RefCounted
 
 
 
+const Cad344: = preload("res://game/cad344.gd")
+
 var gw: GameWorld
 var _t: Dictionary = {}
 
@@ -343,7 +345,11 @@ func _take_neutral(c: Country) -> void:
 					break
 			if close or not _site_free(c, p):
 				continue
-			var pl5: Dictionary = gw.can_found_city(p, City.Kind.TOWN)
+			if gw.cad344 != null and not gw.cad344.plan_free(p, City.Kind.TOWN):
+				_take_t[c.id] = now
+				gw.cad344.take_cont[c.id] = true
+				return
+			var pl5: Dictionary = gw.can_found_city(p, City.Kind.TOWN) if gw.cad344 == null else gw.cad344.can_found_ai(p, City.Kind.TOWN)
 			if not bool(pl5["ok"]) or preload("res://game/ad_relocate.gd").war_blocked(gw, p, c, int(pl5["radius"])):
 				continue
 			if gw.found_city(p, c, City.Kind.TOWN, pl5) != null:
@@ -429,13 +435,53 @@ func update(_dt: float) -> void:
 		if not _t.has(c.id):
 			_t[c.id] = gw.game_time + float(c.id) * 1.7
 		var nt: float = float(_t[c.id])
+		var cad: Cad344 = gw.cad344
 		if gw.game_time < nt:
+			if cad != null:
+				if cad.ai_ph.has(c.id):
+					while cad.ai_ph.has(c.id) and cad.take_ai_slot():
+						_think_step(c)
+					continue
+				if cad.exp_cont.has(c.id) or cad.take_cont.has(c.id):
+					if cad.take_ai_slot():
+						if cad.exp_cont.has(c.id):
+							cad.exp_cont.erase(c.id)
+							_grow_land(c)
+						else:
+							cad.take_cont.erase(c.id)
+							_take_neutral(c)
+					continue
+				if not _go_due(c) or not cad.take_ai_slot():
+					continue
 			_go_on(c)
 			continue
 		_cont_b.erase(c.id)
 		_cont_s.erase(c.id)
 		_t[c.id] = gw.game_time + GameConfig.ai_think_dt(c) * GameConfig.ai_pace(gw.game_time)
+		if cad != null:
+			cad.ai_ph[c.id] = 0
+			while cad.ai_ph.has(c.id) and cad.take_ai_slot():
+				_think_step(c)
+			continue
 		_think(c)
+
+
+
+func _go_due(c: Country) -> bool:
+	var now: float = gw.game_time
+	return (_cont_b.has(c.id) and float(_cont_b[c.id]) < now) or (_cont_s.has(c.id) and float(_cont_s[c.id][0]) < now) or (_cont_a.has(c.id) and float(_cont_a[c.id][0]) < now)
+
+
+
+
+func _think_step(c: Country) -> void:
+	var cad: Cad344 = gw.cad344
+	var ph: int = int(cad.ai_ph[c.id])
+	if ph + 1 >= THINK_PARTS:
+		cad.ai_ph.erase(c.id)
+	else:
+		cad.ai_ph[c.id] = ph + 1
+	_think_part(c, ph, true)
 
 
 
@@ -500,35 +546,62 @@ func _count(c: Country, kind: int) -> int:
 
 
 func _think(c: Country) -> void:
-	_repair(c)
-	if gw.get("navy") != null:
-		gw.navy.ai_think(c)
-	_grow_land(c)
-	_build(c)
-	_aviation(c)
-	_take_neutral(c)
-	var P: Dictionary = persona_of(c)
-	if gw.naval != null:
-		gw.naval.ai_think(c, P)
-	_spend_surplus(c, P)
-	_missile_mix(c, P)
-	for f: Facility in gw.mil.facilities:
-		if f.country_id == c.id and (f.halted or f.stance != 0):
-			f.halted = false
-			f.stance = 0
-		if f.kind == Facility.Kind.BARRACKS and f.country_id == c.id and f.army_build == "":
-			_army_build(c, f, P)
-	if not c.at_war.is_empty():
-		_war(c)
-		_rear_guard(c)
-		_guard_bridges(c, P)
-	else:
+	for ph in THINK_PARTS:
+		_think_part(c, ph)
 
 
-		var foe: Country = _tension_foe(c, P)
-		if foe != null:
-			_fortify(c, foe, false)
-	_fronts(c, P)
+
+
+const THINK_PARTS: int = 8
+
+
+func _think_part(c: Country, ph: int, split: bool = false) -> void:
+	match ph:
+		0:
+			_repair(c)
+			if gw.get("navy") != null:
+				gw.navy.ai_think(c)
+		1:
+			_grow_land(c)
+		2:
+			_build(c)
+		3:
+			_aviation(c)
+			_take_neutral(c)
+		4:
+			var P: Dictionary = persona_of(c)
+			if gw.naval != null:
+				gw.naval.ai_think(c, P)
+			_spend_surplus(c, P)
+			_missile_mix(c, P)
+			for f: Facility in gw.mil.facilities:
+				if f.country_id == c.id and (f.halted or f.stance != 0):
+					f.halted = false
+					f.stance = 0
+				if f.kind == Facility.Kind.BARRACKS and f.country_id == c.id and f.army_build == "":
+					_army_build(c, f, P)
+		5:
+			var P5: Dictionary = persona_of(c)
+			if not c.at_war.is_empty():
+				_war(c)
+				if split:
+					gw.cad344.war_br[c.id] = true
+				else:
+					_rear_guard(c)
+					_guard_bridges(c, P5)
+			else:
+
+
+				var foe: Country = _tension_foe(c, P5)
+				if foe != null:
+					_fortify(c, foe, false)
+		6:
+			if split and gw.cad344.war_br.has(c.id):
+				gw.cad344.war_br.erase(c.id)
+				_rear_guard(c)
+				_guard_bridges(c, persona_of(c))
+		7:
+			_fronts(c, persona_of(c))
 
 
 
@@ -2548,7 +2621,10 @@ func _expand(c: Country) -> bool:
 			return false
 		if not GameWorld.BORDER_GAP.own_ok(gw, q, c.id, _town_r()) or gw.diplo._dist_to_land(q, c.id, reach) < 0 or not GameWorld.BORDER_GAP.site_ok(gw, q, c.id, _town_r()):
 			continue
-		var pl6: Dictionary = gw.can_found_city(q, City.Kind.TOWN)
+		if gw.cad344 != null and not gw.cad344.plan_free(q, City.Kind.TOWN):
+			gw.cad344.exp_cont[c.id] = true
+			return false
+		var pl6: Dictionary = gw.can_found_city(q, City.Kind.TOWN) if gw.cad344 == null else gw.cad344.can_found_ai(q, City.Kind.TOWN)
 		if not bool(pl6["ok"]) or preload("res://game/ad_relocate.gd").war_blocked(gw, q, c, int(pl6["radius"])):
 			continue
 		if gw.found_city(q, c, City.Kind.TOWN, pl6) != null:
@@ -2628,6 +2704,8 @@ func _grow_land(c: Country) -> void:
 		_town_t[c.id] = now + 20.0
 		return
 	var ok: bool = _expand(c)
+	if gw.cad344 != null and gw.cad344.exp_cont.has(c.id):
+		return
 	_town_t[c.id] = now + (float(EXP_GAP[e]) * (1.0 + 0.04 * float(n - 6)) / (appetite(c) * _drama_expand(c)) if ok else EXP_FAIL)
 	if ok:
 		_spent(c, "town", Military.COST_TOWN)

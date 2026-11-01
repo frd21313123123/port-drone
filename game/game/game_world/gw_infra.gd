@@ -751,6 +751,8 @@ func _apply_strike(cell: Vector2i, r: int = 3, crater: String = "crater_m", r_px
 	var value: int = 0
 	var spare: PackedInt32Array = protect.take_spare(cell) if protect != null else PackedInt32Array()
 	var box: = Rect2i(cell - Vector2i(r + 8, r + 8), Vector2i(2 * r + 16, 2 * r + 16))
+	var fo: Dictionary = {}
+	var fo_ok: bool = false
 	for ck: ObjChunk in objects.chunks_in_rect(box):
 		for id in ck.ids:
 			if obj_state[id] != 0:
@@ -770,7 +772,10 @@ func _apply_strike(cell: Vector2i, r: int = 3, crater: String = "crater_m", r_px
 			if kind == KIND_BUILDING:
 				_start_fire(rr)
 				value += 25 * rr.size.x * rr.size.y / 4 + 10
-				if data.has_flag(rr.position.x, rr.position.y, WorldData.F_CITY):
+				if data.has_flag(rr.position.x, rr.position.y, WorldData.F_CITY) and not fo_ok:
+					fo = _fac_objs()
+					fo_ok = true
+				if data.has_flag(rr.position.x, rr.position.y, WorldData.F_CITY) and not fo.has(id):
 					ruins.append([id, game_time, -1.0, 0])
 					var rc: City = city_at_cell(rr.position)
 					if rc != null:
@@ -1005,10 +1010,11 @@ func _update_fires_ruins(dt: float) -> void:
 		if rcc != null and float(e[2]) >= 0.0:
 			busy[rcc.id] = int(busy.get(rcc.id, 0)) + 1
 	var seen: Dictionary = {}
+	var fo: Dictionary = _fac_objs() if not ruins.is_empty() else {}
 	for k in range(ruins.size() - 1, -1, -1):
 		var e2: Array = ruins[k]
 		var id: int = e2[0]
-		if id >= obj_state.size() or obj_state[id] != 1 or seen.has(id):
+		if id >= obj_state.size() or obj_state[id] != 1 or seen.has(id) or fo.has(id):
 			ruins.remove_at(k)
 			continue
 		seen[id] = true
@@ -1069,3 +1075,17 @@ func _fire_sound() -> void:
 				bd = fp.distance_squared_to(lp)
 				best = fp
 	Sfx.loop("fire", "fire_loop", best.is_finite(), best)
+
+
+
+
+
+
+func _fac_objs() -> Dictionary:
+	var out: Dictionary = {}
+	if mil == null:
+		return out
+	for f: Facility in mil.facilities:
+		for oid in f.obj_ids:
+			out[oid] = true
+	return out

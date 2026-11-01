@@ -286,7 +286,7 @@ func _pending_chip() -> void:
 	var total: float = maxf(float(_pend_total.get(id, 0.0)), left)
 	_pend_total[id] = total
 	var c: Country = gw.country_by_id(int(it.get("from", 0)))
-	var cname: String = c.name.to_upper() if c != null else "?"
+	var cname: String = Loc.name(c.name).to_upper() if c != null else "?"
 	var d: Dictionary = {"left": left, "count": list.size()}
 	if dem:
 		var sub: String = ""
@@ -297,7 +297,7 @@ func _pending_chip() -> void:
 					"money":
 						sub = Loc.t("требует %s") % EconKit.num(int(dd.get("n", 0)))
 					"res":
-						sub = Loc.t("требует %s ×%d") % [String(Economy.RES_NAMES.get(String(dd.get("res", "")), "")).to_lower(), int(dd.get("n", 0))]
+						sub = Loc.t("требует %s ×%d") % [Loc.t(String(Economy.RES_NAMES.get(String(dd.get("res", "")), "")).to_lower()), int(dd.get("n", 0))]
 					"deposit":
 						sub = Loc.t("требует землю с залежью")
 					"break_alliance":

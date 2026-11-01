@@ -44,6 +44,14 @@ var _bc: = PackedInt32Array()
 var _bsel: = PackedByteArray()
 var _bgr: = PackedInt32Array()
 var _nb: int = 0
+
+
+
+var _pcx: = PackedFloat32Array()
+var _pcy: = PackedFloat32Array()
+var _pcc: = PackedInt32Array()
+var _pn: int = 0
+var _sk: = PackedInt32Array()
 var _vpts: = PackedVector4Array()
 var _badge_t: float = 0.0
 var _last_z: float = -1.0
@@ -781,10 +789,23 @@ func _cluster(z: float) -> void:
 	var r2: float = rr * rr
 	var sa: Facility = _sel_army()
 	_nb = 0
+	_sk.resize(_pn)
+	_sk.fill(-1)
 	for i in _nv:
 		var u: Unit = _vu[i]
 		var k: int = -1
-		for j in _nb:
+		var sj: int = -1
+		var sd: float = r2
+		for s0 in _pn:
+			if _pcc[s0] == u.country_id:
+				var sx: float = u.pos.x - _pcx[s0]
+				var sy: float = u.pos.y - _pcy[s0]
+				if sx * sx + sy * sy <= sd:
+					sd = sx * sx + sy * sy
+					sj = s0
+		if sj >= 0:
+			k = _sk[sj]
+		for j in (0 if k >= 0 or sj >= 0 else _nb):
 			if _bc[j] == u.country_id:
 				var dx: float = u.pos.x - _bx[j] / float(_bn[j])
 				var dy: float = u.pos.y - _by[j] / float(_bn[j])
@@ -810,6 +831,8 @@ func _cluster(z: float) -> void:
 			_btop[k] = u.pos.y
 			_bsel[k] = 0
 			_bgr[k] = 0
+			if sj >= 0:
+				_sk[sj] = k
 		_bx[k] += u.pos.x
 		_by[k] += u.pos.y
 		_bn[k] += 1
@@ -818,6 +841,14 @@ func _cluster(z: float) -> void:
 			_bsel[k] = 1
 		if u.home != null and u.home.group_id >= 0 and u.country_id == (gw.player.id if gw.player != null else -1):
 			_bgr[k] += 1
+	_pn = _nb
+	_pcx.resize(_nb)
+	_pcy.resize(_nb)
+	_pcc.resize(_nb)
+	for j3 in _nb:
+		_pcx[j3] = _bx[j3] / float(_bn[j3])
+		_pcy[j3] = _by[j3] / float(_bn[j3])
+		_pcc[j3] = _bc[j3]
 	if gw.vfx == null:
 		return
 	var pid: int = gw.player.id if gw.player != null else -1

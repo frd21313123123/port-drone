@@ -3,6 +3,13 @@ extends "res://game/game_world/gw_infra.gd"
 
 
 
+
+
+func _as_gw() -> GameWorld:
+	return (self as Object) as GameWorld
+
+
+
 func create_country(is_player: bool, legacy_flag: bool = false) -> Country:
 	var c: = Country.new()
 	c.id = countries.size() + 1
@@ -278,10 +285,10 @@ func _ai_try_town(c: Country) -> bool:
 			continue
 		if preload("res://game/ad_relocate.gd").war_blocked(self, p, c, 14):
 			continue
-		var pl: Dictionary = can_found_city(p, City.Kind.TOWN)
+		var pl: Dictionary = can_found_city(p, City.Kind.TOWN) if cad344 == null else cad344.can_found_ai(p, City.Kind.TOWN)
 		if bool(pl["ok"]):
 			return found_city(p, c, City.Kind.TOWN, pl) != null
-		pl = can_found_city(p, City.Kind.VILLAGE)
+		pl = can_found_city(p, City.Kind.VILLAGE) if cad344 == null else cad344.can_found_ai(p, City.Kind.VILLAGE)
 		if not bool(pl["ok"]):
 			continue
 		return found_city(p, c, City.Kind.VILLAGE, pl) != null
@@ -391,13 +398,13 @@ func mp_place_capital(cid: int, cell: Vector2i) -> City:
 	var c: Country = country_by_id(cid)
 	if c == null or not c.is_player or c.capital_id >= 0 or c.eliminated:
 		return null
-	if cell.x >= 0 and data.inside(cell.x, cell.y) and RankedRules.capital_why(self, c, cell) != "":
-		say(c, RankedRules.capital_why(self, c, cell))
+	if cell.x >= 0 and data.inside(cell.x, cell.y) and RankedRules.capital_why(_as_gw(), c, cell) != "":
+		say(c, RankedRules.capital_why(_as_gw(), c, cell))
 		return null
 	if cell.x < 0 or not data.inside(cell.x, cell.y):
 		_landmasses()
 		cell = _find_capital_spot(-1)
-		if RankedRules.active() and cell.x >= 0 and RankedRules.capital_why(self, c, cell) != "":
+		if RankedRules.active() and cell.x >= 0 and RankedRules.capital_why(_as_gw(), c, cell) != "":
 			cell = _ranked_spot(c)
 		if cell.x < 0:
 			return null
@@ -782,7 +789,7 @@ func new_country_from(ids: Array) -> Country:
 	var src: Country = country_by_id(cities[int(ids[0])].country_id) if int(ids[0]) >= 0 and int(ids[0]) < cities.size() else null
 	var c: Country = create_country(false)
 	c.ai_diff = src.ai_diff if src != null and not src.is_player else -1
-	c.arch = ArchStyle.native_of(self, ids)
+	c.arch = ArchStyle.native_of(_as_gw(), ids)
 	c.money = 1500
 	c.food = 30
 	var was: bool = capture_quiet

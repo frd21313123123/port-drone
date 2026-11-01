@@ -288,6 +288,7 @@ static func slot_row(parent: Control, idx: int, nick: String, host: bool, you: b
 		row.add_child(fp)
 	if not cos.is_empty():
 		p.custom_minimum_size.y = SLOT_H + 4
+		banner_bg(p, cos.get("banner"))
 		row.add_child(avatar_framed(cos.get("frame"), 48.0))
 		var tc: String = Cosmetics.shown("title", cos.get("title"))
 		if tc != "":

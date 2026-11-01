@@ -453,7 +453,7 @@ func _demand_ok(d: Dictionary) -> String:
 				return Loc.t("Не хватает денег: нужно %d") % int(d["n"])
 		"res":
 			if int(v.get(String(d["res"]))) < int(d["n"]):
-				return Loc.t("Не хватает: %s %d") % [String(Economy.RES_NAMES.get(String(d["res"]), "")).to_lower(), int(d["n"])]
+				return Loc.t("Не хватает: %s %d") % [Loc.t(String(Economy.RES_NAMES.get(String(d["res"]), "")).to_lower()), int(d["n"])]
 		"deposit":
 			var cell: Vector2i = d["cell"]
 			if not gw.data.inside(cell.x, cell.y) or gw.data.get_owner_id(cell.x, cell.y) != v.id:
@@ -511,7 +511,7 @@ func demand_options(from: int, to: int) -> Array:
 			out.append({"kind": "res", "label": Loc.t("РЕСУРС"), "text": "%s ×%d" % [Loc.t(String(Economy.RES_NAMES[best]).to_lower()), n2], "params": {"res": best, "n": n2}})
 		var dep: Dictionary = border_deposit(to, from)
 		if not dep.is_empty():
-			out.append({"kind": "deposit", "label": Loc.t("ЗЕМЛЯ"), "text": Loc.t("земля с месторождением (%s)") % String(Economy.RES_NAMES.get(String(dep["res"]), "")).to_lower(),
+			out.append({"kind": "deposit", "label": Loc.t("ЗЕМЛЯ"), "text": Loc.t("земля с месторождением (%s)") % Loc.t(String(Economy.RES_NAMES.get(String(dep["res"]), "")).to_lower()),
 				"params": {"cell": dep["cell"], "res": String(dep["res"])}})
 	for c: Country in gw.countries:
 		if c.id == from or c.id == to or c.eliminated:
@@ -1073,6 +1073,8 @@ func war_block_why(a: int, b: int) -> String:
 func strike_block(a: int, o: int) -> String:
 	if a <= 0 or o <= 0 or a == o or at_war(a, o):
 		return ""
+	if is_subject(a) or subject_of(o) == a or subject_of(a) == o:
+		return STRIKE_SUBJ_TXT
 	return STRIKE_BLOCK_TXT if not war_block(a, o).is_empty() else ""
 
 

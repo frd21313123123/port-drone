@@ -589,7 +589,7 @@ func _build_place() -> void:
 
 
 func _strip_signature() -> String:
-	var s: String = "%d|%s|" % [tab_gid, selecting]
+	var s: String = "%d|%s|%d|" % [tab_gid, selecting, Loc.gen]
 	for g: Dictionary in store.groups:
 		s += "%d:%s:%d:%s;" % [int(g["id"]), String(g["name"]), int(g["color"]), String(g["emblem"])]
 	return s + str(not store.armies(_sm, -2).is_empty())
@@ -647,7 +647,7 @@ func _chip(gid: int) -> void:
 	vb.add_theme_constant_override("separation", -1)
 	vb.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	hb.add_child(vb)
-	var nm: String = Loc.t("ВСЕ") if gid == -1 else (Loc.t("БЕЗ ГРУППЫ") if gid == -2 else "%d·%s" % [gid, Loc.name(String(g["name"])).to_upper()])
+	var nm: String = Loc.t("ВСЕ") if gid == -1 else (Loc.t("БЕЗ ГРУППЫ") if gid == -2 else Loc.gtag(gid, String(g["name"])))
 	var nl: Label = UiKit.lbl(nm, 11, UiKit.GOLD if active else UiKit.TEXT, 2, 3)
 	vb.add_child(nl)
 	var sub: Label = UiKit.lbl("", 9, UiKit.MUTED, 2, 2)
@@ -1040,7 +1040,7 @@ func open_to_group_menu(anchor: Control) -> void:
 	var items: Array = []
 	for g: Dictionary in store.groups:
 		var gid: int = int(g["id"])
-		items.append({"emb": String(g["emblem"]), "col": int(g["color"]), "text": "%d · %s" % [gid, Loc.name(String(g["name"])).to_upper()],
+		items.append({"emb": String(g["emblem"]), "col": int(g["color"]), "text": "%d · %s" % [gid, Loc.gname(String(g["name"])).to_upper()],
 			"sub": Loc.t("сейчас %s") % [(Loc.n((g["fids"] as PackedInt32Array).size(), "%d армия", "%d армии", "%d армий") % ((g["fids"] as PackedInt32Array).size()))], "on": false,
 			"cb": func() -> void:
 				_cmd("groups", "add", [gid, fids], func(_r: Variant) -> void: refresh())
@@ -1147,7 +1147,7 @@ func _show_confirm(g: Dictionary, n: int, pvd: Dictionary, mins: int) -> void:
 	if not sk.is_empty():
 		var parts: PackedStringArray = []
 		for s: Array in sk.slice(0, 3):
-			parts.append("№%d (%s)" % [int(s[0]), _reason(s)])
+			parts.append("%s (%s)" % [Loc.no(int(s[0])), _reason(s)])
 		if sk.size() > 3:
 			parts.append(Loc.t("ещё %d") % (sk.size() - 3))
 		var l3: Label = UiKit.lbl(Loc.t("Не пойдут: %s") % [", ".join(parts)], 9, UiKit.RED, 2, 2)
@@ -1865,7 +1865,7 @@ func group_menu(gid: int, anchor: Control) -> void:
 	items.append({"icon": "icon_doctrine", "text": "АВТО-ФРОНТ", "sub": "штаб сам ведёт фронт и план в войне", "on": auto,
 		"cb": func() -> void:
 			_cmd("front", "set_auto", [gid, not auto], func(_r: Variant) -> void: refresh())})
-	popover(anchor, Loc.t("ГРУППА %d · %s") % [gid, Loc.name(String(g["name"])).to_upper()], items, 248.0)
+	popover(anchor, Loc.t("ГРУППА %d · %s") % [gid, Loc.gname(String(g["name"])).to_upper()], items, 248.0)
 
 
 

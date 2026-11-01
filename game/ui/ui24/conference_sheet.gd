@@ -426,7 +426,7 @@ func _build_top() -> void:
 	for pid: int in (cf.get("parts", []) as Array):
 		var oc: Country = gw.country_by_id(pid)
 		if oc != null and pid != me:
-			chips.append([4, oc.color, oc.name.to_upper()])
+			chips.append([4, oc.color, Loc.name(oc.name).to_upper()])
 	_legend_w = 12.0
 	for ch: Array in chips:
 		var w: float = _legend_chip(fl, int(ch[0]), ch[1] as Color, String(ch[2]))
@@ -525,7 +525,8 @@ func _fit_camera() -> void:
 
 
 		var cr: = Rect2()
-		var cs: Array = _layer.get("cities")
+		var csv: Variant = _layer.get("cities")
+		var cs: Array = csv if csv is Array else []
 		for k: int in cs.size():
 			var cw: Vector2 = _layer.call("city_world", k)
 			cr = Rect2(cw, Vector2.ZERO) if k == 0 else cr.expand(cw)
@@ -533,7 +534,7 @@ func _fit_camera() -> void:
 			r = cr.grow(14.0 / cam.min_zoom())
 			zf = minf(free.size.x / maxf(r.size.x, 1.0), free.size.y / maxf(r.size.y, 1.0)) * 0.95
 	var z: float = cam.min_zoom()
-	for zz: Variant in MapCamera.ZOOMS:
+	for zz: Variant in MapCamera.zs:
 		if float(zz) <= zf and float(zz) <= 3.0:
 			z = float(zz)
 	cam.set_zoom_at(z, vs * 0.5)
@@ -569,7 +570,7 @@ func world_tap(pos: Vector2, _wp: Vector2) -> bool:
 
 func _map_tap(pos: Vector2) -> void:
 	var cam: MapCamera = gw.camera
-	var zmax: float = float(MapCamera.ZOOMS[MapCamera.ZOOMS.size() - 1])
+	var zmax: float = float(MapCamera.zs[MapCamera.zs.size() - 1])
 	var k: int = int(_layer.call("pick_at", pos, cam.zoom.x >= zmax - 0.01))
 	if k == -2:
 		map_zoom_taps += 1
@@ -664,7 +665,7 @@ func _select(k: int, from_map: bool, quiet: bool = false) -> void:
 
 
 static func _f1(v: float) -> String:
-	return ("%.1f" % v).replace(".", ",")
+	return Loc.dec("%.1f" % v)
 
 
 
@@ -745,7 +746,7 @@ func _build_parts(cf: Dictionary) -> void:
 		grid.add_child(hb)
 		hb.add_child(_flag(c, Vector2(21, 14)))
 		if not two:
-			var nm: Label = UiKit.lbl(Loc.t("ВЫ") if pid == me else c.name.to_upper(), 10, C_GOLD if pid == me else UiKit.TEXT, 2, 3)
+			var nm: Label = UiKit.lbl(Loc.t("ВЫ") if pid == me else Loc.name(c.name).to_upper(), 10, C_GOLD if pid == me else UiKit.TEXT, 2, 3)
 			nm.custom_minimum_size.x = 84 if vp.x < 400 else 112
 			UiKit.fit_lbl(nm, [10, 9])
 			hb.add_child(nm)
@@ -753,7 +754,7 @@ func _build_parts(cf: Dictionary) -> void:
 		hb.add_child(bar)
 		_bars[pid] = bar
 		if not two:
-			var sh: Label = UiKit.lbl("%d %%" % roundi(float((cf["share"] as Dictionary).get(pid, 0.0)) * 100.0), 10, UiKit.MUTED, 2, 3)
+			var sh: Label = UiKit.lbl(Loc.pct(roundi(float((cf["share"] as Dictionary).get(pid, 0.0)) * 100.0)), 10, UiKit.MUTED, 2, 3)
 			sh.custom_minimum_size.x = 34
 			sh.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 			hb.add_child(sh)
@@ -1080,7 +1081,7 @@ func _style_row(cf: Dictionary, t0: Dictionary) -> void:
 		who.add_theme_color_override("font_color", gw.country_by_id(by).color.lightened(0.3))
 	elif not fcd.is_empty():
 		var fb: Country = gw.country_by_id(int(fcd["by"]))
-		who.text = "→ " + fb.name.to_upper()
+		who.text = "→ " + Loc.name(fb.name).to_upper()
 		who.add_theme_color_override("font_color", fb.color.lightened(0.25))
 	else:
 		who.text = "ОСТАНЕТСЯ ИМ"
@@ -1268,7 +1269,7 @@ func _build_result() -> void:
 			hb.custom_minimum_size.y = 28
 			col.add_child(hb)
 			hb.add_child(_flag(c, Vector2(24, 16)))
-			var nm: Label = UiKit.lbl(Loc.t("ВЫ") if c.id == me else c.name.to_upper(), 11, C_GOLD if c.id == me else UiKit.TEXT, 2, 3)
+			var nm: Label = UiKit.lbl(Loc.t("ВЫ") if c.id == me else Loc.name(c.name).to_upper(), 11, C_GOLD if c.id == me else UiKit.TEXT, 2, 3)
 			nm.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 			hb.add_child(nm)
 			var n_an: int = int(annex.get(c.id, annex.get(str(c.id), 0)))
@@ -1456,7 +1457,7 @@ static func _mmss(t: float) -> String:
 
 
 static func _k(v: float) -> String:
-	return (Loc.t("%.1fК") % (v / 1000.0)).replace(".", ",") if v >= 1000.0 else str(roundi(v))
+	return Loc.dec(Loc.t("%.1fК") % (v / 1000.0)) if v >= 1000.0 else str(roundi(v))
 
 
 static func _plural(n: int, one: String, few: String, many: String) -> String:

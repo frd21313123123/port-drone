@@ -578,11 +578,42 @@ func can_restore(f: Facility) -> bool:
 
 
 
+
+
+
+
+
+const HEAL_DT: float = 20.0
+
+
+func heal_partial(now: bool = false) -> int:
+	var n: int = 0
+	for f: Facility in facilities:
+		if f.restore_t > 0.0 or f.is_line() or f.kind == Facility.Kind.NUCLEAR_PLANT:
+			continue
+		if not now and fire_block_left(f) > 0.0:
+			continue
+		var bad: bool = false
+		for id in f.obj_ids:
+			if id >= 0 and id < gw.obj_state.size() and gw.obj_kind[id] == GameWorld.KIND_BUILDING and gw.obj_state[id] == 1:
+				bad = true
+				break
+		if not bad or not alive(f):
+			continue
+		for id2 in f.obj_ids:
+			if id2 >= 0 and id2 < gw.obj_state.size() and gw.obj_kind[id2] == GameWorld.KIND_BUILDING and gw.obj_state[id2] == 1:
+				gw.obj_state[id2] = 0
+				gw._mark_obj_chunk(id2)
+				n += 1
+	return n
+
+
+
 func ruined_own(country_id: int) -> Array:
 	var n: int = 0
 	var cost: int = 0
 	for f: Facility in facilities:
-		if f.country_id == country_id and f.parent == null and can_restore(f) and not (f.kind == Facility.Kind.NUCLEAR_PLANT and alive(f)):
+		if f.country_id == country_id and _repair_all_ok(f) and can_restore(f) and not (f.kind == Facility.Kind.NUCLEAR_PLANT and alive(f)):
 			n += 1
 			cost += restore_cost(f)
 	return [n, cost]
@@ -590,10 +621,17 @@ func ruined_own(country_id: int) -> Array:
 
 
 
+
+func _repair_all_ok(f: Facility) -> bool:
+	return f.parent == null or alive(f.parent) or can_restore(f.parent) or f.parent.restore_t > 0.0
+
+
+
+
 func restore_all(country: Country) -> Array:
 	var list: Array[Facility] = []
 	for f: Facility in facilities:
-		if f.country_id == country.id and f.parent == null and can_restore(f) and not (f.kind == Facility.Kind.NUCLEAR_PLANT and alive(f)):
+		if f.country_id == country.id and _repair_all_ok(f) and can_restore(f) and not (f.kind == Facility.Kind.NUCLEAR_PLANT and alive(f)):
 			list.append(f)
 	var key: = func(f: Facility) -> int:
 		return 0 if f.kind == Facility.Kind.POWER_PLANT or f.kind == Facility.Kind.NUCLEAR_PLANT else (1 if f.kind == Facility.Kind.REFINERY or f.kind == Facility.Kind.CIV_FACTORY else 2)

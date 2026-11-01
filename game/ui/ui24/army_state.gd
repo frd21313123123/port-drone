@@ -23,7 +23,7 @@ const FOOT: Array = [Unit.Type.INFANTRY, Unit.Type.ATGM, Unit.Type.ASSAULT]
 
 
 static func gname(g: Dictionary) -> String:
-	return "%d·%s" % [int(g.get("id", 0)), Loc.uname(String(g.get("name", ""))).to_upper()]
+	return Loc.gtag(int(g.get("id", 0)), String(g.get("name", "")))
 
 
 static func hp_col(hp: float) -> Color:

@@ -18,6 +18,7 @@ var winner: int = 0
 var win_team: int = -2
 var verdict: Dictionary = {}
 var _t: float = 0.0
+var _land_swept: bool = false
 
 
 func _init(world: GameWorld) -> void:
@@ -59,11 +60,26 @@ func update(dt: float) -> void:
 		c.score_eco = c.earned / EARN_DIV + pop + ent * 25
 		c.score_mil = c.destroyed / DESTROY_DIV + c.captured * CAPTURE_PTS
 		c.score = c.score_eco + c.score_mil
+		if not c.eliminated and c.capital_id < 0 and not c.city_ids.is_empty():
+
+
+
+			var best: int = -1
+			for id2 in c.city_ids:
+				if best < 0 or gw.cities[id2].kind < gw.cities[best].kind:
+					best = id2
+			c.capital_id = best
+			gw.cities[best].kind = City.Kind.CAPITAL
 		if not c.eliminated and c.city_ids.is_empty() and c.capital_id < 0 and (started or not c.is_player):
 			if gw.cities.size() > 0 and _ever_had_city(c):
 				c.eliminated = true
 				gw.news_m(Loc.mk("%s ПЕРЕСТАЁТ СУЩЕСТВОВАТЬ", [Loc.name(c.name).to_upper()]), "alert_red")
 				_cleanup(c)
+	if not _land_swept:
+		_land_swept = true
+		for c2: Country in gw.countries:
+			if c2.eliminated:
+				free_land(c2.id)
 	if not started or ended or gw.player == null:
 		return
 	if RankedRules.active():
@@ -174,7 +190,7 @@ static func kilo(n: int) -> String:
 	var s: String = "%.1f" % (float(n) / 1000.0)
 	if s.ends_with(".0"):
 		s = s.substr(0, s.length() - 2)
-	return Loc.t("%s тыс.") % [s.replace(".", ",")]
+	return Loc.t("%s тыс.") % [Loc.dec(s)]
 
 
 
@@ -258,7 +274,27 @@ func ranking() -> Array[Country]:
 
 
 
+
+
+
+func free_land(cid: int) -> int:
+	var d: WorldData = gw.data
+	if d == null or cid <= 0 or cid > 255:
+		return 0
+	var n: int = 0
+	var i: int = d.owners.find(cid)
+	while i >= 0:
+		d.owners[i] = 0
+		n += 1
+		i = d.owners.find(cid, i + 1)
+	if n > 0:
+		d.owners_dirty = true
+		gw._checkpoints_dirty = true
+	return n
+
+
 func _cleanup(c: Country) -> void:
+	free_land(c.id)
 	for o: Country in gw.countries:
 		if o.id != c.id and gw.diplo.get_rel(c.id, o.id) != Diplomacy.Rel.PEACE:
 			gw.diplo._set_rel(c.id, o.id, Diplomacy.Rel.PEACE)

@@ -123,7 +123,7 @@ static func pend_text(main: Node, pd: Dictionary) -> String:
 	var cost: Dictionary = {"money": int(plan["money"]), "metal": int(plan["metal"]), "wood": int(plan["wood"])}
 	var nb: int = int(plan.get("bridges", 0))
 	var to: String = (Loc.t("к вокзалу %s") % R.st_name(int(plan["b"]))) if int(plan["b"]) >= 0 else Loc.t("новый вокзал")
-	var km: String = (Loc.t("%.1f км") % (float(plan["len"]) / 1000.0)).replace(".", ",")
+	var km: String = Loc.dec(Loc.t("%.1f км") % (float(plan["len"]) / 1000.0))
 
 	return Loc.t("Ж/Д путь %s → %s\nстройка %s%s\n%s") % [km, to, _mins(float(plan["time"])), (Loc.t(" · мост") if nb == 1 else (Loc.t(" · мостов: %d") % nb if nb > 1 else "")), Economy.cost_text(cost)]
 

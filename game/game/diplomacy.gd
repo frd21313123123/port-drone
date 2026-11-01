@@ -4,6 +4,8 @@ extends "res://game/diplomacy/dip_allies.gd"
 
 
 
+const Cad344: = preload("res://game/cad344.gd")
+
 
 
 
@@ -86,10 +88,23 @@ func update(dt: float) -> void:
 	_react_update(dt)
 	_sky_update(dt)
 	_req_update(dt)
+	var cad: Cad344 = gw.cad344
+	while cad != null and not cad.dip_q.is_empty() and cad.take_ai_slot():
+		_ai_think_one(int(cad.dip_q.pop_front()), cad.dip_t0)
 	_t += dt
 	if _t < THINK_DT:
 		return
 	_t = 0.0
+	if cad != null:
+		_ai_think_global()
+		cad.dip_t0 = gw.game_time
+		cad.dip_q.clear()
+		for c: Country in gw.countries:
+			if not (c.is_player or c.eliminated or c.capital_id < 0):
+				cad.dip_q.append(c.id)
+		while not cad.dip_q.is_empty() and cad.take_ai_slot():
+			_ai_think_one(int(cad.dip_q.pop_front()), cad.dip_t0)
+		return
 	_ai_think()
 
 
@@ -119,24 +134,42 @@ func answer_offer(i: int, yes: bool) -> void:
 
 
 func _ai_think() -> void:
+	_ai_think_global()
+	for c: Country in gw.countries:
+		if c.is_player or c.eliminated or c.capital_id < 0:
+			continue
+		_ai_think_c(c, int(gw.game_time))
+
+
+
+func _ai_think_global() -> void:
 	_tick_n += 1
 	_drift_tick()
 	if ally != null:
 		ally.tick()
 	if rift != null:
 		rift.tick()
-	for c: Country in gw.countries:
-		if c.is_player or c.eliminated or c.capital_id < 0:
-			continue
-		var P: Dictionary = _p(c.id)
-		var h: int = Hash32.h2(c.id, int(gw.game_time), 431) % 1000
-		_ai_peace(c, P, h)
-		_ai_passage_review(c)
-		_ai_wars(c, P, h)
-		_ai_treaties(c, P, h)
-		_ai_demands(c, P, h)
-		_ai_embargo(c, P, h)
-		_dip2_think(c, P, h)
+
+
+
+func _ai_think_one(cid: int, t0: float) -> void:
+	var c: Country = gw.country_by_id(cid)
+	if c == null or c.is_player or c.eliminated or c.capital_id < 0:
+		return
+	_ai_think_c(c, int(t0))
+
+
+
+func _ai_think_c(c: Country, t: int) -> void:
+	var P: Dictionary = _p(c.id)
+	var h: int = Hash32.h2(c.id, t, 431) % 1000
+	_ai_peace(c, P, h)
+	_ai_passage_review(c)
+	_ai_wars(c, P, h)
+	_ai_treaties(c, P, h)
+	_ai_demands(c, P, h)
+	_ai_embargo(c, P, h)
+	_dip2_think(c, P, h)
 
 
 
@@ -813,9 +846,9 @@ func pending_for_player() -> Array:
 	if gw.econ != null:
 		for rq: Dictionary in gw.econ.requests_for(p.id):
 			out.append({"id": "r%d" % int(rq["id"]), "from": int(rq["from"]), "kind": "trade", "icon": "icon_treaty_trade",
-				"text": Loc.t("%s просит %s ×%d по %d") % [_cname(int(rq["from"])), String(Economy.RES_NAMES.get(String(rq["res"]), "")).to_lower(), int(rq["n"]), int(rq["price"])],
+				"text": Loc.t("%s просит %s ×%d по %d") % [Loc.name(_cname(int(rq["from"]))), Loc.t(String(Economy.RES_NAMES.get(String(rq["res"]), "")).to_lower()), int(rq["n"]), int(rq["price"])],
 				"deadline": float(rq["until"]), "left": maxf(0.0, float(rq["until"]) - now),
-				"options": [{"act": "accept", "label": Loc.t("ПРОДАТЬ")}, {"act": "refuse", "label": Loc.t("НЕТ")}]})
+				"options": [{"act": "accept", "label": Loc.t("ПРОДАТЬ")}, {"act": "refuse", "label": Loc.tc("НЕТ", "offer")}]})
 	out.append_array(_dip2_pending(now))
 	if ally != null:
 		out.append_array(ally.pending(now))
@@ -1600,4 +1633,4 @@ func _dip2_load(d: Dictionary) -> void:
 
 
 static func _f1(v: float) -> String:
-	return ("%.1f" % v).replace(".", ",")
+	return Loc.dec("%.1f" % v)

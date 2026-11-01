@@ -460,7 +460,7 @@ func open_trade() -> void:
 			continue
 		var rr: HBoxContainer = _rowbox(vb)
 		rr.add_child(_flag(oc))
-		var rl: Label = UiKit.lbl(Loc.t("%s просит %s %d за %d") % [Loc.name(oc.name), String(Economy.RES_NAMES.get(String(rq["res"]), "")).to_lower(), int(rq["n"]), int(rq["price"])], 10, UiKit.TITLE, 2, 2)
+		var rl: Label = UiKit.lbl(Loc.t("%s просит %s %d за %d") % [Loc.name(oc.name), Loc.t(String(Economy.RES_NAMES.get(String(rq["res"]), "")).to_lower()), int(rq["n"]), int(rq["price"])], 10, UiKit.TITLE, 2, 2)
 		rl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		rl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		rr.add_child(rl)

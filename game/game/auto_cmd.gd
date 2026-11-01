@@ -24,7 +24,7 @@ const MONEY_RESERVE: int = 300
 const THREAT_R: float = 400.0
 const DEF_REACH: float = 2400.0
 const MIN_ARMY: int = 3
-const HEAL_BELOW: float = 0.6
+const HEAL_BELOW: float = 0.45
 const ATTACK_HP: float = 0.7
 const ATTACK_N: int = 6
 const RETARGET_GAP: float = 20.0
@@ -187,8 +187,12 @@ static func _army_think(gw: GameWorld, c: Country, f: Facility, groups: Array) -
 	if f.stance == 2 and not c.at_war.is_empty():
 		if not op.is_empty():
 			_note(gw, c, f, "")
-			if kind == Operations.Kind.DEFEND and now - float(op["t0"]) > 30.0:
-				_start(gw, f, Operations.Kind.RETREAT, home)
+			if kind == Operations.Kind.DEFEND and now - float(op["t0"]) > 30.0 and smem.size() >= mini(ATTACK_N, Army.BARRACKS_CAP) and hpf >= ATTACK_HP and now >= float(ops.auto_next.get("t%d" % f.id, 0.0)):
+
+
+
+				if not _attack(gw, c, f, groups):
+					ops.auto_next["t%d" % f.id] = now + TRY_GAP
 			return
 
 		var need: int = mini(ATTACK_N, Army.BARRACKS_CAP)
@@ -209,11 +213,14 @@ static func _army_think(gw: GameWorld, c: Country, f: Facility, groups: Array) -
 	if f.stance == 2:
 		_note(gw, c, f, attack_reason(gw, c, f))
 
+
+
+	var keep: bool = not c.at_war.is_empty() and bpos.distance_to(cen) <= DEF_REACH and ops._owner_at(cen) == c.id
 	if not op.is_empty():
-		if now - float(op["t0"]) > 30.0:
+		if now - float(op["t0"]) > 30.0 and not keep:
 			_start(gw, f, Operations.Kind.RETREAT, home)
 		return
-	if not stay and cen.distance_to(home) > 300.0 and now >= float(ops.auto_next.get("t%d" % f.id, 0.0)):
+	if not stay and not keep and cen.distance_to(home) > 300.0 and now >= float(ops.auto_next.get("t%d" % f.id, 0.0)):
 		if _start(gw, f, Operations.Kind.RETREAT, home) != "":
 			ops.auto_next["t%d" % f.id] = now + TRY_GAP
 

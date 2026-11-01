@@ -6,6 +6,8 @@ extends "res://game/economy/eco_trade.gd"
 
 
 
+const Cad344: = preload("res://game/cad344.gd")
+
 
 func _init(world: GameWorld) -> void:
 	gw = world
@@ -28,6 +30,12 @@ func update(dt: float) -> void:
 	if _trade_t >= TRADE_DT:
 		_trade_t = 0.0
 		_trade_tick()
+	var cad: Cad344 = gw.cad344
+	while cad != null and not cad.trade_q.is_empty() and cad.take_ai_slot():
+		var tc: Country = gw.country_by_id(int(cad.trade_q.pop_front()))
+		if tc != null and not tc.is_player and not tc.eliminated and tc.capital_id >= 0:
+			_ai_trade(tc)
+			_ai_upgrade(tc)
 	_update_trucks(dt)
 	ports.update(dt)
 	_econ27_tick(dt)
@@ -296,6 +304,9 @@ func _trade_tick() -> void:
 		_ship(b, a)
 	for c: Country in gw.countries:
 		if not c.is_player and not c.eliminated and c.capital_id >= 0:
+			if gw.cad344 != null:
+				gw.cad344.trade_q.append(c.id)
+				continue
 			_ai_trade(c)
 			_ai_upgrade(c)
 	ports.export_tick()

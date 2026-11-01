@@ -138,6 +138,8 @@ func _ready() -> void:
 func _exit_tree() -> void:
 	if _open == self:
 		_open = null
+	if ResourceLoader.exists("res://core/sfx.gd") and Sfx.beds_off:
+		Sfx.set_beds_off(false)
 
 
 
@@ -247,6 +249,9 @@ func _save_last() -> void:
 
 
 func _mute_beds(on: bool) -> void:
+	if ResourceLoader.exists("res://core/sfx.gd"):
+		Sfx.set_beds_off(on)
+		return
 	for bn: String in ["Music", "Ambience"]:
 		var bi: int = AudioServer.get_bus_index(bn)
 		if bi < 0:

@@ -641,7 +641,7 @@ func _offer_card(it: Dictionary) -> Control:
 	l1.add_theme_constant_override("separation", 4)
 	vb.add_child(l1)
 	l1.add_child(_flag(from, Vector2(18, 12)))
-	var t1: Label = UiKit.lbl("%s · %s" % [Loc.name(from.name).to_upper(), what], 11, UiKit.TEXT, 2, 3)
+	var t1: Label = UiKit.lbl("%s · %s" % [Loc.name(from.name).to_upper(), Loc.t(what)], 11, UiKit.TEXT, 2, 3)
 	t1.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	t1.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	t1.clip_text = true
@@ -1753,7 +1753,7 @@ static func _rel_col(v: int) -> Color:
 
 
 static func _x(v: float) -> String:
-	return str(roundi(v)) if v >= 3.0 else String.num(v, 1).replace(".", ",")
+	return str(roundi(v)) if v >= 3.0 else Loc.dec(String.num(v, 1))
 
 
 static func _res_gen(r: String) -> String:
@@ -1928,7 +1928,7 @@ func _my_overlord_line() -> Control:
 
 func _cname_up(id: int) -> String:
 	var c: Country = gw.country_by_id(id)
-	return c.name.to_upper() if c != null else "?"
+	return Loc.name(c.name).to_upper() if c != null else "?"
 
 
 
@@ -1971,7 +1971,7 @@ func _subject_block(cid: int) -> Control:
 				var lb: Control = _plain_bar(float(o["liberty"]) / 100.0, Vector2(60, 8), C_WAR if float(o["liberty"]) > 70.0 else C_TRUCE)
 				lb.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 				lr.add_child(lb)
-				lr.add_child(UiKit.lbl("%d %%" % roundi(float(o["liberty"])), 9, UiKit.TEXT, 2))
+				lr.add_child(UiKit.lbl(Loc.pct(roundi(float(o["liberty"]))), 9, UiKit.TEXT, 2))
 				var rb: Button = UiKit.big("ОТПУСТИТЬ", "stone", "", 44.0, 10)
 				rb.custom_minimum_size.x = 88
 				rb.size_flags_vertical = Control.SIZE_SHRINK_CENTER

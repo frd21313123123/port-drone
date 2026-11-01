@@ -20,7 +20,7 @@ func setup(m: Node) -> void:
 func tick() -> void:
 	var hub = main.strike
 	var gw: GameWorld = main.world
-	var want: bool = hub.active or not hub.pending.is_empty() or (gw != null and gw.strike_net != null and not (gw.strike_net.get("pending") as Array).is_empty())
+	var want: bool = hub.active or not hub.pending.is_empty() or (gw != null and gw.strike_net != null and gw.strike_net.get("pending") is Array and not (gw.strike_net.get("pending") as Array).is_empty())
 	if visible != want:
 		visible = want
 	if want:

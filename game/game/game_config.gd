@@ -84,6 +84,21 @@ static var opening: bool = true
 static var notif_mode: int = 0
 static var plan_pos: Vector2 = Vector2(-1, -1)
 static var power_save: bool = false
+
+
+
+static var android: bool = OS.has_feature("android") or (OS.is_debug_build() and not OS.get_environment("DF_FAKE_ANDROID") in ["", "0"])
+
+
+static var fps_i: int = 1
+const FPS_CAPS: Array = [30, 60, 0]
+
+
+
+
+
+static var ui_scale_i: int = 4
+const UI_SCALES: Array = [0.8, 0.85, 0.9, 0.95, 1.0]
 static var creative: bool = false
 static var confirm_actions: bool = true
 static var fog: bool = true

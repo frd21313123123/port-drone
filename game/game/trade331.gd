@@ -365,7 +365,13 @@ func _impose(by: int, on: int, res: String, until: float, op: int, tell: bool) -
 		var n: int = sanction_count(on, res)
 		gw.say(on, Loc.t("САНКЦИИ: %s — %s. Импорт %s +%d %% (%d %s)") % [_cn(by), ", ".join(rs), String(Economy.RES_GEN.get(res, rname(res).to_lower())),
 			roundi(minf(IMPORT_CAP, IMPORT_STEP * float(n)) * 100.0), n, Loc.n(n, "страна", "страны", "стран", "count")])
-		gw.say(by, Loc.mk("Санкции против страны %s: %s", [Loc.name(_cn(on)), ", ".join(rs).to_lower()]))
+		var ra: Variant = ""
+		var first: bool = true
+		for r2: String in sanctions_by(by, on):
+			var lo: String = rname(r2).to_lower()
+			ra = lo if first else Loc.mk("%s, %s", [ra, lo])
+			first = false
+		gw.say(by, Loc.mk("Санкции против страны %s: %s", [_cn(on), ra]))
 
 
 func _lift(by: int, on: int, res: String, tell: bool) -> void:

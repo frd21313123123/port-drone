@@ -1,8 +1,8 @@
 extends "res://game/main/main_input.gd"
-
-
-
-
+## Entry point: world + camera + HUD, touch/mouse input, tool modes.
+## Taps: build modes place facilities; TARGET / MISSILE plan a strike; with nothing active a tap
+## selects an own drone or missile (telemetry, camera follow) or a facility (card with actions);
+## while a drone is selected, a tap anywhere on the map gives it a new target.
 
 
 func _ready() -> void:
@@ -36,7 +36,7 @@ func _ready() -> void:
 	hud.add_child(overlay)
 	hud.move_child(overlay, 0)
 	net = NetSession.new()
-	net.name = "Net"
+	net.name = "Net"  # same path on every peer: the RPC target
 	add_child(net)
 	net.setup(self)
 	menus = Menus.new()
@@ -53,13 +53,13 @@ func _ready() -> void:
 	world.war_declared.connect(_on_war)
 	world.match_ended.connect(_on_match_end)
 	world.city_captured.connect(_on_city_captured)
-	world.offer_received.connect(_on_offer)
+	world.offer_received.connect(_on_offer)  # v0.28 UX-CALM: the inbox pill counts it (journal line, no toast)
 	loading = Loading.new()
 	loading.name = "Loading"
 	add_child(loading)
-	if LangPicker.needed(self):
+	if LangPicker.needed(self):  # R340 I18N-LANG: first launch - the language first, then the opening (i18n333 §6)
 		await LangPicker.first_run(self)
-	if Opening.should_autoplay(self):
+	if Opening.should_autoplay(self):  # v0.30.8: the cinematic first; it ends on the loading look
 		await play_opening(true)
 	else:
 		loading.show_screen("Создаём мир...")
@@ -68,17 +68,17 @@ func _ready() -> void:
 	await get_tree().process_frame
 	_main_menu()
 	for a: String in OS.get_cmdline_user_args():
-		if a.begins_with("--net-test="):
+		if a.begins_with("--net-test="):  # NET: dev/net_autotest.gd (two-instance LAN test)
 			var nt: RefCounted = (load("res://dev/net_autotest.gd") as GDScript).new()
-			set_meta("net_test", nt)
+			set_meta("net_test", nt)  # keeps the test object alive while its coroutine runs
 			nt.call("run", self, a)
-		elif a.begins_with("--mp-shots="):
+		elif a.begins_with("--mp-shots="):  # NET: dev/mp_shots.gd (multiplayer UI screenshots)
 			var ms: RefCounted = (load("res://dev/mp_shots.gd") as GDScript).new()
 			set_meta("mp_shots", ms)
 			ms.call("run", self, a)
 
 
-
+## Main menu: a living world of bots behind the menu, camera drifting.
 func _main_menu() -> void:
 	in_menu = true
 	tutorial.stop()
@@ -90,7 +90,7 @@ func _main_menu() -> void:
 	loading.set_progress(0.1, "Рельеф, реки и леса...")
 	await get_tree().process_frame
 	await get_tree().process_frame
-	var s: = WorldSettings.new()
+	var s := WorldSettings.new()
 	s.world_seed = randi() % 100000000
 	s.size = 512
 	settings = s
@@ -102,7 +102,7 @@ func _main_menu() -> void:
 	world.spawn_ai_countries(4)
 	world._flush_territory()
 	world.time_scale = 2.0
-	cam.set_zoom_at(1.0, cam.view_size() * 0.5)
+	cam.set_zoom_at(MapCamera.zk(1.0), cam.view_size() * 0.5)  # R347
 	_on_zoom(1.0)
 	var caps: Array = []
 	for c: City in world.cities:
@@ -117,10 +117,10 @@ func _main_menu() -> void:
 	menus.show_main()
 
 
-
-
+## v0.30.8 OPENING: plays the cinematic over everything. `boot`: the loading screen appears under its
+## fade (same first frame). Otherwise («СМОТРЕТЬ ЗАСТАВКУ») the menu music pauses meanwhile.
 func play_opening(boot: bool) -> void:
-	var op: = Opening.new()
+	var op := Opening.new()
 	op.name = "Opening"
 	if boot:
 		op.reveal.connect(func() -> void: loading.show_screen("Создаём мир..."))
@@ -142,7 +142,7 @@ func _on_menu(req: String) -> void:
 			menus.show_main()
 		"setup":
 			if net.in_match:
-				net.leave()
+				net.leave()  # NET: the end screen's «НОВАЯ ПАРТИЯ»: leave the network match first
 				return
 			if not in_menu:
 				_main_menu()
@@ -150,7 +150,7 @@ func _on_menu(req: String) -> void:
 		"mp":
 			menus.show_mp()
 		"mp_lobby":
-			menus.show_lobby()
+			menus.show_lobby()  # NET: back from the match setup to the room
 		"settings_main":
 			menus.show_settings(false)
 		"settings_pause":
@@ -158,16 +158,16 @@ func _on_menu(req: String) -> void:
 		"start":
 			GameConfig.tutorial = false
 			if GameConfig.cb_on:
-				CustomBots.sanitize()
+				CustomBots.sanitize()  # CUSTOMBOTS R331: prefs may hold anything
 				if GameConfig.cb_list.is_empty():
-					menus.show_custom_bots()
+					menus.show_custom_bots()  # no enemy: back to the roster (its empty state says why)
 					return
 			_new_game()
 		"tutorial", "tutorial_restart":
 			if net.in_match:
 				net.leave()
 				return
-
+			# Gentle settings for the tutorial match only; the player's choice is restored after.
 			var keep: Array = [GameConfig.bots, GameConfig.difficulty, GameConfig.aggression, GameConfig.size_i]
 			GameConfig.tutorial = true
 			GameConfig.bots = 2
@@ -185,7 +185,7 @@ func _on_menu(req: String) -> void:
 			menus.show_scores()
 		"resume", "continue":
 			menus.close()
-			_paused = _menu_paused
+			_paused = _menu_paused  # v0.21: the menu keeps the player's own pause
 			_menu_paused = false
 			_apply_speed()
 		"restart":
@@ -196,14 +196,14 @@ func _on_menu(req: String) -> void:
 		"main_menu":
 			if net.in_match:
 				if net.reconnecting or net.rejoining:
-					net.leave(true, true, true)
+					net.leave(true, true, true)  # NET 32: the place stays («ВЕРНУТЬСЯ В ПАРТИЮ» in «Мультиплеер»)
 				else:
-					net.leave()
+					net.leave()  # NET: leaving a network match; net_match_closed() shows the menu
 				return
 			Save.save_game(self)
 			_main_menu()
 		"mp_start":
-			var whys: String = net.host_start()
+			var whys: String = net.host_start()  # NET: the host starts with the setup-screen rules
 			if whys != "":
 				menus.show_lobby(whys)
 		"load_save":
@@ -213,25 +213,25 @@ func _on_menu(req: String) -> void:
 			menus.close()
 			hud.hide_prompt()
 			if not await Save.load_game(self):
-				_main_menu()
+				_main_menu()  # R332 SAVES: the slot is marked damaged (the saves screen shows it), not deleted
 				hud.show_toast("Сохранение повреждено")
 			else:
-				_plan_refresh()
+				_plan_refresh()  # the plan showed an old early step for seconds after a load
 
 
 func _new_game() -> void:
-	RankedRules.clear()
-
-	Save.begin_new()
+	RankedRules.clear()  # (critic) a ranked match's settings never reach a single-player game
+	# The old save stays until this match's first autosave (60 s): backing out keeps «ПРОДОЛЖИТЬ».
+	Save.begin_new()  # R332 SAVES: the slot picked on the setup screen (ЗАНОВО: the same slot)
 	hud.hide_prompt()
 	menus.close()
 	in_menu = false
 	hud.visible = true
-	var s: = WorldSettings.new()
+	var s := WorldSettings.new()
 	s.world_seed = randi() % 100000000
 	s.size = int(GameConfig.SIZES[GameConfig.size_i])
-	GameConfig.apply_map(s, true)
-	GameConfig.bots = maxi(1, GameConfig.bots)
+	GameConfig.apply_map(s, true)  # v0.25 MAP: map type, rivers, lakes, the previewed seed
+	GameConfig.bots = maxi(1, GameConfig.bots)  # kiwy-multiplayer: 0 bots is for network matches only
 	_paused = false
 	_speed_i = 0
 	start_world(s)
@@ -244,7 +244,7 @@ func _new_game() -> void:
 func start_world(s: WorldSettings) -> void:
 	settings = s
 	if not net.in_match:
-		world.net_driven = false
+		world.net_driven = false  # NET: a single-player world is never stepped by the lockstep
 	loading.show_screen("Генерация мира...")
 	_deselect()
 	_clear_plan()
@@ -256,7 +256,7 @@ func start_world(s: WorldSettings) -> void:
 	loading.set_progress(0.9, "Готовим карту...")
 	await get_tree().process_frame
 	_apply_speed()
-	cam.set_zoom_at(1.0, cam.view_size() * 0.5)
+	cam.set_zoom_at(MapCamera.zk(1.0), cam.view_size() * 0.5)  # R347
 	_on_zoom(1.0)
 	loading.finish()
 	_snd("music", ["game"])
@@ -270,7 +270,7 @@ func start_world(s: WorldSettings) -> void:
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_GO_BACK_REQUEST:
 		if bool(load("res://ui/ui24/tutorial_feed.gd").call("close_if_open")):
-			return
+			return  # SP 0.31.3: BACK over the tutorial feed closes it (was: resumed the paused match under the feed)
 		if (menus == null or not menus.is_open()) and _army_back():
 			return
 		if menus != null and menus.is_open():
@@ -279,12 +279,12 @@ func _notification(what: int) -> void:
 		else:
 			_open_pause()
 	elif what == NOTIFICATION_APPLICATION_PAUSED or what == NOTIFICATION_APPLICATION_FOCUS_OUT:
-		_touches.clear()
+		_touches.clear()  # fingers lifted while the app was away never send a release
 		_pinch_d = 0.0
 		_pinch_mid = Vector2.INF
 		_dtz = false
 		if net != null and net.in_match:
-
+			# NET: no local save, no pause; a host going to the background pauses the match for all.
 			if OS.has_feature("mobile"):
 				net.set_host_active(false)
 			return
@@ -298,14 +298,14 @@ func _notification(what: int) -> void:
 	elif what == NOTIFICATION_WM_CLOSE_REQUEST:
 		if net != null and net.in_match:
 			if net.is_host:
-				net.host_exit_saved()
+				net.host_exit_saved()  # NET 35: the match stays saved: the host may resume it, the guests keep their places
 			else:
 				net.leave(false)
 		elif not in_menu:
 			Save.save_game(self)
 
 
-
+## REPORTS: «ЖАЛОБА» from the chat (ui/ui24/dip_chat_view.gd): the menu opens on the report about that country.
 func open_report(cid: int) -> void:
 	if in_menu:
 		return
@@ -324,7 +324,7 @@ func _open_pause() -> void:
 	menus.show_pause()
 
 
-
+## A new diplomatic item. NET: the signal fires on every device; only a new item for this player counts.
 func _on_offer() -> void:
 	if net.in_match and world.diplo != null:
 		var fresh: bool = false
@@ -337,17 +337,17 @@ func _on_offer() -> void:
 		if not fresh:
 			return
 	var was: bool = world.ui_mute
-	world.ui_mute = false
+	world.ui_mute = false  # NET: another person's command made it, but the item is ours
 	hud._on_world_message("Дипломатия: новое предложение")
-	world.ui_mute = was
+	world.ui_mute = was  # v0.28 UX-CALM: the inbox pill counts it (journal line, no toast)
 
 
 func _on_war(a: int, b: int) -> void:
 	if world.player == null or (a != world.player.id and b != world.player.id):
-		return
+		return  # NET: someone else's war (the signal fires on every device)
 	var other: int = b if a == world.player.id else a
 	var oc: Country = world.country_by_id(other)
-	hud.war_flash(Loc.msg(Loc.mk("ВОЙНА: %s", [(Loc.name(oc.name).to_upper() if oc != null else "")])), "war")
+	hud.war_flash(Loc.msg(Loc.mk("ВОЙНА: %s", [(Loc.name(oc.name).to_upper() if oc != null else "")])), "war")  # R340
 	hud.plan_state = 0
 	hud.plan_open = false
 	hud._plan_sig = ""
@@ -355,7 +355,7 @@ func _on_war(a: int, b: int) -> void:
 
 
 func _on_match_end(winner: int) -> void:
-	if net.in_match and RankedRules.active():
+	if net.in_match and RankedRules.active():  # BACKEND 2: every player reports by himself, at once
 		var wt: int = world.session.win_team if world.session != null else -1
 		var mid: String = String(GameConfig.ranked.get("match", net.match_id))
 		if mid == "":
@@ -369,12 +369,12 @@ func _on_match_end(winner: int) -> void:
 		menus.show_end_ranked(wt, mid)
 		return
 	if not net.in_match:
-		Save.match_over(world.player != null and winner == world.player.id)
+		Save.match_over(world.player != null and winner == world.player.id)  # R332: the slot keeps its saves, marked ended  # NET: a network match never touches the single-player save
 	else:
-		net.match_decided = true
-		NetConfig.clear_rejoin()
+		net.match_decided = true  # leaving now ends the match on the server (counted), never a hand-over
+		NetConfig.clear_rejoin()  # NET 32: nothing to come back to
 		if net.is_host:
-			NetConfig.clear_match()
+			NetConfig.clear_match()  # NET 35: the match is over: nothing to resume
 	_menu_paused = false
 	_paused = true
 	_apply_speed()
@@ -388,18 +388,27 @@ func _on_city_captured(city: City, _old: int) -> void:
 	if follow is Aircraft and world.player != null and (follow as Aircraft).country_id != world.player.id:
 		_deselect()
 	if world.player != null and city.country_id == world.player.id:
-		var annex: bool = world.diplo != null and world.diplo.get("conf") != null and bool(world.diplo.conf.applying)
-		hud.war_flash((Loc.t("АННЕКСИЯ: %s") if annex else Loc.t("ГОРОД ВЗЯТ: %s")) % Loc.name(city.name).to_upper())
+		var annex: bool = world.diplo != null and world.diplo.get("conf") != null and bool(world.diplo.conf.applying)  # v0.26 DIP2
+		hud.war_flash((Loc.t("АННЕКСИЯ: %s") if annex else Loc.t("ГОРОД ВЗЯТ: %s")) % Loc.name(city.name).to_upper())  # R340
 	elif world.player != null and _old == world.player.id:
-		var by_c: Country = world.country_by_id(city.country_id)
+		var by_c: Country = world.country_by_id(city.country_id)  # v0.30.13 PEACE313: who took it (an ally of the defeated is not the defeated)
 		hud.war_flash(Loc.msg(Loc.mk("ПОТЕРЯН ГОРОД: %s — взял %s", [Loc.name(city.name).to_upper(), Loc.name(by_c.name).to_upper() if by_c != null else "?"])), "lost")
 
 
+const _TutorialFeed = preload("res://ui/ui24/tutorial_feed.gd")  # R346C (is_open: the idle frame cap)
+
+
 func _process(delta: float) -> void:
+	# R346C: the plain main menu screen, the pause, a menu over the match: Save.IDLE_FPS (heat, battery). Not under the
+	# tutorial feed (its flick is read per frame) nor on the other main-menu screens (flag editor strokes, lists).
+	var idle: bool = ((in_menu and menus.current == "main") or (not in_menu and (_paused or menus.is_open()))) and not _TutorialFeed.is_open()
+	if idle != Save.fps_idle:
+		Save.fps_idle = idle
+		Save.apply_power_save()
 	if not _focus.is_empty():
 		_focus_tick()
 	if in_menu:
-
+		# Slow drift over the bots' world behind the main menu.
 		cam.position += _menu_pan * delta * 14.0
 		var wpx: Vector2 = cam.world_px
 		if cam.position.x < 200.0 or cam.position.x > wpx.x - 200.0:
@@ -411,50 +420,50 @@ func _process(delta: float) -> void:
 	if _strat_tap.is_finite() and Time.get_ticks_msec() - _strat_tap_ms >= 320:
 		var stp: Vector2 = _strat_tap
 		_strat_tap = Vector2.INF
-
-
+		# SP 0.31.1 (STRANGE332): the pending tap is dropped when the view moved / zoomed or a menu opened meanwhile
+		# (was: a country page opened under the pause menu; after a quick pinch the tap hit whatever was there now)
 		if not menus.is_open() and mode == Mode.NONE and _strat_tap_w.is_finite() and cam.world_to_screen(_strat_tap_w).distance_to(stp) < 12.0:
 			_tap(stp)
 	world.selected_army = selected_fac if selected_fac != null and selected_fac.kind == Facility.Kind.BARRACKS else null
 	_creative_t -= delta
 	if world.get("vfx") != null and world.vfx.has_method("set_focus"):
-
+		# v0.20: clouds / smoke step aside while aiming (any mode) and over the pending mark.
 		var fp: Vector2 = _pend["wp"] if _pend.has("wp") else Vector2.INF
-		var fsig: = Vector3(fp.x if fp.is_finite() else -1.0, fp.y if fp.is_finite() else -1.0, float(mode))
+		var fsig := Vector3(fp.x if fp.is_finite() else -1.0, fp.y if fp.is_finite() else -1.0, float(mode))
 		if fsig != _focus_sig:
 			_focus_sig = fsig
 			world.vfx.set_focus([fp] if fp.is_finite() else [], mode != Mode.NONE or fp.is_finite())
 	if _auto_card != null:
-
+		# v0.20: a card opened by a build closes by itself if untouched (it hid the plan for minutes).
 		_auto_card_t -= delta
 		if selected_fac != _auto_card:
 			_auto_card = null
 		elif _auto_card_t <= 0.0 and not _confirming:
 			_auto_card = null
 			_deselect()
-	if GameConfig.creative and _creative_t <= 0.0 and world.player != null and not GameConfig.tutorial and not net.in_match:
-		_creative_t = 0.5
+	if GameConfig.creative and _creative_t <= 0.0 and world.player != null and not GameConfig.tutorial and not net.in_match:  # NET: online top-up runs on the ticks
+		_creative_t = 0.5  # creative mode: money and every resource stay topped up
 		var cp: Country = world.player
 		cp.money = maxi(cp.money, 1000000)
 		for rk: String in Economy.TRADE_RES + ["fuel"]:
 			var cap: int = int(world.econ.res_cap(cp, rk)) if world.econ.has_method("res_cap") else 0
 			cp.set(rk, maxi(int(cp.get(rk)), cap if cap > 0 else 999))
-
+	# Camera may bring every map edge into the free area between the HUD bars.
 	var mt: float = hud.top_col.position.y + hud.top_col.size.y
 	var mb: float = hud.root.size.y - hud.holder.position.y
 	if absf(cam.margin_top_px - mt) > 2.0 or absf(cam.margin_bottom_px - mb) > 2.0:
 		cam.margin_top_px = mt
 		cam.margin_bottom_px = mb
 		cam.center_on(cam.position)
-	var g_live: bool = not _pend.is_empty() or mode == Mode.TARGET or BUILD_KIND.has(mode) or mode == Mode.RAIL_ST or mode == Mode.RAIL_LINE
+	var g_live: bool = not _pend.is_empty() or mode == Mode.TARGET or BUILD_KIND.has(mode) or mode == Mode.RAIL_ST or mode == Mode.RAIL_LINE  # R335
 	if (g_live or _ghost_live) and _ghost != null:
-		_ghost.queue_redraw()
+		_ghost.queue_redraw()  # R323 PLACE: build modes too (own AD rings before the first tap); one more to clear
 	_ghost_live = g_live
 	_cam_tick(delta)
 	_prompt_tick(delta)
 	_update_ops(delta)
 	_net_banner_tick(delta)
-	strike.tick(world)
+	strike.tick(world)  # v0.28 UX-STRIKE: staggered (synchronised) launches on game time
 	if strike_marks != null:
 		strike_marks.tick()
 	if jet316_marks != null:
@@ -470,24 +479,24 @@ func _on_action(nm: String) -> void:
 	if world.player != null and world.player.eliminated and not in_menu and not (nm in SPECTATOR_OK or nm.begins_with("page_") or nm.begins_with("dipx:")):
 		hud.show_toast("Наблюдение: ваша страна выбыла. «Новая партия» — в меню")
 		return
-
+	# A card of something that is no longer ours (captured) does nothing.
 	if selected_fac != null and world.player != null and selected_fac.country_id != world.player.id:
 		_deselect()
 	if net.in_match and nm == "pause":
 		hud.show_toast("Мультиплеер: пауза — только когда хост свернул игру")
 		return
 	if net.in_match and nm in ["speed", "speed_next"]:
-		_speed_picker()
+		_speed_picker()  # NET 31: agreed / automatic match speed
 		return
 	match nm:
 		"pause":
 			_paused = not _paused
 			_apply_speed()
 		"speed":
-			_speed_picker()
+			_speed_picker()  # v0.26.1 owner: a popup row of speed chips (was: cycle per tap)
 		"speed_next":
 			if net.in_match:
-				_speed_picker()
+				_speed_picker()  # NET 31: the match speed is agreed / automatic, not this device's
 				return
 			_speed_i = (_speed_i + 1) % SPEEDS.size()
 			_paused = false
@@ -525,12 +534,12 @@ func _on_action(nm: String) -> void:
 				_menu_paused = _paused
 			_paused = true
 			_apply_speed()
-			menus.show_scores("pause" if menus.is_open() and menus.current == "pause" else "resume")
+			menus.show_scores("pause" if menus.is_open() and menus.current == "pause" else "resume")  # R332 T4: HUD score -> back to the game
 		"diplomacy":
 			hud.open_diplomacy()
 		"trade":
 			hud.open_trade()
-		"ad_rules":
+		"ad_rules":  # R335 UX335: country-wide AD target rules (ПВО tab key, AD site card act)
 			hud.open_ad_rules(selected_fac.kind if selected_fac != null and Defense.AD_CLASSES.has(selected_fac.kind) else -1)
 		"doctrine":
 			hud.open_doctrine()
@@ -571,7 +580,7 @@ func _on_action(nm: String) -> void:
 					hud.show_toast(_why(r) if _why(r) != "" else Loc.msg(Loc.mk("Подвес: %s", [Loc.t(Air.PYLON_NAMES[a2.pylon])]))))
 		"air_hyp":
 			if follow is Aircraft:
-				strike_open("hyper")
+				strike_open("hyper")  # v0.28 UX-STRIKE: the one strike panel, hypersonic preselected
 		"page_0", "page_1", "page_2", "page_3", "page_4", "page_5", "page_6":
 			pass
 		"defend":
@@ -590,13 +599,13 @@ func _on_action(nm: String) -> void:
 		"bar_4":
 			if selected_fac != null and selected_fac.kind == Facility.Kind.BARRACKS:
 				_sim("", "cmd_field", [selected_fac, "prod_type", 4])
-		"factory", "droneport", "tel", "mfactory", "refinery", "power", "airfield", "farm", "civ", "mine", "barracks", "ad_mfg", "ad_spaag", "ad_sam", "ad_patriot", "ad_int", "ad_radar", "ad_ew", "trench", "teeth", "dugout", "sawmill", "oil_rig", "port", "solar_farm", "navbase", "coastal_asm", "npp", "umine":
+		"factory", "droneport", "tel", "mfactory", "refinery", "power", "airfield", "farm", "civ", "mine", "barracks", "ad_mfg", "ad_spaag", "ad_sam", "ad_patriot", "ad_int", "ad_radar", "ad_ew", "trench", "teeth", "dugout", "sawmill", "oil_rig", "port", "solar_farm", "navbase", "coastal_asm", "npp", "umine":  # QA v0.27.1: + coastal_asm; v0.30 URAN30: + npp, umine
 			var bm: int = BUILD_KEYS[nm]
 			if not _has_capital():
 				_set_mode(mode)
 			else:
 				_set_mode(Mode.NONE if mode == bm else bm)
-		"rail_st", "rail_line":
+		"rail_st", "rail_line":  # R335 RAIL335
 			var rm: int = Mode.RAIL_ST if nm == "rail_st" else Mode.RAIL_LINE
 			if _has_capital():
 				RB.reset()
@@ -608,7 +617,7 @@ func _on_action(nm: String) -> void:
 				_set_mode(Mode.NONE)
 			elif _has_capital():
 				route_mode = false
-				strike_open("jet" if plan_jet else "drone")
+				strike_open("jet" if plan_jet else "drone")  # v0.28 UX-STRIKE
 			else:
 				_set_mode(mode)
 		"ship_cr":
@@ -621,18 +630,18 @@ func _on_action(nm: String) -> void:
 				_set_mode(Mode.NONE)
 			elif _has_capital():
 				route_mode = false
-				strike_open("tel")
+				strike_open("tel")  # v0.28 UX-STRIKE
 			else:
 				_set_mode(mode)
 		"route":
 			if mode == Mode.NONE and follow is Drone:
-				route_mode = not route_mode
+				route_mode = not route_mode  # taps add waypoints to the selected drone
 				hud.show_toast("Тап по карте добавит точку маршрута" if route_mode else "Тап по карте задаёт новую цель")
 			elif mode != Mode.TARGET:
 				if not _has_capital():
 					_set_mode(mode)
 					return
-				strike_open("jet" if plan_jet else "drone")
+				strike_open("jet" if plan_jet else "drone")  # v0.28 UX-STRIKE
 				route_mode = true
 			else:
 				route_mode = not route_mode
@@ -657,7 +666,7 @@ func _on_action(nm: String) -> void:
 			if mode == Mode.JET_KAB or mode == Mode.JET_CAS:
 				_jet_fire()
 			elif strike.active:
-				strike_fire()
+				strike_fire()  # v0.28 UX-STRIKE
 			else:
 				_do_launch()
 		"plan_cancel":
@@ -681,7 +690,7 @@ func _on_action(nm: String) -> void:
 		"armies":
 			hud.toggle_armies()
 		"fleet":
-			hud.open_navy_dock(null)
+			hud.open_navy_dock(null)  # v0.26 NAVY: the fleet dock
 		"move_all":
 			_set_mode(Mode.MOVE_ALL)
 		_ when nm.begins_with("arm_all_set:"):
@@ -705,19 +714,19 @@ func _on_action(nm: String) -> void:
 				_set_mode(Mode.NONE)
 				_deselect()
 				if hud.get("army_ux") != null and preload("res://game/army_groups.gd").army_alive(world, af):
-					hud.army_ux.open_army(af.id)
+					hud.army_ux.open_army(af.id)  # v0.30.3 ARMUX303
 					return
 				selected_fac = af
-				army_view = true
+				army_view = true  # v0.30.3 ARMUX303: a dock row = the army card
 				cam_lock = false
-				var sum: = Vector2.ZERO
+				var sum := Vector2.ZERO
 				var cnt: int = 0
 				for u: Unit in world.army.units:
 					if u.home == af and u.alive():
 						sum += u.pos
 						cnt += 1
 				cam.center_on(sum / cnt if cnt > 0 else af.center_px())
-				_focus = {"fid": af.id, "n": 3}
+				_focus = {"fid": af.id, "n": 3}  # CRITIC303 #1: then out from under the card
 				hud._arm_sig = ""
 		"auto_refill":
 			if selected_fac != null and selected_fac.kind == Facility.Kind.BARRACKS:
@@ -727,7 +736,7 @@ func _on_action(nm: String) -> void:
 		"build_pick":
 			if selected_fac != null and selected_fac.kind == Facility.Kind.BARRACKS:
 				hud.open_builds(selected_fac)
-		"army_trench_in", "army_trench_out":
+		"army_trench_in", "army_trench_out":  # v0.30.3 ARMUX303: the army card's В ОКОПЫ / ИЗ ОКОПОВ (nearest free places)
 			if selected_fac != null and selected_fac.kind == Facility.Kind.BARRACKS:
 				var tf: Facility = selected_fac
 				var tin: bool = nm == "army_trench_in"
@@ -738,17 +747,17 @@ func _on_action(nm: String) -> void:
 						UiKit.snd("ui_error")
 					else:
 						UiKit.snd("ui_select"))
-		"army_group":
+		"army_group":  # v0.30.3 ARMUX303: the army card's ГРУППА: the АРМИЯ dock on its group (or «без группы» to add it)
 			if selected_fac != null and selected_fac.kind == Facility.Kind.BARRACKS and hud.get("army_dock") != null:
 				var gf2: Facility = selected_fac
 				_deselect()
 				hud.army_dock.open_group_card(gf2.group_id if gf2.group_id >= 0 else -2, gf2.id)
-		"army_barracks":
+		"army_barracks":  # v0.30.3 ARMUX303: from the army card to its building (builds, refill, demolish)
 			if selected_fac != null and selected_fac.kind == Facility.Kind.BARRACKS:
 				army_view = false
 				cam_lock = false
 				UiKit.snd("ui_select")
-		"army_card":
+		"army_card":  # v0.30.3 ARMUX303: from the barracks card to its army
 			if selected_fac != null and selected_fac.kind == Facility.Kind.BARRACKS:
 				army_view = true
 				cam_lock = false
@@ -766,7 +775,7 @@ func _on_action(nm: String) -> void:
 		_ when nm.begins_with("plan_go:"):
 			_plan_go(nm.get_slice(":", 1))
 		_ when nm.begins_with("fac_go:") or nm.begins_with("dep_go:"):
-			_res_go(nm)
+			_res_go(nm)  # R332 ECONUI: a resource sheet row -> camera + card
 		"prot:net", "prot:conc":
 			if selected_fac != null and world.get("protect") != null:
 				var pw: String = nm.substr(5)
@@ -775,7 +784,7 @@ func _on_action(nm: String) -> void:
 				var broken_p: bool = String(pinf[pw + "_state"]) in ["torn", "broken"]
 				_sim("protect", "repair" if broken_p else "upgrade", [pf, pw, world.player], func(r: Variant) -> void:
 					if _why(r) != "":
-						hud.show_toast(_why(r)))
+						hud.show_toast(_why(r)))  # success toasts come from Protect itself
 		"fac_halt":
 			if selected_fac != null and world.mil.has_method("set_halted"):
 				var hf: Facility = selected_fac
@@ -842,7 +851,7 @@ func _on_action(nm: String) -> void:
 			var uc: Country = world.country_by_id(int(u["to"]))
 			_sim("diplo", "demand", [world.player.id, int(u["to"]), kind, prm], func(r: Variant) -> void:
 				var whyu: String = _why(r)
-				hud.show_toast(whyu if whyu != "" else Loc.msg(Loc.mk("%s уступает: требование выполнено", [(Loc.name(uc.name) if uc != null else "")])))
+				hud.show_toast(whyu if whyu != "" else Loc.msg(Loc.mk("%s уступает: требование выполнено", [(Loc.name(uc.name) if uc != null else "")])))  # R340
 				UiKit.snd("ui_error" if whyu != "" else "ui_money")
 				hud.open_diplomacy())
 		"pend_ok":
@@ -900,7 +909,7 @@ func _on_action(nm: String) -> void:
 				_sim("", "cmd_recall", [world.player.id, int(rd.get("id"))])
 		"satellite":
 			if net.in_match:
-				hud.show_toast("Спутник в сетевой партии пока недоступен")
+				hud.show_toast("Спутник в сетевой партии пока недоступен")  # NET: Vision is the local player's
 				return
 			if world.get("vision") == null or not world.vision.has_method("reveal"):
 				hud.show_toast("Спутниковая разведка недоступна")
@@ -910,12 +919,12 @@ func _on_action(nm: String) -> void:
 			world.set_map_mode(int(nm.get_slice(":", 1)))
 		_ when nm.begins_with("goto_dep:"):
 			var gp: PackedStringArray = nm.split(":")
-			var gc: = Vector2i(int(gp[1]), int(gp[2]))
+			var gc := Vector2i(int(gp[1]), int(gp[2]))
 			_deselect()
 			_set_mode(Mode.NONE)
 			cam.center_on(Vector2(gc * GameWorld.CELL) + Vector2(0, 40))
 			if cam.zoom.x < 1.5:
-				cam.set_zoom_at(1.5, cam.view_size() * 0.5)
+				cam.set_zoom_at(MapCamera.zk(1.5), cam.view_size() * 0.5)  # R347
 			selected_dep = world.econ.deposit_at(gc, 1)
 		"inventory":
 			hud.open_inventory()
@@ -926,7 +935,7 @@ func _on_action(nm: String) -> void:
 			hud.hide_ops()
 		"buy_bomber", "buy_fighter", "buy_heli", "buy_attack":
 			if selected_fac != null:
-				var t: int = {"buy_bomber": Aircraft.Type.BOMBER, "buy_fighter": Aircraft.Type.FIGHTER, "buy_heli": Aircraft.Type.HELI, "buy_attack": Aircraft.Type.ATTACK} [nm]
+				var t: int = {"buy_bomber": Aircraft.Type.BOMBER, "buy_fighter": Aircraft.Type.FIGHTER, "buy_heli": Aircraft.Type.HELI, "buy_attack": Aircraft.Type.ATTACK}[nm]
 				_sim("mil.air", "buy", [selected_fac, t, world.player], func(r: Variant) -> void:
 					hud.show_toast(_why(r) if _why(r) != "" else Loc.msg(Loc.mk("Куплен: %s", [Loc.t(String(Air.SPEC[t]["name"]))]))))
 		"air_land":
@@ -943,10 +952,10 @@ func _on_action(nm: String) -> void:
 					hud.show_toast(_why(r) if _why(r) != "" else "Истребитель улучшен"))
 		"air_cr":
 			if follow is Aircraft:
-				strike_open("bomber")
+				strike_open("bomber")  # v0.28 UX-STRIKE: КР from aircraft in the one strike panel
 		"air_kab", "air_cas", "jet_kab", "jet_cas":
-
-
+			# R316: attack jet — card keys (the followed jet) and the side-panel keys (best ready jet).
+			# R316: the bomber КАБ payload (air_payload / launch_kab) is gone; КАБ fly on attack jets.
 			var jm: int = Mode.JET_KAB if nm.ends_with("kab") else Mode.JET_CAS
 			if nm.begins_with("jet_") and mode == jm:
 				_set_mode(Mode.NONE)
@@ -973,7 +982,7 @@ func _on_action(nm: String) -> void:
 		_ when nm.begins_with("offer:"):
 			var parts: PackedStringArray = nm.split(":")
 			_sim("diplo", "answer_as", [world.player.id, "o%d" % int(parts[1]), "accept" if parts[2] == "1" else "refuse"], func(_r: Variant) -> void:
-				hud.open_diplomacy())
+				hud.open_diplomacy())  # NET 29: a command (was answer_offer_from on this device only)
 		_ when nm.begins_with("trade:"):
 			var tp: PackedStringArray = nm.split(":")
 			var t_m: String = ("propose_treaty" if tp[2] == "1" else "cancel_treaty") if world.diplo.has_method("propose_treaty") else "set_trade"
@@ -1008,15 +1017,15 @@ func _on_action(nm: String) -> void:
 				var uf: Facility = selected_fac
 				_sim("econ", "upgrade", [uf, world.player], func(r: Variant) -> void:
 					var whyu: String = _why(r)
-					hud.show_toast(whyu if whyu != "" else (String(world.econ.call("upgrade_toast", uf)) if world.econ.has_method("upgrade_toast") else Loc.msg(Loc.mk("Улучшено: %s, уровень %d", [Loc.t(Military.title_of(uf.kind)), int(world.econ.call("level_of", uf))]))))
+					hud.show_toast(whyu if whyu != "" else (String(world.econ.call("upgrade_toast", uf)) if world.econ.has_method("upgrade_toast") else Loc.msg(Loc.mk("Улучшено: %s, уровень %d", [Loc.t(Military.title_of(uf.kind)), int(world.econ.call("level_of", uf))]))))  # v0.27 ECON27
 					UiKit.snd("ui_error" if whyu != "" else "ui_build"))
 		"intel_strike":
-
+			# Intel card → missile strike plan aimed at the last known position.
 			if selected_intel != null:
 				var tp: Vector2 = world.vision.last_pos(selected_intel)
 				_deselect()
 				route_mode = false
-				strike_open("tel")
+				strike_open("tel")  # v0.28 UX-STRIKE: the intel point joins the ОТРК points
 				if plan_has_target:
 					plan_list.append({"pos": plan_target, "n": plan_count, "wps": plan_wps.duplicate()})
 					plan_wps.clear()
@@ -1030,7 +1039,7 @@ func _on_action(nm: String) -> void:
 			if world.player != null:
 				_sim("mil", "restore_all", [world.player], func(r: Variant) -> void:
 					var rr: Array = r if r is Array else [0, 0, 0]
-					var rwhy: String = String(rr[3]) if rr.size() > 3 else ""
+					var rwhy: String = String(rr[3]) if rr.size() > 3 else ""  # v0.28: the exact reason (fire / money)
 					if int(rr[0]) > 0:
 						hud.show_toast(Loc.msg(Loc.mk("Ремонт: %d объект(ов), −%d%s", [int(rr[0]), int(rr[1]), (Loc.t(" · не начато: ") + rwhy) if rwhy != "" else ""])))
 						UiKit.snd("ui_build")
@@ -1041,7 +1050,7 @@ func _on_action(nm: String) -> void:
 			if selected_fac != null:
 				_sim("mil", "restore", [selected_fac, world.player])
 		"fac_demolish":
-
+			# v0.25 DEMOLISH: always through the confirm card (destructive), whatever confirm_actions says.
 			if selected_fac != null and world.player != null and world.mil.has_method("demolish"):
 				var whyd: String = world.mil.demolish_why(world.player, selected_fac)
 				if whyd != "":
@@ -1067,13 +1076,13 @@ func _on_action(nm: String) -> void:
 		"dtype_0", "dtype_1":
 			if selected_fac != null and selected_fac.kind == Facility.Kind.DRONE_FACTORY:
 				_sim("", "cmd_field", [selected_fac, "prod_type", int(nm.substr(6))])
-		_ when nm.begins_with("mtype_"):
+		_ when nm.begins_with("mtype_"):  # R316: mtype_5 = КАБ
 			if selected_fac != null:
 				_sim("mil", "set_prod_type", [selected_fac, int(nm.substr(6))])
 		"mod_ramp", "mod_runway", "mod_store", "mod_solar", "mod_crane":
 			if selected_fac != null and world.mil.alive(selected_fac):
 				module_port = selected_fac
-				module_kind = {"mod_ramp": Facility.Kind.DP_RAMP, "mod_runway": Facility.Kind.DP_RUNWAY, "mod_store": Facility.Kind.DP_STORE, "mod_solar": Facility.Kind.SOLAR, "mod_crane": Facility.Kind.PORT_CRANE} [nm]
+				module_kind = {"mod_ramp": Facility.Kind.DP_RAMP, "mod_runway": Facility.Kind.DP_RUNWAY, "mod_store": Facility.Kind.DP_STORE, "mod_solar": Facility.Kind.SOLAR, "mod_crane": Facility.Kind.PORT_CRANE}[nm]
 				_set_mode(Mode.MODULE)
 		"expedition":
 			if selected_fac != null and selected_fac.kind == Facility.Kind.PORT and world.get("naval") != null:
@@ -1081,7 +1090,7 @@ func _on_action(nm: String) -> void:
 				if ready != "":
 					hud.show_toast(ready)
 					UiKit.snd("ui_error")
-					if bool(world.naval.port_info(selected_fac).get("short_res", false)):
+					if bool(world.naval.port_info(selected_fac).get("short_res", false)):  # R333: a flag, not the words
 						_offer_buy(Naval.EXP_COST)
 				else:
 					exp_port = selected_fac
@@ -1102,21 +1111,21 @@ func _on_action(nm: String) -> void:
 			hud.show_toast(nm.substr(8))
 			UiKit.snd("ui_error")
 			if hud.panel_kind == "trade":
-				hud.trade_status(Loc.t("НЕ ВЫШЛО: %s") % Loc.t(nm.substr(8)), false)
+				hud.trade_status(Loc.t("НЕ ВЫШЛО: %s") % Loc.t(nm.substr(8)), false)  # R340
 				hud.open_trade()
 		_ when nm.begins_with("mkt:"):
-
+			# mkt:<buy|sell>:<partner id, 0 = foreign market>:<res>:<n>
 			var mp: PackedStringArray = nm.split(":")
 			var other: Country = world.country_by_id(int(mp[2])) if int(mp[2]) > 0 else null
-
-
+			# v0.30.6 MKT306: one command for both directions (NetSession.ALLOWED "econ.market_order"); the
+			# answer is this device's only: what / how many / price / how it travels / when it arrives
 			_sim("econ", "market_order", [world.player, other, mp[3], int(mp[4]), mp[1] == "buy"], func(r: Variant) -> void:
 				var whym: String = _why(r)
 				var ld: Dictionary = world.econ.last_deal
 				if whym != "" or ld.is_empty():
-					var tmsg: String = whym if whym != "" else (Loc.t("Сделка оформлена: %s") % Loc.t(String(Economy.RES_NAMES.get(mp[3], mp[3]))).to_lower())
+					var tmsg: String = whym if whym != "" else (Loc.t("Сделка оформлена: %s") % Loc.t(String(Economy.RES_NAMES.get(mp[3], mp[3]))).to_lower())  # R340
 					hud.show_toast(tmsg)
-					hud.trade_status((Loc.t("НЕ ВЫШЛО: %s") % Loc.t(whym)) if whym != "" else tmsg, whym == "")
+					hud.trade_status((Loc.t("НЕ ВЫШЛО: %s") % Loc.t(whym)) if whym != "" else tmsg, whym == "")  # R340
 				else:
 					var rn: String = String(Economy.RES_NAMES.get(String(ld["res"]), "")).to_lower()
 					var how: String = String({"truck": "грузовиком", "rail": "поездом", "ship": "кораблём", "import": "кораблём", "export": "кораблём", "queue": "ближайшим кораблём"}.get(String(ld["mode"]), ""))
@@ -1140,7 +1149,7 @@ func _on_action(nm: String) -> void:
 		_ when nm.begins_with("req:"):
 			var rp: PackedStringArray = nm.split(":")
 			if rp[1] == "ok":
-				_sim("econ", "accept_request", [world.player, int(rp[2])], func(r: Variant) -> void:
+				_sim("econ", "accept_request", [world.player, int(rp[2])], func(r: Variant) -> void:  # R335 FIX335: answering country
 					hud.show_toast(_why(r) if _why(r) != "" else "Сделка принята"))
 			else:
 				_sim("econ", "decline_request", [world.player, int(rp[2])])
@@ -1163,20 +1172,20 @@ func _unhandled_input(event: InputEvent) -> void:
 		_debug_key(kc)
 		return
 	if event is InputEventMagnifyGesture:
-		var mg: = event as InputEventMagnifyGesture
+		var mg := event as InputEventMagnifyGesture
 		cam.set_zoom_at(cam.zoom.x * mg.factor, mg.position)
 		_on_zoom(cam.zoom.x)
 		return
 	if event is InputEventPanGesture:
-		var pg: = event as InputEventPanGesture
+		var pg := event as InputEventPanGesture
 		cam.pan_screen(-pg.delta * 8.0)
 		cam_lock = false
 		return
 	if event is InputEventScreenTouch:
-		var st: = event as InputEventScreenTouch
+		var st := event as InputEventScreenTouch
 		if st.pressed:
-
-
+			# Index 0 = the first finger of a new gesture: forget fingers whose release the UI ate
+			# (a stale entry made every later touch a "pinch" — the zoom-on-any-action bug).
 			if st.index == 0:
 				_touches.clear()
 				_pinch_d = 0.0
@@ -1197,15 +1206,15 @@ func _unhandled_input(event: InputEvent) -> void:
 			else:
 				_end_drag()
 			if _touches.size() < 2 and _pinch_d > 0.0:
-
-
+				# v0.22: glide to the pixel step around the fingers (was an instant jump about the
+				# screen centre, which yanked the map sideways and often undid the pinch).
 				var zf: Vector2 = _pinch_mid if _pinch_mid.is_finite() else cam.view_size() * 0.5
 				cam.settle_zoom(zf, signi(int(signf(cam.zoom.x - _pinch_z0))))
 				_pinch_d = 0.0
 			if _touches.size() < 2:
 				_pinch_mid = Vector2.INF
 	elif event is InputEventScreenDrag:
-		var sd: = event as InputEventScreenDrag
+		var sd := event as InputEventScreenDrag
 		_touches[sd.index] = sd.position
 		if _touches.size() == 1:
 			if _dtz:
@@ -1222,7 +1231,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			if _pinch_d > 0.0 and d > 1.0:
 				cam.set_zoom_at(cam.zoom.x * d / _pinch_d, mid)
 			if _pinch_mid != Vector2.INF:
-				cam.pan_screen(mid - _pinch_mid)
+				cam.pan_screen(mid - _pinch_mid)  # two-finger drag moves the map (needed while drawing lines)
 				cam_lock = false
 			_pinch_mid = mid
 			_pinch_d = d
@@ -1230,7 +1239,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			if not line_cells.is_empty():
 				line_cells.clear()
 	elif event is InputEventMouseButton:
-		var mb: = event as InputEventMouseButton
+		var mb := event as InputEventMouseButton
 		if mb.device == InputEvent.DEVICE_ID_EMULATION:
 			return
 		if mb.button_index == MOUSE_BUTTON_WHEEL_UP and mb.pressed:
@@ -1267,14 +1276,15 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 
-
-
 var _pc_pan: bool = false
 
 
+## Desktop / MCP test keys: -/= zoom, arrows pan, Space = tap at screen centre,
+## 1 capital mode, 2 town mode, 3 strike mode, P pause, S speed, K next checkpoint,
+## B strike next bridge, N next capital.
 func _debug_key(k: int) -> void:
 	if net.in_match and (k == KEY_3 or k == KEY_B):
-		return
+		return  # NET 34: the test strike changes the world on this device only (critic)
 	if not OS.is_debug_build() and (k == KEY_B or k == KEY_K):
 		return  # PC port: developer keys (B = strike a bridge) are not for players
 	var c: Vector2 = cam.view_size() * 0.5
@@ -1309,7 +1319,7 @@ func _debug_key(k: int) -> void:
 				_kpp_i = (_kpp_i + 1) % keys.size()
 				var cp: Dictionary = world.checkpoints[keys[_kpp_i]]
 				var cc: Vector2i = cp["cell"]
-				cam.set_zoom_at(3.0, c)
+				cam.set_zoom_at(MapCamera.zk(3.0), c)  # R347
 				cam.center_on(Vector2(cc * GameWorld.CELL))
 				var d: WorldData = world.data
 				var row: String = ""
@@ -1323,7 +1333,7 @@ func _debug_key(k: int) -> void:
 				_br_i = (_br_i + 1) % world.bridges.size()
 				var br: Bridge = world.bridges[_br_i]
 				var mid: Vector2i = br.cells[br.cells.size() / 2]
-				cam.set_zoom_at(3.0, c)
+				cam.set_zoom_at(MapCamera.zk(3.0), c)  # R347
 				cam.center_on(Vector2(mid * GameWorld.CELL))
 				world.strike(mid)
 				print("[Debug] strike bridge %d (%d cells) at %s" % [br.id, br.cells.size(), mid])
@@ -1337,14 +1347,14 @@ func _debug_key(k: int) -> void:
 				cam.center_on(Vector2((caps[_cap_i] as City).center * GameWorld.CELL))
 
 
-
-
+## «ПОКАЗАТЬ» / «ИСПРАВИТЬ»: camera to the best site for `key`, enter its build mode and put the
+## confirm mark there, so one tap on ✓ builds it.
 func _plan_go(key: String) -> void:
 	if key == "" or world.player == null:
 		return
 	hud.close_panel()
 	if not BUILD_KEYS.has(key) and key != "town" and key != "capital":
-		_on_action(key)
+		_on_action(key)  # trade / diplomacy / economy windows
 		return
 	var pos: Vector2 = Vector2.INF
 	if world.get("guide") != null and world.guide.has_method("best_site"):
@@ -1362,7 +1372,7 @@ func _plan_go(key: String) -> void:
 		hud.show_toast("Подходящего места не видно — выберите сами")
 
 
-
+## Development-plan steps that are not a build: open the right window / card for the player.
 func _plan_action(nm: String) -> void:
 	var p: Country = world.player
 	var g = world.get("guide")
@@ -1396,8 +1406,8 @@ func _plan_action(nm: String) -> void:
 				hud.show_toast("Нажмите «СЕТКА» в карточке" if nm == "net_best" else "Улучшение — кнопка «УР» в карточке")
 
 
-
-
+## NetSession._start on every peer: the same world from the host's settings, one country per
+## human, then each places a capital (NetSession «cap» commands).
 func net_begin(s: WorldSettings, humans: int, local_slot: int) -> void:
 	hud.hide_prompt()
 	menus.close()
@@ -1414,17 +1424,17 @@ func net_begin(s: WorldSettings, humans: int, local_slot: int) -> void:
 	hud.show_toast("Мультиплеер: выберите место для столицы")
 
 
-
-
+## After a resync snapshot was restored (NetSession._apply_snapshot). NET 29: the snapshot has no
+## FrontPlan caches / timers and no staggered УДАР launches - every device drops them the same way.
 func net_after_restore() -> void:
-	(load("res://game/front_plan.gd") as GDScript).call("reset")
+	(load("res://game/front_plan.gd") as GDScript).call("reset")  # FrontPlan has no class_name
 	world.strike_net = null
 	hud.set_net_mode(true)
 	_apply_speed()
 	hud.refresh()
 
 
-
+## The network match is over for this device (left, host lost, kicked): back to the menu.
 func net_match_closed() -> void:
 	hud.set_net_mode(false)
 	if not in_menu:
@@ -1432,8 +1442,8 @@ func net_match_closed() -> void:
 	menus.show_mp()
 
 
-
-
+## NET 31: the match speed changed (the host's decision): HUD + a toast with the reason (UX:
+## a rise in АВТО only on the button; a drop at most once in 15 s; none for one's own event).
 func _on_net_speed(old: int, new: int) -> void:
 	_apply_speed()
 	if _spick != null and is_instance_valid(_spick) and bool(_spick.get("is_open")):
@@ -1443,7 +1453,7 @@ func _on_net_speed(old: int, new: int) -> void:
 	var why: String = net.speed_why
 	var me_name: String = world.player.name if world.player != null else ""
 	if net.speed_why_prev == "start" and why != "start" and not _speed_hinted:
-		_speed_hinted = true
+		_speed_hinted = true  # the guests never saw the setting
 		if GameConfig.mp_speed == 2:
 			hud.show_toast("УСКОРЕНИЕ ВЫКЛЮЧЕНО ХОСТОМ · ИГРА ИДЁТ x1")
 		elif GameConfig.mp_speed == 1:
@@ -1469,12 +1479,12 @@ func _on_net_speed(old: int, new: int) -> void:
 			t += Loc.t(" · ВАШ ВЫБОР") if net.my_want == new else Loc.t(" · ВЫБОР %s") % net.speed_who.to_upper()
 		elif why.begins_with("auto:"):
 			if net.speed_who == me_name:
-				return
+				return  # one's own event has its own notification
 			t += " · %s%s" % [why.substr(5), (Loc.t(" У %s") % net.speed_who.to_upper()) if net.speed_who != "" else ""]
 	hud.show_toast(t)
 
 
-
+## NET 32: connected back to a running match: the snapshot comes next (it builds the world).
 func net_rejoin_wait() -> void:
 	menus.close()
 	loading.show_screen("Возвращаемся в партию...")
@@ -1486,7 +1496,7 @@ func _on_net_player_back(nick: String) -> void:
 	UiKit.snd("ui_select")
 
 
-
+## A toast from the network session (UI only).
 func net_toast(t: String) -> void:
 	hud.show_toast(t)
 
@@ -1512,16 +1522,16 @@ func _net_banner_tick(delta: float) -> void:
 		_net_banner = MpKit.Plate.new()
 		hud.root.add_child(_net_banner)
 	var w: float = minf(380.0, hud.root.size.x - 16.0)
-	_net_banner.size = Vector2(w, 0.0)
+	_net_banner.size = Vector2(w, 0.0)  # height: the content (a long under-line wraps)
 	_net_banner.position = Vector2((hud.root.size.x - w) * 0.5, hud.top_col.position.y + hud.top_col.size.y + 4.0)
 	_net_banner.set_state(st, delta)
 	var extra: float = _resume_btn_tick(key == "resume" and net.is_host and _net_banner.visible)
-	if hud.lane != null and is_instance_valid(hud.lane):
+	if hud.lane != null and is_instance_valid(hud.lane):  # the notification lane goes under the plate (UX: no overlap)
 		hud.lane.set("push_y", (_net_banner.size.y + 4.0 + extra) if _net_banner.visible else 0.0)
 
 
-
-
+## NET 35 (UX): «ИГРАТЬ БЕЗ НИХ» — a green 150 x 44 button under the «ЖДЁМ ИГРОКОВ» plate, right edge
+## (the host only; the AI plays who is not back, they can still return). Returns the height it takes.
 func _resume_btn_tick(show: bool) -> float:
 	if not show:
 		if _resume_btn != null and is_instance_valid(_resume_btn):
@@ -1541,5 +1551,5 @@ func _resume_btn_tick(show: bool) -> float:
 
 
 func _on_net_player_left(nick: String, lost: bool = true) -> void:
-	hud.show_toast((Loc.t("У %s ПРОПАЛА СВЯЗЬ · СТРАНУ ВЕДЁТ ИИ") if lost else Loc.t("%s ВЫШЕЛ · СТРАНУ ВЕДЁТ ИИ")) % nick.to_upper())
+	hud.show_toast((Loc.t("У %s ПРОПАЛА СВЯЗЬ · СТРАНУ ВЕДЁТ ИИ") if lost else Loc.t("%s ВЫШЕЛ · СТРАНУ ВЕДЁТ ИИ")) % nick.to_upper())  # R340
 	UiKit.snd("ui_select")

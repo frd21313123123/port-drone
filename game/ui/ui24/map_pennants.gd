@@ -286,9 +286,9 @@ func _draw() -> void:
 		if bool(c1["whole"]):
 			txt = "%d·%s ×%d%s" % [int(c1["gid"]), Loc.name(String(g1["name"])).to_upper(), n1, Loc.t(" бой") if hot else ""]
 		elif n1 == 1:
-			txt = "№%d%s" % [int(c1["no"]), tag]
+			txt = "%s%s" % [Loc.no(int(c1["no"])), tag]
 		else:
-			txt = "№%d +%d%s" % [int(c1["no"]), n1 - 1, tag]
+			txt = "%s +%d%s" % [Loc.no(int(c1["no"])), n1 - 1, tag]
 		var k: float = 1.25 if on1 else 1.0
 		var fs: int = 11 if on1 else 10
 		var foot0: Vector2 = at1 + Vector2(0, -6)
@@ -516,7 +516,7 @@ func _ux_draw(ux: Node, cam: MapCamera, z: float, per: Dictionary) -> void:
 					draw_arc(up, clampf(5.0 * z, 4.0, 9.0), 0.0, TAU, 12, gc, 1.5)
 	elif view == "army" or (view == "place" and String(ux.place_kind) == "move_army"):
 		var af: Facility = ArmyGroups.fac(gw, cf)
-		_mark(cam, f, per, cf, UiKit.GOLD, "№%d" % (af.army_no if af != null else 0))
+		_mark(cam, f, per, cf, UiKit.GOLD, Loc.no(af.army_no if af != null else 0))
 	elif view == "bar":
 		var bf: Facility = ArmyGroups.fac(gw, cf)
 		if bf != null:
@@ -530,7 +530,7 @@ func _ux_draw(ux: Node, cam: MapCamera, z: float, per: Dictionary) -> void:
 	if view == "pick":
 		for fid2: int in ux.picked:
 			var pf: Facility = ArmyGroups.fac(gw, fid2)
-			_mark(cam, f, per, fid2, UiKit.GOLD, "✓№%d" % (pf.army_no if pf != null else 0))
+			_mark(cam, f, per, fid2, UiKit.GOLD, "✓" + Loc.no(pf.army_no if pf != null else 0))
 
 	var pv: Dictionary = ux.preview
 	if not pv.is_empty() and now < int(pv.get("until", 0)):
@@ -565,7 +565,7 @@ func _ux_draw(ux: Node, cam: MapCamera, z: float, per: Dictionary) -> void:
 				draw_line(p2 + Vector2(-6, -6), p2 + Vector2(6, 6), UiKit.RED, 3.0)
 				draw_line(p2 + Vector2(6, -6), p2 + Vector2(-6, 6), UiKit.RED, 3.0)
 		var tp: Vector2 = cam.world_to_screen(pv["to"])
-		var tc: Color = UiKit.GREEN if (pv["bad"] as Array).is_empty() else (UiKit.RED if (pv["ok"] as Array).is_empty() else UiKit.GOLD)
+		var tc: Color = UiKit.GREEN if (pv.get("bad", []) as Array).is_empty() else (UiKit.RED if (pv.get("ok", []) as Array).is_empty() else UiKit.GOLD)
 		draw_arc(tp, 14.0, 0.0, TAU, 28, U.DARK, 5.0)
 		draw_arc(tp, 14.0, 0.0, TAU, 28, tc, 3.0)
 		draw_circle(tp, 3.0, tc)
@@ -815,7 +815,7 @@ func _ux_draw(ux: Node, cam: MapCamera, z: float, per: Dictionary) -> void:
 			var p4: Vector2 = cam.world_to_screen(_center(per, fid4, Vector2.INF))
 			if p4.y < top or p4.y > bot or not vr.has_point(p4):
 				continue
-			var t4: String = "№%d" % fac.army_no
+			var t4: String = Loc.no(fac.army_no)
 			var w4: float = f.get_string_size(t4, HORIZONTAL_ALIGNMENT_LEFT, -1, 10).x + 10.0
 			var r4: = Rect2((p4 + Vector2(-w4 * 0.5, -30.0)).round(), Vector2(roundf(w4), 18.0))
 			var clash: bool = false

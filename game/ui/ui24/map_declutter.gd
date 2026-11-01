@@ -130,7 +130,8 @@ static func hits(r: Rect2, list: Array) -> bool:
 
 
 static func zoom_in_of(z: float) -> float:
-	for s: float in [0.5, 1.0, 2.0]:
+	for s0: float in [0.5, 1.0, 2.0]:
+		var s: float = MapCamera.zk(s0)
 		if s > z + 0.05:
 			return s
 	return z

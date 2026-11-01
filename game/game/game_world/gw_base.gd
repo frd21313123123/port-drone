@@ -1,6 +1,8 @@
 extends Node2D
 
 
+const Cad344: = preload("res://game/cad344.gd")
+
 signal changed
 signal message(text: String)
 signal missile_launched(m: Missile)
@@ -127,6 +129,7 @@ var camera: MapCamera
 
 var _expand_t: float = 0.0
 var _ai_t: float = 0.0
+var cad344: Cad344 = null
 var _delayed: Array = []
 var _checkpoints_dirty: bool = false
 

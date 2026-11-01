@@ -826,10 +826,10 @@ static func pause_row(mn: Menus, vb: VBoxContainer) -> void:
 	ld.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.add_child(ld)
 	var st: Label = mn._label(vb, _pause_status(), 10, UiKit.MUTED)
-	var can: bool = m != null and Save.can_save(m)
-	if not can:
+	var why: String = Save.why_not(m)
+	if why != "":
 		sv.disabled = true
-		st.text = "Сохранять пока нечего: поставьте столицу"
+		st.text = Loc.t(why)
 	sv.pressed.connect(func() -> void:
 		var ok: bool = Save.save_game(m)
 		UiKit.snd("ui_select" if ok else "ui_error")

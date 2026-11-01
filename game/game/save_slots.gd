@@ -309,7 +309,7 @@ static func before_write(n: int, key: String, header: Dictionary, fresh: bool) -
 
 static func after_write(n: int, key: String, header: Dictionary, m: Dictionary, thumb: Image) -> void:
 	(m["files"] as Dictionary)[key] = header
-	m["end"] = END_NONE
+	m["end"] = int(header.get("end", END_NONE))
 	m["bad"] = false
 	_write_meta(n, m)
 	if thumb != null and not thumb.is_empty():

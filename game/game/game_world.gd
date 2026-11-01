@@ -254,6 +254,8 @@ func new_world(s: WorldSettings) -> void:
 	if camera != null:
 		camera.world_px = Vector2(data.w * CELL, data.h * CELL)
 		camera.center_on(camera.world_px * 0.5)
+	cad344 = Cad344.new(self)
+	cad344.phase_offsets()
 	changed.emit()
 
 
@@ -390,6 +392,8 @@ func _sim_step(dt: float) -> void:
 	if perf_prof:
 		_pu = Time.get_ticks_usec()
 	game_time += dt
+	if cad344 != null:
+		cad344.step(dt)
 	if not _delayed.is_empty():
 		var due: Array = []
 		for k in range(_delayed.size() - 1, -1, -1):
@@ -409,10 +413,14 @@ func _sim_step(dt: float) -> void:
 
 		var pe: float = _expand_t
 		_expand_t += dt
-		for ph in EXP_SLICES:
-			var th: float = EXPAND_DT * float(ph + 1) / float(EXP_SLICES)
+		var nsl: int = Cad344.EXP_SLICES if cad344 != null else EXP_SLICES
+		for ph in nsl:
+			var th: float = EXPAND_DT * float(ph + 1) / float(nsl)
 			if pe < th and _expand_t >= th:
-				_expand_tick(ph)
+				if cad344 != null:
+					_expand_tick(ph, nsl)
+				else:
+					_expand_tick(ph)
 				if perf_prof:
 					_pf("_expand_tick")
 		if _expand_t >= EXPAND_DT:
@@ -425,9 +433,18 @@ func _sim_step(dt: float) -> void:
 			_ai_t = 0.0
 			for c: Country in countries:
 				if not c.is_player and c.city_ids.size() < 6:
+					if cad344 != null:
+						cad344.town_q.append(c.id)
+						continue
 					_ai_try_town(c)
 					if perf_prof:
 						_pf("_ai_try_town")
+		while cad344 != null and not cad344.town_q.is_empty() and cad344.take_ai_slot():
+			var tc: Country = country_by_id(int(cad344.town_q.pop_front()))
+			if tc != null and not tc.is_player and not tc.eliminated and tc.city_ids.size() < 6:
+				_ai_try_town(tc)
+				if perf_prof:
+					_pf("_ai_try_town")
 		_update_bridges(dt)
 		if perf_prof:
 			_pf("_update_bridges")

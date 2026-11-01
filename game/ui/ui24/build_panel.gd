@@ -36,8 +36,9 @@ static func condensed() -> Array:
 
 static func fit(l: Label, w: float, fs: int) -> void:
 	var px: float = 0.0
+	var shown: String = l.text if l.auto_translate_mode == Node.AUTO_TRANSLATE_MODE_DISABLED else Loc.t(l.text)
 	for f: Font in [UiKit.f_bold] + condensed():
-		px = f.get_string_size(l.text, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x
+		px = f.get_string_size(shown, HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x
 		l.add_theme_font_override("font", f)
 		if px <= w:
 			break

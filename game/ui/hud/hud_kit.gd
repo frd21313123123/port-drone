@@ -281,9 +281,13 @@ func _window(title: String, kind: String = "") -> VBoxContainer:
 	panel.add_child(vb)
 	var hr: = HBoxContainer.new()
 	vb.add_child(hr)
-	var t: Label = UiKit.title(title, 20)
+
+
+	var t: Label = UiKit.title(title, 20 if title.length() <= 20 else 16)
 	t.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	t.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	t.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	t.custom_minimum_size.x = 60.0
 	hr.add_child(t)
 	var cb: Button = UiKit.close_btn(36.0)
 	cb.pressed.connect(func() -> void:

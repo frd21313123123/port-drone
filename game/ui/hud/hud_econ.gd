@@ -266,7 +266,7 @@ func open_hub(pg: int) -> void:
 
 
 	if econ_hub != null and is_instance_valid(econ_hub):
-		if econ_hub.has_method("reopen") and absf(econ_hub.custom_minimum_size.y - sheet_h) < 0.5 and bool(econ_hub.call("reopen")):
+		if econ_hub.has_method("reopen") and int(econ_hub.get_meta("loc_gen", -1)) == Loc.gen and absf(econ_hub.custom_minimum_size.y - sheet_h) < 0.5 and bool(econ_hub.call("reopen")):
 			ui24_open(econ_hub)
 			bottom_panel.visible = false
 			econ_hub.call("show_page", pg, false)
@@ -281,6 +281,7 @@ func open_hub(pg: int) -> void:
 	hub.name = "EconHub"
 	hub.call("setup", self, sheet_h, _safe_margins().y)
 	hub.connect("action", _on_hub_action)
+	hub.set_meta("loc_gen", Loc.gen)
 	econ_hub = hub
 	ui24_open(hub)
 	holder.add_child(hub)

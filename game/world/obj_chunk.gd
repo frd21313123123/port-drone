@@ -65,26 +65,56 @@ func _draw() -> void:
 	var ng: int = guests.size()
 	var taken: PackedInt32Array = right.guests if right != null else PackedInt32Array()
 	var nt: int = taken.size()
+	if nt == 0 and ng == 0:
+		for id in _list:
+			gw.draw_object(self, id, phase)
+		return
+
+
+	var tk: Dictionary = {}
+	for id in taken:
+		tk[id] = true
+	var gs: Dictionary = {}
+	for id in guests:
+		gs[id] = true
+	var lids: Dictionary = {}
+	if ng > 0 and left != null:
+		for id in left.ids:
+			lids[id] = true
+	var llp: int = left.left.phase if left != null and left.left != null else lp
 	for id in _list:
-		if nt > 0 and taken.has(id):
+		if nt > 0 and tk.has(id):
 			continue
-		if ng > 0 and _is_guest(id):
-			gw.draw_object(self, id, _owner_phase(id, lp))
+		if ng > 0 and gs.has(id):
+			gw.draw_object(self, id, lp if left == null or lids.has(id) else llp)
 		else:
 			gw.draw_object(self, id, phase)
 
 
-func _is_guest(id: int) -> bool:
-	return guests.has(id)
 
 
-
-func _owner_phase(id: int, lp: int) -> int:
-	if left != null and left.ids.has(id):
-		return lp
-	if left != null and left.left != null:
-		return left.left.phase
-	return lp
+func _depth_sort(src: Array) -> PackedInt32Array:
+	var g: GameWorld = gw
+	var n: int = src.size()
+	var ks: = PackedInt64Array()
+	ks.resize(n)
+	var oy: PackedInt32Array = g.obj_y
+	var ox: PackedInt32Array = g.obj_x
+	var osp: PackedInt32Array = g.obj_spr
+	var fd: PackedInt32Array = g.spr_fd
+	for i in n:
+		var id: int = src[i]
+		if id >= 4194304 or id < 0:
+			var arr: Array = src.duplicate()
+			arr.sort_custom(func(a: int, b: int) -> bool: return g.obj_sort_key(a) < g.obj_sort_key(b))
+			return PackedInt32Array(arr)
+		ks[i] = ((oy[id] + fd[osp[id]]) * 65536 + ox[id]) * 4194304 + id
+	ks.sort()
+	var out: = PackedInt32Array()
+	out.resize(n)
+	for i in n:
+		out[i] = ks[i] & 4194303
+	return out
 
 
 
@@ -106,25 +136,18 @@ func _quick() -> void:
 		need_guests = need_guests or not guests.is_empty()
 		return
 	_sig = sg
-	var g: GameWorld = gw
 	var arr: Array = Array(ids)
-	arr.sort_custom(func(a: int, b: int) -> bool: return g.obj_sort_key(a) < g.obj_sort_key(b))
-	_own = PackedInt32Array(arr)
+	_own = _depth_sort(arr)
 	if guests.is_empty():
 		_list = _own
 	else:
-		var all: Array = arr + Array(guests)
-		all.sort_custom(func(a: int, b: int) -> bool: return g.obj_sort_key(a) < g.obj_sort_key(b))
-		_list = PackedInt32Array(all)
+		_list = _depth_sort(arr + Array(guests))
 	need_guests = true
 
 
 func _resort() -> void:
-	var g: GameWorld = gw
 	_dirty = false
-	var arr: Array = Array(ids)
-	arr.sort_custom(func(a: int, b: int) -> bool: return g.obj_sort_key(a) < g.obj_sort_key(b))
-	_own = PackedInt32Array(arr)
+	_own = _depth_sort(Array(ids))
 	_sig = _ids_sig()
 	var old: PackedInt32Array = guests
 	var ol: ObjectsLayer = get_parent() as ObjectsLayer
@@ -137,9 +160,7 @@ func _resort() -> void:
 	if guests.is_empty():
 		_list = _own
 	else:
-		var all: Array = Array(_own) + Array(guests)
-		all.sort_custom(func(a: int, b: int) -> bool: return g.obj_sort_key(a) < g.obj_sort_key(b))
-		_list = PackedInt32Array(all)
+		_list = _depth_sort(Array(_own) + Array(guests))
 	sorted = true
 	if left != null and old != guests:
 		left.queue_redraw()

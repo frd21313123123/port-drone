@@ -521,7 +521,7 @@ func _res_go(nm: String) -> void:
 		_deselect()
 		cam_lock = false
 		if cam.zoom.x < 1.0:
-			cam.set_zoom_at(2.0, cam.view_size() * 0.5)
+			cam.set_zoom_at(MapCamera.zk(2.0), cam.view_size() * 0.5)
 		cam.center_on(Vector2(cell * GameWorld.CELL))
 		var dep: Dictionary = world.econ.deposit_at(cell, 1)
 		if not dep.is_empty():
@@ -539,7 +539,7 @@ func _res_go(nm: String) -> void:
 		_deselect()
 		cam_lock = false
 		if cam.zoom.x < 1.0:
-			cam.set_zoom_at(2.0, cam.view_size() * 0.5)
+			cam.set_zoom_at(MapCamera.zk(2.0), cam.view_size() * 0.5)
 		cam.center_on(f.center_px())
 		if f.kind == Facility.Kind.BARRACKS and world.mil.alive(f) and f.restore_t <= 0.0 and hud.get("army_ux") != null:
 			hud.army_ux.open_bar(f.id)

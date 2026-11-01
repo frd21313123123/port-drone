@@ -68,7 +68,7 @@ var _cache_key: String = ""
 
 
 func _cache_sig() -> String:
-	return "%d|%s|%s" % [gw.player.get_instance_id(), str(get_viewport_rect().size), str(hud._safe_margins())]
+	return "%d|%s|%s|%d" % [gw.player.get_instance_id(), str(get_viewport_rect().size), str(hud._safe_margins()), Loc.gen]
 
 
 func _show_cached() -> bool:
@@ -504,7 +504,7 @@ func _group_head(gid: int, rows: Array, t: Dictionary) -> Button:
 	tv.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	tv.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	hb.add_child(tv)
-	tv.add_child(UiKit.lbl(("%d·%s" % [gid, Loc.name(String(g["name"])).to_upper()]) if not g.is_empty() else Loc.t("БЕЗ ГРУППЫ"), 11, UiKit.TEXT, 2, 3))
+	tv.add_child(UiKit.lbl(Loc.gtag(gid, String(g["name"])) if not g.is_empty() else Loc.t("БЕЗ ГРУППЫ"), 11, UiKit.TEXT, 2, 3))
 	var subl: Label = UiKit.lbl("", 9, UiKit.MUTED, 1, 2)
 	tv.add_child(subl)
 	var pills: Array = []

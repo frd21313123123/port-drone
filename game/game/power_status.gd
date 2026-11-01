@@ -253,21 +253,23 @@ func rival_clamp(a: int, b: int, op: int, v: int) -> int:
 
 func change_text(ev: Dictionary, own: bool) -> String:
 	var c: Country = gw.country_by_id(int(ev["cid"]))
-	var who: String = Loc.t("Ваша страна") if own else (c.name if c != null else "?")
+
+
+	var who: String = "Ваша страна" if own else (c.name if c != null else "?")
 	var s: int = int(ev["state"])
 	var os: int = int(ev["old_state"])
 	if s != os and s != ST_NONE:
-		return Loc.t("%s стала %s") % [who, String(STATE_INS[s])]
+		return Loc.msg(Loc.mk("%s стала %s", [who, String(STATE_INS[s])]))
 	if s != os and s == ST_NONE:
 		match os:
 			ST_PARIAH:
-				return Loc.t("%s больше не изгой") % who
+				return Loc.msg(Loc.mk("%s больше не изгой", [who]))
 			ST_VASSAL, ST_PUPPET:
-				return Loc.t("%s снова независима") % who
-		return Loc.t("%s оправилась от кризиса") % who
+				return Loc.msg(Loc.mk("%s снова независима", [who]))
+		return Loc.msg(Loc.mk("%s оправилась от кризиса", [who]))
 	if int(ev["tier"]) > int(ev["old_tier"]):
-		return Loc.t("%s стала %s") % [who, String(TIER_INS[int(ev["tier"])])]
-	return Loc.t("%s теряет статус: снова %s") % [who, status_name(int(ev["tier"]))]
+		return Loc.msg(Loc.mk("%s стала %s", [who, String(TIER_INS[int(ev["tier"])])]))
+	return Loc.t("%s теряет статус: снова %s") % [Loc.tx(who), status_name(int(ev["tier"]))]
 
 
 

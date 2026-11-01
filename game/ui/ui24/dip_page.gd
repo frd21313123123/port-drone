@@ -507,7 +507,7 @@ func _pin_chip(it: Dictionary, n: int) -> Control:
 	var ic: TextureRect = s._icon(String(it.get("icon", "icon_dip_call")), 16)
 	ic.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	hb.add_child(ic)
-	var t: Label = UiKit.lbl(_pend_title(it) + ((" +%d" % (n - 1)) if n > 1 else ""), 9, UiKit.TEXT, 2, 3)
+	var t: Label = UiKit.lbl(Loc.t(_pend_title(it)) + ((" +%d" % (n - 1)) if n > 1 else ""), 9, UiKit.TEXT, 2, 3)
 	t.clip_text = true
 	t.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	t.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -784,7 +784,7 @@ func _pin(it: Dictionary, n: int) -> void:
 	v.alignment = BoxContainer.ALIGNMENT_CENTER
 	v.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	hb.add_child(v)
-	var t: Label = UiKit.lbl(Loc.t("ПРОСЯТ: %s") % [_pend_title(it)], 10, UiKit.TEXT, 2, 3)
+	var t: Label = UiKit.lbl(Loc.t("ПРОСЯТ: %s") % [Loc.t(_pend_title(it))], 10, UiKit.TEXT, 2, 3)
 	t.clip_text = true
 	t.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	v.add_child(t)
@@ -816,7 +816,7 @@ func _pin_line(it: Dictionary, n: int) -> void:
 	var ic: TextureRect = s._icon(String(it.get("icon", "icon_dip_call")), 20)
 	ic.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	hb.add_child(ic)
-	var t: Label = UiKit.lbl(Loc.t("ПРОСЯТ: %s%s") % [_pend_title(it), ((Loc.t(" · ещё %d") % (n - 1)) if n > 1 else "")], 10, UiKit.TEXT, 2, 3)
+	var t: Label = UiKit.lbl(Loc.t("ПРОСЯТ: %s%s") % [Loc.t(_pend_title(it)), ((Loc.t(" · ещё %d") % (n - 1)) if n > 1 else "")], 10, UiKit.TEXT, 2, 3)
 	t.clip_text = true
 	t.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	t.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -832,6 +832,7 @@ func _pin_line(it: Dictionary, n: int) -> void:
 	ar.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	hb.add_child(ar)
 	b.pressed.connect(func() -> void: _set_tab("req"))
+
 
 
 
