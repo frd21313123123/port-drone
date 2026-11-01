@@ -53,5 +53,9 @@ Debug-build test hooks: `DF_UPDATE_API=<url>`, `DF_UPDATE_ASSET=<name>`; `DF_NO_
 
 ```
 python3 tools/fetch_godot.py godot_dl
-python3 tools/build.py --godot godot_dl/godot --template godot_dl/windows_release_x86_64.exe --version 0.32.1 --repo you/repo --out dist
+python3 tools/build.py --godot godot_dl/godot --template godot_dl/windows_release_x86_64.exe --version 0.33.2.2 --repo you/repo --out dist
 ```
+
+### Performance checks
+
+`python3 tools/check_performance.py` runs CPU regression checks against the current source in a temporary PCK, with isolated save files. No Windows export template is needed. Use `--mode benchmark --size 2048 --bots 4` for a late-game simulation benchmark; JSON results and logs go to `dist/performance/`. See [performance validation](docs/performance.md) for checkpoint comparisons and limitations.

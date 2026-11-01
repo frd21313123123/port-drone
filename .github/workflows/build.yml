@@ -2,7 +2,7 @@ name: Build
 
 on:
   push:
-    branches: [main]
+    branches: [main, codex/performance-0.33.2.2]
     tags: ["v*"]
   pull_request:
   workflow_dispatch:

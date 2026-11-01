@@ -61,6 +61,8 @@ var drowned: Dictionary = {}
 var sunk_by: Dictionary = {}
 var ai_next: Dictionary = {}
 var ai_towns: Dictionary = {}
+# Deterministic, resumable searches: one probe per simulation step for all bots.
+var _colony_jobs: Array = []
 var _id: int = 1
 var _fire_acc: float = 0.0
 var _supply_t: float = 0.0
@@ -280,10 +282,17 @@ func _exp_route(port: Facility, cell: Vector2i) -> Array:
 
 func _near_land_of(country_id: int, cell: Vector2i, reach: int) -> bool:
 	var d: WorldData = gw.data
+	var w: int = d.w
+	var h: int = d.h
+	var owners: PackedByteArray = d.owners
 	for dy in range(-reach, reach + 1, 3):
+		var y: int = cell.y + dy
+		if y < 0 or y >= h:
+			continue
+		var row: int = y * w
 		for dx in range(-reach, reach + 1, 3):
-			var q: = cell + Vector2i(dx, dy)
-			if d.inside(q.x, q.y) and d.get_owner_id(q.x, q.y) == country_id:
+			var x: int = cell.x + dx
+			if x >= 0 and x < w and owners[row + x] == country_id:
 				return true
 	return false
 
@@ -572,6 +581,7 @@ func on_cancel(home: Facility) -> void:
 
 
 func update(dt: float) -> void:
+	_ai_colony_step()
 	_fire_acc += dt
 	_snd_t -= dt
 	for k in range(landings.size() - 1, -1, -1):
@@ -1077,6 +1087,9 @@ func ai_think(c: Country, P: Dictionary) -> void:
 		ai_towns[c.id] = tn
 	if now < 360.0 or now < float(ai_next.get(c.id, 0.0)):
 		return
+	for job: Dictionary in _colony_jobs:
+		if int(job["country"]) == c.id:
+			return
 	ai_next[c.id] = now + 110.0 + float(c.id % 5) * 9.0
 	var pr: Ports = _ports()
 	if pr == null:
@@ -1093,8 +1106,7 @@ func ai_think(c: Country, P: Dictionary) -> void:
 		want += 0.45 * float(dr.bias(c, "colony"))
 	if gw.army.fire.rf() > want:
 		return
-	if dr != null and _drama_colony(c, port, int(dr.colony_target(c))):
-		return
+	var drama_sites: Array = _drama_colony_sites(c, port, int(dr.colony_target(c))) if dr != null else []
 	var full: bool = now - float(tn[1]) > 420.0 and c.city_ids.size() >= 3
 	var sites: Array = []
 	var pc: Vector2 = port.center_px()
@@ -1107,42 +1119,66 @@ func ai_think(c: Country, P: Dictionary) -> void:
 			continue
 		sites.append([float(gw.econ.market_price(String(dp.get("res", "metal")))) * 40.0 - dd, dc])
 	sites.sort_custom(func(a: Array, b: Array) -> bool: return float(a[0]) > float(b[0]))
-	var tries: int = 0
-	for s: Array in sites:
-		var dc2: Vector2i = s[1]
-		if _near_land_of(c.id, dc2, GameWorld.TOWN_REACH):
-			continue
-		tries += 1
-		if tries > 4:
-			break
-		for r in [12, 18]:
-			for a in range(0, 360, 60):
-				var q: Vector2i = dc2 + Vector2i(roundi(cos(deg_to_rad(a)) * r), roundi(sin(deg_to_rad(a)) * r))
-				if launch_expedition(port, q) == "":
-					return
-	if not full:
+	var fallback: Array = []
+	if full:
+		var body: int = int(pr._port_state(port)["body"])
+		var rr: = Rng.new(int(now) + c.id * 31)
+		for t in 40:
+			var q2: = Vector2i(rr.range_ab(2, pr._w - 3), rr.range_ab(2, pr._h - 3))
+			if pr._body_at(q2) != body:
+				continue
+			var lp: Vector2 = gw.econ.land_point(pr.cell_px(q2), 6)
+			var cell: = Vector2i(floori(lp.x / GameWorld.CELL), floori(lp.y / GameWorld.CELL))
+			fallback.append(cell + (cell - q2 * Ports.K).sign() * 10)
+	_colony_jobs.append({"country": c.id, "port": port, "candidates": drama_sites, "sites": sites, "tries": 0, "fallback": fallback})
+
+
+func _ai_colony_step() -> void:
+	if _colony_jobs.is_empty():
 		return
-
-	var body: int = int(pr._port_state(port)["body"])
-	var rr: = Rng.new(int(now) + c.id * 31)
-	for t in 40:
-		var q2: = Vector2i(rr.range_ab(2, pr._w - 3), rr.range_ab(2, pr._h - 3))
-		if pr._body_at(q2) != body:
-			continue
-		var lp: Vector2 = gw.econ.land_point(pr.cell_px(q2), 6)
-		var cell: = Vector2i(floori(lp.x / GameWorld.CELL), floori(lp.y / GameWorld.CELL))
-		var inl: Vector2i = cell + (cell - q2 * Ports.K).sign() * 10
-		if launch_expedition(port, inl) == "":
+	var job: Dictionary = _colony_jobs.pop_front()
+	var c: Country = gw.country_by_id(int(job["country"]))
+	var port: Facility = job["port"]
+	# State may have changed since the search began (capture, sinking, spending).
+	if c == null or c.is_player or c.eliminated or c.capital_id < 0 or _ready_why(port, c) != "":
+		return
+	var reserve: int = gw.ai.treasury_reserve(c, gw.ai.persona_of(c)) + 600 if gw.ai != null else 2000
+	if c.money < int(EXP_COST["money"]) + reserve or c.food < int(EXP_COST["food"]) + 80:
+		return
+	var candidates: Array = job["candidates"]
+	var sites: Array = job["sites"]
+	var fallback: Array = job["fallback"]
+	if not candidates.is_empty():
+		if launch_expedition(port, candidates.pop_front()) == "":
 			return
+	elif not sites.is_empty():
+		var site: Array = sites.pop_front()
+		var dc: Vector2i = site[1]
+		if not _near_land_of(c.id, dc, GameWorld.TOWN_REACH):
+			job["tries"] = int(job["tries"]) + 1
+			if int(job["tries"]) > 4:
+				sites.clear()
+			else:
+				for r in [12, 18]:
+					for a in range(0, 360, 60):
+						candidates.append(dc + Vector2i(roundi(cos(deg_to_rad(a)) * r), roundi(sin(deg_to_rad(a)) * r)))
+	elif not fallback.is_empty():
+		if launch_expedition(port, fallback.pop_front()) == "":
+			return
+	else:
+		return
+	# Round-robin avoids starving other countries; no wall-clock budget in lockstep.
+	_colony_jobs.append(job)
 
 
 
 
 
-func _drama_colony(c: Country, port: Facility, to: int) -> bool:
+func _drama_colony_sites(c: Country, port: Facility, to: int) -> Array:
+	var out: Array = []
 	var tc: Country = gw.country_by_id(to)
 	if tc == null or tc.eliminated:
-		return false
+		return out
 	var pc: Vector2 = port.center_px()
 	var near: Array = []
 	for cid in tc.city_ids:
@@ -1160,10 +1196,9 @@ func _drama_colony(c: Country, port: Facility, to: int) -> bool:
 				continue
 			tries += 1
 			if tries > 16:
-				return false
-			if launch_expedition(port, q) == "":
-				return true
-	return false
+				return out
+			out.append(q)
+	return out
 
 
 

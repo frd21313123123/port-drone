@@ -210,10 +210,9 @@ static func autosave(m: Node) -> bool:
 
 
 
-	var raw: PackedByteArray = var_to_bytes(snap[1])
 	var thi: Dictionary = SaveSlots.thumb_input(gw0)
+	_task = _queue_write(snap[0], snap[1], thi, _fresh)
 	last["autosave_main_ms"] = (Time.get_ticks_usec() - t0) / 1000.0
-	_task = WorkerThreadPool.add_task(_write_job.bind(snap[0], raw, thi, _fresh), false, "autosave")
 	_fresh = false
 	_last_gt = gw0.game_time
 	return true
@@ -575,8 +574,42 @@ static func _assign(o: Object, n: String, v: Variant) -> void:
 	o.set(n, v)
 
 
+static var _ent_complex_c: Dictionary = {}
+
+
+static func _entity_dump(o: Object, skip: Array) -> Dictionary:
+	# inst_to_dict already supplies a fresh dictionary of script fields. Only
+	# transform reference/container fields, instead of copying every scalar again.
+	var flags: Variant = _complex(o)
+	if flags == null:
+		return dump_slow(o, skip)
+	var script: Script = o.get_script()
+	if not _ent_complex_c.has(script):
+		var complex_names: PackedStringArray = PackedStringArray()
+		var names: PackedStringArray = _names(o)
+		for i in names.size():
+			if flags[i] != 0:
+				complex_names.append(names[i])
+		_ent_complex_c[script] = complex_names
+	var out: Dictionary = inst_to_dict(o)
+	out.erase("@path")
+	out.erase("@subpath")
+	for n: String in skip:
+		out.erase(n)
+	for n: String in _ent_complex_c[script]:
+		if not out.has(n):
+			continue
+		var v: Variant = out[n]
+		var t: int = typeof(v)
+		if t == TYPE_CALLABLE or t == TYPE_SIGNAL or t == TYPE_RID or (t == TYPE_OBJECT and v != null and not _is_entity(v)):
+			out.erase(n)
+		else:
+			out[n] = enc(v)
+	return out
+
+
 static func _ent_fields(o: Object) -> Dictionary:
-	var d: Dictionary = dump(o, ["fx"] if o is Facility else (["visited"] if o is City else []))
+	var d: Dictionary = _entity_dump(o, ["fx"] if o is Facility else (["visited"] if o is City else []))
 	if o is City:
 		d["visited"] = {SET: PackedInt32Array((o as City).visited.keys())}
 		var fl: Variant = (o as City).flag_node
@@ -746,7 +779,19 @@ static func _md5(b: PackedByteArray) -> PackedByteArray:
 	return h.finish()
 
 
-static func _write_job(header: Dictionary, raw: PackedByteArray, thi: Dictionary = {}, fresh: bool = false) -> void:
+static func _queue_write(header: Dictionary, body: Dictionary, thi: Dictionary = {}, fresh: bool = false) -> int:
+	# Packed arrays are shared references too. Freeze them before the simulation
+	# resumes, then serialize/compress/write entirely on the worker.
+	var frozen: Dictionary = body.duplicate(true)
+	var thumb: Dictionary = thi.duplicate()
+	if not thumb.is_empty():
+		thumb["biome"] = frozen["core"]["biome"]
+		thumb["owners"] = frozen["core"]["owners"]
+	return WorkerThreadPool.add_task(_write_job.bind(header, frozen, thumb, fresh), false, "autosave")
+
+
+static func _write_job(header: Dictionary, body: Dictionary, thi: Dictionary = {}, fresh: bool = false) -> void:
+	var raw: PackedByteArray = var_to_bytes(body)
 	_write_ok = _write_raw(header, raw, "a0", SaveSlots.render_thumb(thi), fresh)
 
 

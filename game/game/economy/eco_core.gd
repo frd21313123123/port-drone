@@ -1198,6 +1198,10 @@ func _wet_on(a: Vector2, b: Vector2) -> Vector2:
 	if L < 0.5:
 		return Vector2.INF
 	var d: WorldData = gw.data
+	var w: int = d.w
+	var h: int = d.h
+	var bio: PackedByteArray = d.biome
+	var flags: PackedByteArray = d.flags
 	var side: Vector2 = (b - a).normalized().orthogonal() * BODY_HALF
 	var steps: int = maxi(1, int(L / 2.0))
 	var inv: float = 1.0 / float(GameWorld.CELL)
@@ -1207,12 +1211,22 @@ func _wet_on(a: Vector2, b: Vector2) -> Vector2:
 		var c0: = Vector2i(floori(m.x * inv), floori(m.y * inv))
 		var c1: = Vector2i(floori((m.x + side.x) * inv), floori((m.y + side.y) * inv))
 		var c2: = Vector2i(floori((m.x - side.x) * inv), floori((m.y - side.y) * inv))
-		var key: int = ((c0.y * d.w + c0.x) * 31 + (c1.y * d.w + c1.x)) * 31 + (c2.y * d.w + c2.x)
+		var i0: int = c0.y * w + c0.x
+		var i1: int = c1.y * w + c1.x
+		var i2: int = c2.y * w + c2.x
+		var key: int = (i0 * 31 + i1) * 31 + i2
 		if key == last:
 			continue
 		last = key
 
-		if (_water_px(m) or _water_px(m + side) or _water_px(m - side)) and not _bridge_near(m):
+		# These are the same three cells as _water_px; don't convert coordinates again
+		# for every two-pixel sample along every army/convoy route.
+		var wet: bool = (
+			(c0.x >= 0 and c0.y >= 0 and c0.x < w and c0.y < h and bio[i0] <= Biome.RIVER and (flags[i0] & WorldData.F_BRIDGE) == 0)
+			or (c1.x >= 0 and c1.y >= 0 and c1.x < w and c1.y < h and bio[i1] <= Biome.RIVER and (flags[i1] & WorldData.F_BRIDGE) == 0)
+			or (c2.x >= 0 and c2.y >= 0 and c2.x < w and c2.y < h and bio[i2] <= Biome.RIVER and (flags[i2] & WorldData.F_BRIDGE) == 0)
+		)
+		if wet and not _bridge_near(m):
 			return m
 	return Vector2.INF
 

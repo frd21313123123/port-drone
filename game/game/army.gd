@@ -2140,8 +2140,8 @@ func _near(p: Vector2, r: float) -> Array:
 	var y1: int = floori((p.y + r) / GRID_PX)
 	for cy in range(y0, y1 + 1):
 		for cx in range(x0, x1 + 1):
-			var a: Array = _grid.get(Vector2i(cx, cy), [])
-			if not a.is_empty():
+			var a: Variant = _grid.get(Vector2i(cx, cy))
+			if a != null:
 				out.append_array(a)
 	return out
 
@@ -2154,8 +2154,8 @@ func _near_fac(p: Vector2, r: float) -> Array:
 	var y1: int = floori((p.y + r) / GRID_PX)
 	for cy in range(y0, y1 + 1):
 		for cx in range(x0, x1 + 1):
-			var a: Array = _fgrid.get(Vector2i(cx, cy), [])
-			if not a.is_empty():
+			var a: Variant = _fgrid.get(Vector2i(cx, cy))
+			if a != null:
 				out.append_array(a)
 	return out
 

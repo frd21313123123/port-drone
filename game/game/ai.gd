@@ -104,7 +104,9 @@ const ARMS_RACE_THR: float = 0.6
 
 
 
-func _targets(c: Country, P: Dictionary) -> Array:
+func _targets(c: Country, P: Dictionary, counts: Dictionary = {}) -> Array:
+	if counts.is_empty():
+		counts = _kind_counts(c)
 	var diff: int = GameConfig.diff_of(c)
 	var n: int = c.city_ids.size()
 	var thr: float = _threat(c)
@@ -117,7 +119,7 @@ func _targets(c: Country, P: Dictionary) -> Array:
 	var mil: float = 0.35 + aggr * 0.6 + thr * 0.5
 	var dfn: float = 0.25 + caut * 0.7 + thr * 0.6
 
-	var basics: bool = _count(c, Facility.Kind.FARM) > 0 and _count(c, Facility.Kind.SAWMILL) > 0 and _count(c, Facility.Kind.CIV_FACTORY) > 0
+	var basics: bool = _count(c, Facility.Kind.FARM, counts) > 0 and _count(c, Facility.Kind.SAWMILL, counts) > 0 and _count(c, Facility.Kind.CIV_FACTORY, counts) > 0
 	if not basics or gw.game_time < 150.0:
 		mil *= 0.25
 		dfn *= 0.25
@@ -142,7 +144,7 @@ func _targets(c: Country, P: Dictionary) -> Array:
 	if gw.game_time > 240.0:
 		t.append([Facility.Kind.REFINERY, 1, 0.6 * eco])
 		t.append([Facility.Kind.PORT_CRANE, 2 if trade > 0.7 else 1, (0.3 + trade * 0.5) * eco])
-	if _count(c, Facility.Kind.DRONE_PORT) > 0 and gw.mil.stock_count(c.id) >= gw.mil.drone_capacity(c.id) - 1:
+	if _count(c, Facility.Kind.DRONE_PORT, counts) > 0 and gw.mil.stock_count(c.id) >= gw.mil.drone_capacity(c.id) - 1:
 		t.append([Facility.Kind.DP_STORE, 1 + (1 if aggr > 0.7 else 0), maxf(mil, 0.4) * 0.8])
 	if diff >= 1 or aggr > 0.7:
 		t.append([Facility.Kind.MISSILE_FACTORY, 1, 0.3 + aggr * 0.5 + sneaky * 0.2])
@@ -185,13 +187,15 @@ func _build(c: Country, cont: bool = false) -> void:
 	var P: Dictionary = persona_of(c)
 	var now: float = gw.game_time
 	var scored: Array = []
-	for e: Array in _targets(c, P):
+	# One inventory for this decision, rebuilt after every build or ownership change.
+	var counts: Dictionary = _kind_counts(c)
+	for e: Array in _targets(c, P, counts):
 		var kind: int = e[0]
 		var want: int = int(e[1])
-		var have: int = _count(c, kind)
+		var have: int = _count(c, kind, counts)
 		if have >= want or want <= 0:
 			continue
-		if Defense.is_ad(kind) and not _ad_room(c, kind):
+		if Defense.is_ad(kind) and not _ad_room(c, kind, counts):
 			continue
 		if gw.econ.upk != null and not gw.econ.upk.ai_ok(c, kind):
 			continue
@@ -537,7 +541,17 @@ func _attack_next(c: Country) -> void:
 		_cont_a[c.id] = [gw.game_time, cid, ids]
 
 
-func _count(c: Country, kind: int) -> int:
+func _kind_counts(c: Country) -> Dictionary:
+	var counts: Dictionary = {}
+	for f: Facility in gw.mil.facilities:
+		if f.country_id == c.id:
+			counts[f.kind] = int(counts.get(f.kind, 0)) + 1
+	return counts
+
+
+func _count(c: Country, kind: int, counts: Dictionary = {}) -> int:
+	if not counts.is_empty():
+		return int(counts.get(kind, 0))
 	var n: int = 0
 	for f: Facility in gw.mil.facilities:
 		if f.country_id == c.id and f.kind == kind:
@@ -2250,11 +2264,11 @@ func _ad_n(c: Country) -> int:
 
 
 
-func _ad_room(c: Country, kind: int) -> bool:
+func _ad_room(c: Country, kind: int, counts: Dictionary = {}) -> bool:
 	var d: int = GameConfig.diff_of(c)
 	if kind == Facility.Kind.AD_MFG:
-		return _count(c, kind) < int(D_AD_MFG[d])
-	if kind == Facility.Kind.AD_PATRIOT and _count(c, kind) >= int(D_PATRIOT[d]):
+		return _count(c, kind, counts) < int(D_AD_MFG[d])
+	if kind == Facility.Kind.AD_PATRIOT and _count(c, kind, counts) >= int(D_PATRIOT[d]):
 		return false
 	if kind >= Facility.Kind.AD_SPAAG and kind <= Facility.Kind.AD_INT:
 		return _ad_n(c) < mini(int(D_AD_COUNTRY[d]), int(D_AD_CITY[d]) * maxi(1, c.city_ids.size()))
@@ -2336,6 +2350,7 @@ func _spend_surplus(c: Country, P: Dictionary, left: int = -1) -> void:
 
 func _sinks(c: Country, P: Dictionary) -> Array:
 	var out: Array = []
+	var counts: Dictionary = _kind_counts(c)
 	var aggr: float = float(P["aggr"])
 	var caut: float = float(P["caution"])
 	var trade: float = float(P["trade"])
@@ -2357,36 +2372,36 @@ func _sinks(c: Country, P: Dictionary) -> Array:
 	var free_pw: int = c.power_cap - c.power_use
 	if free_pw < 2:
 		add.call(1.6, "power", Military.cost_of(Facility.Kind.POWER_PLANT), Facility.Kind.POWER_PLANT, 40.0)
-	if _count(c, Facility.Kind.CIV_FACTORY) < 2 + n / 2 + (1 if trade > 0.7 else 0) + roundi(float(extra) * trade / 3.0) and free_pw >= 1:
+	if _count(c, Facility.Kind.CIV_FACTORY, counts) < 2 + n / 2 + (1 if trade > 0.7 else 0) + roundi(float(extra) * trade / 3.0) and free_pw >= 1:
 		add.call(0.8 + trade * 0.6, "civ", Military.cost_of(Facility.Kind.CIV_FACTORY), Facility.Kind.CIV_FACTORY, 40.0)
-	if c.food < 60 and gw.army.count_units(c.id) > 6 and _count(c, Facility.Kind.FARM) < n + 2:
+	if c.food < 60 and gw.army.count_units(c.id) > 6 and _count(c, Facility.Kind.FARM, counts) < n + 2:
 		add.call(1.2, "farm", Military.cost_of(Facility.Kind.FARM), Facility.Kind.FARM, 40.0)
 
 	var want_bar: int = 1 + roundi(aggr * 3.0) + (1 if war else 0) + (1 if GameConfig.diff_of(c) == 2 else 0) + extra
-	if _count(c, Facility.Kind.BARRACKS) < mini(want_bar, int(D_BARRACKS[GameConfig.diff_of(c)])) and gw.army.count_units(c.id) < MAX_UNITS:
+	if _count(c, Facility.Kind.BARRACKS, counts) < mini(want_bar, int(D_BARRACKS[GameConfig.diff_of(c)])) and gw.army.count_units(c.id) < MAX_UNITS:
 		add.call(0.6 + aggr * 0.8 + w * 0.6 + thr * 0.4, "barracks", Military.cost_of(Facility.Kind.BARRACKS), Facility.Kind.BARRACKS, 45.0)
-	if _count(c, Facility.Kind.AD_SPAAG) < 1 + roundi(caut * 3.0) + (1 if war else 0) + extra / 2 + (extra * n) / 24 and _ad_room(c, Facility.Kind.AD_SPAAG):
+	if _count(c, Facility.Kind.AD_SPAAG, counts) < 1 + roundi(caut * 3.0) + (1 if war else 0) + extra / 2 + (extra * n) / 24 and _ad_room(c, Facility.Kind.AD_SPAAG, counts):
 		add.call(0.3 + caut * 0.7 + thr * 0.5, "spaag", Military.cost_of(Facility.Kind.AD_SPAAG), Facility.Kind.AD_SPAAG, 40.0)
-	if _count(c, Facility.Kind.AD_SAM) < roundi(caut * 2.0) + (1 if war else 0) + extra / 2 + (extra * n) / 36 and _ad_room(c, Facility.Kind.AD_SAM):
+	if _count(c, Facility.Kind.AD_SAM, counts) < roundi(caut * 2.0) + (1 if war else 0) + extra / 2 + (extra * n) / 36 and _ad_room(c, Facility.Kind.AD_SAM, counts):
 		add.call(0.25 + caut * 0.6 + thr * 0.5, "sam", Military.cost_of(Facility.Kind.AD_SAM), Facility.Kind.AD_SAM, 60.0)
-	if _count(c, Facility.Kind.AD_PATRIOT) < (1 if caut > 0.6 or extra >= 1 else 0) + (1 if extra >= 3 else 0) + (1 if caut > 0.6 and extra >= 5 else 0) + (1 if extra >= 8 else 0) + (1 if extra >= 11 else 0) and _ad_room(c, Facility.Kind.AD_PATRIOT):
+	if _count(c, Facility.Kind.AD_PATRIOT, counts) < (1 if caut > 0.6 or extra >= 1 else 0) + (1 if extra >= 3 else 0) + (1 if caut > 0.6 and extra >= 5 else 0) + (1 if extra >= 8 else 0) + (1 if extra >= 11 else 0) and _ad_room(c, Facility.Kind.AD_PATRIOT, counts):
 		add.call(0.2 + caut * 0.4 + thr * 0.4, "patriot", Military.cost_of(Facility.Kind.AD_PATRIOT), Facility.Kind.AD_PATRIOT, 90.0)
 
 	var bw: Array = guard.want(c, P, spent, extra)
 	if not bw.is_empty():
 		add.call(0.35 + caut * 0.4 + thr * 0.4 + w * 0.4 + minf(1.0, float(bw[2]) / 4.0) * 0.3, "bridge_ad", Military.cost_of(int(bw[1])), bw, 60.0)
-	if (war or caut > 0.6) and _count(c, Facility.Kind.AD_RADAR) < 1:
+	if (war or caut > 0.6) and _count(c, Facility.Kind.AD_RADAR, counts) < 1:
 		add.call(0.3 + caut * 0.4, "radar", Military.cost_of(Facility.Kind.AD_RADAR), Facility.Kind.AD_RADAR, 90.0)
-	if (war or caut > 0.6) and _count(c, Facility.Kind.AD_EW) < 1:
+	if (war or caut > 0.6) and _count(c, Facility.Kind.AD_EW, counts) < 1:
 		add.call(0.25 + caut * 0.3, "ew", Military.cost_of(Facility.Kind.AD_EW), Facility.Kind.AD_EW, 90.0)
 
 	if aggr > 0.4 or war or extra >= 3:
-		if _count(c, Facility.Kind.MISSILE_FACTORY) < 1:
+		if _count(c, Facility.Kind.MISSILE_FACTORY, counts) < 1:
 			add.call(0.3 + aggr * 0.4 + w * 0.3, "mfactory", Military.cost_of(Facility.Kind.MISSILE_FACTORY), Facility.Kind.MISSILE_FACTORY, 60.0)
-		elif _count(c, Facility.Kind.TEL) < 1 + roundi(aggr * 2.0) + (1 if war else 0) + extra / 2:
+		elif _count(c, Facility.Kind.TEL, counts) < 1 + roundi(aggr * 2.0) + (1 if war else 0) + extra / 2:
 			add.call(0.2 + aggr * 0.5 + w * 0.4, "tel", Military.cost_of(Facility.Kind.TEL), Facility.Kind.TEL, 60.0)
 
-	var afs: int = _count(c, Facility.Kind.AIRFIELD)
+	var afs: int = _count(c, Facility.Kind.AIRFIELD, counts)
 	var want_af: int = (1 if war or aggr > 0.4 or caut > 0.6 or extra >= 1 else 0) + (1 if extra >= 4 else 0)
 	if afs < want_af:
 		add.call(0.4 + aggr * 0.3 + caut * 0.2 + w * 0.3 + (0.3 if afs == 0 else 0.0), "airfield", Military.cost_of(Facility.Kind.AIRFIELD), Facility.Kind.AIRFIELD, 90.0)
@@ -2429,7 +2444,7 @@ func _sinks(c: Country, P: Dictionary) -> Array:
 		if not pp.is_empty():
 			add.call(0.3 + caut * 0.5 + trade * 0.3 + float(extra) * 0.05, "protect", 1500, pp, 15.0)
 
-	if extra >= 2 and aggr > 0.5 and Facility.Kind.has("DRONE_FACTORY") and _count(c, Facility.Kind.DRONE_FACTORY) < 1 + extra / 3:
+	if extra >= 2 and aggr > 0.5 and Facility.Kind.has("DRONE_FACTORY") and _count(c, Facility.Kind.DRONE_FACTORY, counts) < 1 + extra / 3:
 		add.call(0.3 + aggr * 0.5 + w * 0.3, "dfactory", Military.cost_of(Facility.Kind.DRONE_FACTORY), Facility.Kind.DRONE_FACTORY, 90.0)
 
 	for res: String in ["titanium", "metal", "oil", "precious"]:
