@@ -1,0 +1,4 @@
+dist/
+godot_dl/
+__pycache__/
+*.pck

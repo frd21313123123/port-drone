@@ -1,0 +1,70 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      release_version:
+        description: "Publish a release with this version (e.g. 0.32.2). Empty = only build."
+        required: false
+
+permissions:
+  contents: write
+
+env:
+  GODOT_VERSION: 4.7.2-stable
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Version
+        id: v
+        run: |
+          set -e
+          BASE="$(sed -n 's/^version="\(.*\)"/\1/p' game/pc/version.cfg)"
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"; echo "release=true" >> "$GITHUB_OUTPUT"
+          elif [[ -n "${{ github.event.inputs.release_version }}" ]]; then
+            echo "version=${{ github.event.inputs.release_version }}" >> "$GITHUB_OUTPUT"; echo "release=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "version=${BASE}" >> "$GITHUB_OUTPUT"; echo "release=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/cache@v4
+        with:
+          path: godot_dl
+          key: godot-${{ env.GODOT_VERSION }}
+
+      - name: Godot editor + Windows template
+        run: python3 tools/fetch_godot.py godot_dl
+
+      - name: Build DroneFlames.exe
+        run: |
+          python3 tools/build.py --godot godot_dl/godot --template godot_dl/windows_release_x86_64.exe \
+            --version "${{ steps.v.outputs.version }}" --repo "$GITHUB_REPOSITORY" --out dist
+          ls -la dist
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DroneFlames-${{ steps.v.outputs.version }}
+          path: dist/*
+
+      - name: Publish release
+        if: steps.v.outputs.release == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VER: ${{ steps.v.outputs.version }}
+        run: |
+          set -e
+          if gh release view "v$VER" >/dev/null 2>&1; then
+            gh release upload "v$VER" dist/* --clobber
+          else
+            gh release create "v$VER" dist/* --target "${GITHUB_SHA}" --title "DroneFlames PC v$VER" \
+              --notes "Автоматическая сборка. Игра сама предложит обновиться до этой версии при запуске."
+          fi
