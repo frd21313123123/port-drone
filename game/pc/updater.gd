@@ -14,7 +14,7 @@ const API_FMT: String = "https://api.github.com/repos/%s/releases/latest"
 const EXE_ASSET: String = "DroneFlames.exe"
 const LIB_FILES: PackedStringArray = ["libwebrtc_native.windows.template_release.x86_64.dll",
 	"libgodotsteam.windows.template_release.x86_64.dll", "steam_api64.dll"]
-const CHECK_TIMEOUT_S: float = 7.0
+const CHECK_TIMEOUT_S: float = 12.0
 const GOLD: Color = Color("e8b33a")
 const TEXT: Color = Color("e9e4cf")
 
@@ -123,6 +123,8 @@ func _cleanup_old() -> void:
 # ---------------------------------------------------------------- the flow
 
 func _run() -> void:
+	await get_tree().process_frame  # the first frames of a cold start can be long: the timeout must not run through them
+	await get_tree().process_frame
 	var api: String = OS.get_environment("DF_UPDATE_API") if OS.is_debug_build() and OS.get_environment("DF_UPDATE_API") != "" else API_FMT % repo
 	var rel: Dictionary = await _get_json(api)
 	if rel.is_empty():
@@ -150,9 +152,27 @@ func _find_asset(assets: Array, nm: String) -> Dictionary:
 	return {}
 
 
+## Debug builds only (tests behind a proxy): HTTPS_PROXY and DF_UPDATE_CA (a PEM file with the proxy's CA).
+func _net(h: HTTPRequest) -> void:
+	if not OS.is_debug_build():
+		return
+	var px: String = OS.get_environment("HTTPS_PROXY")
+	if px != "":
+		var hp: PackedStringArray = px.trim_prefix("http://").trim_suffix("/").split(":")
+		if hp.size() == 2:
+			h.set_https_proxy(hp[0], int(hp[1]))
+			h.set_http_proxy(hp[0], int(hp[1]))
+	var ca: String = OS.get_environment("DF_UPDATE_CA")
+	if ca != "":
+		var cert: X509Certificate = X509Certificate.new()
+		if cert.load(ca) == OK:
+			h.set_tls_options(TLSOptions.client(cert))
+
+
 func _get_json(url: String) -> Dictionary:
 	var h: HTTPRequest = HTTPRequest.new()
 	h.timeout = CHECK_TIMEOUT_S
+	_net(h)
 	add_child(h)
 	if h.request(url, ["User-Agent: DroneFlames-PC", "Accept: application/vnd.github+json"]) != OK:
 		h.queue_free()
@@ -160,6 +180,7 @@ func _get_json(url: String) -> Dictionary:
 	var r: Array = await h.request_completed
 	h.queue_free()
 	if int(r[0]) != HTTPRequest.RESULT_SUCCESS or int(r[1]) != 200:
+		print("[Update] check failed: result=%d http=%d" % [int(r[0]), int(r[1])])
 		return {}
 	var j: Variant = JSON.parse_string((r[3] as PackedByteArray).get_string_from_utf8())
 	return j if j is Dictionary else {}
@@ -230,6 +251,7 @@ func _download(url: String, path: String, size: int, label: String) -> String:
 	_http.download_file = path
 	_http.timeout = 0.0
 	_http.max_redirects = 10
+	_net(_http)
 	add_child(_http)
 	_total = size
 	_dl_label = label
