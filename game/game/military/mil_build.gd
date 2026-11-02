@@ -344,6 +344,8 @@ func build(kind: int, center: Vector2i, country: Country, parent: Facility = nul
 	elif DepotS.is_depot(kind) or STORE_PARTS.has(kind):
 
 		f.depot_owner = country.id
+		if f.is_store():
+			gw.econ._cap_bonus.erase(country.id)
 		for pl: Array in (DEPOT_PARTS[kind] if DEPOT_PARTS.has(kind) else STORE_PARTS[kind]):
 			var pid: int = gw.add_object(String(pl[0]), nw + (pl[1] as Vector2i), GameWorld.KIND_BUILDING)
 			if pid >= 0:
@@ -1110,9 +1112,16 @@ func _watch_state() -> void:
 	for cid: int in dep_cids:
 		dep_share.merge(DepotS.shares(self, cid, true))
 	for f: Facility in facilities:
+		if f.is_store() and f.depot_owner != f.country_id:
+			# Captured / handed over: the storage bonus moves to the new owner at once.
+			gw.econ._cap_bonus.erase(f.depot_owner)
+			gw.econ._cap_bonus.erase(f.country_id)
+			f.depot_owner = f.country_id
 		var a: bool = alive(f)
 		if a == f.was_alive:
 			continue
+		if f.is_store():
+			gw.econ._cap_bonus.erase(f.country_id)
 		f.was_alive = a
 		if f.restore_t > 0.0 and not a:
 			continue

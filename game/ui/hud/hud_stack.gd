@@ -410,6 +410,8 @@ func open_store_pick() -> void:
 	intro.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	vb.add_child(intro)
 	var p: Country = gw.player if gw != null else null
+	# Text width: window minus its padding, the button's side offsets, the icon and the gap.
+	var tw: float = maxf(120.0, panel.custom_minimum_size.x - 24.0 - 12.0 - 40.0 - 8.0)
 	for i in Economy.STORE_KINDS.size():
 		var kind: int = int(Economy.STORE_KINDS[i])
 		var key: String = String(Economy.STORE_KEYS[i])
@@ -426,7 +428,6 @@ func open_store_pick() -> void:
 		b.add_theme_stylebox_override("normal", UiKit.sb("wb_panel_dark", 6, 4))
 		b.add_theme_stylebox_override("hover", UiKit.sb("wb_slot_red", 6, 4))
 		b.add_theme_stylebox_override("pressed", UiKit.sb("wb_slot_red", 6, 4))
-		b.custom_minimum_size = Vector2(0, 62)
 		b.pressed.connect(func() -> void:
 			UiKit.snd("ui_click")
 			close_panel()
@@ -453,16 +454,30 @@ func open_store_pick() -> void:
 		var head: String = "%s · %s" % [Military.title_of(kind).to_upper(), Economy.cost_text(bc).to_upper()]
 		var t: Label = UiKit.lbl(head, 12, UiKit.GOLD, 2, 2)
 		t.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		t.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		t.custom_minimum_size.x = tw
 		col.add_child(t)
 		var caps: Dictionary = Economy.STORE_CAP[kind]
 		var sz: Vector2i = Military.size_of(kind)
 		var d: Label = UiKit.lbl(Loc.t("+%d УРАН · +%d ТИТАН · +%d МЕТАЛЛ · +%d НЕФТЬ · +%d ДЕРЕВО · +%d ДРАГМЕТ.") % [caps["uranium"], caps["titanium"], caps["metal"], caps["oil"], caps["wood"], caps["precious"]] + Loc.t("\n%d×%d М · У ВАС: %d") % [sz.x * GameWorld.CELL, sz.y * GameWorld.CELL, have], 9, UiKit.MUTED, 1, 1)
 		d.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		d.custom_minimum_size.x = tw
 		d.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		col.add_child(d)
+		# The button does not size itself from its children: measure the wrapped text and set the height.
+		b.custom_minimum_size = Vector2(0, maxf(62.0, _wrap_h(t, tw) + _wrap_h(d, tw) + 14.0))
 	if p != null:
 		var st: Label = UiKit.lbl(Loc.t("СКЛАДЫ СЫРЬЯ: УРАН %d / %d · ТИТАН %d / %d") % [p.uranium, gw.econ.res_cap(p, "uranium"), p.titanium, gw.econ.res_cap(p, "titanium")], 10, UiKit.TEXT, 1, 1)
+		st.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		st.custom_minimum_size.x = tw + 48.0
 		vb.add_child(st)
+
+
+## Height of a label's text when wrapped to `w` pixels.
+func _wrap_h(l: Label, w: float) -> float:
+	var f: Font = l.get_theme_font("font")
+	var fs: int = l.get_theme_font_size("font_size")
+	return f.get_multiline_string_size(l.text, HORIZONTAL_ALIGNMENT_LEFT, w, fs, -1, TextServer.BREAK_WORD_BOUND | TextServer.BREAK_MANDATORY).y + float(l.get_theme_constant("outline_size"))
 
 
 func open_map_modes() -> void:
