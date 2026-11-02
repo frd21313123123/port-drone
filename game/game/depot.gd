@@ -84,8 +84,60 @@ static func used(mil: Object, c: Country) -> int:
 	return n
 
 
-static func room(mil: Object, c: Country) -> int:
-	return maxi(0, capacity(mil, c.id) - used(mil, c))
+## The one packing rule: what a country has above its normal limits is laid over a list of depots,
+## in the given order, big munitions first, whole items only. Admission (fits / cap), the contents shown
+## on the card, hand-over and demolition checks all go through this, so an item that was accepted
+## always belongs to some depot.
+static func _pack(ds: Array, m: Array, d: Array) -> Dictionary:
+	var left_m: Array[int] = []
+	for t in MT_VOL.size():
+		left_m.append(int(m[t]) if t < m.size() else 0)
+	var left_d: Array[int] = []
+	for j in DRONE_VOL.size():
+		left_d.append(int(d[j]) if j < d.size() else 0)
+	var out: Dictionary = {}
+	for f: Facility in ds:
+		var sh: Dictionary = _empty_share()
+		var free: int = int(CAP[f.kind])
+		sh["cap"] = free
+		for t: int in FILL_ORDER:
+			var k: int = mini(left_m[t], free / int(MT_VOL[t]))
+			if k > 0:
+				(sh["m"] as Array)[t] = k
+				left_m[t] -= k
+				free -= k * int(MT_VOL[t])
+		for j in DRONE_VOL.size():
+			var k2: int = mini(left_d[j], free / int(DRONE_VOL[j]))
+			if k2 > 0:
+				(sh["d"] as Array)[j] = k2
+				left_d[j] -= k2
+				free -= k2 * int(DRONE_VOL[j])
+		sh["pts"] = int(sh["cap"]) - free
+		out[f.id] = sh
+	return {"shares": out, "left_m": left_m, "left_d": left_d}
+
+
+static func _unplaced(r: Dictionary) -> int:
+	var n: int = 0
+	for v: int in r["left_m"]:
+		n += v
+	for v: int in r["left_d"]:
+		n += v
+	return n
+
+
+static func _over_m(mil: Object, c: Country) -> Array[int]:
+	var m: Array[int] = []
+	for t in MT_VOL.size():
+		m.append(overflow(mil, c, t))
+	return m
+
+
+static func _over_d(c: Country) -> Array[int]:
+	var d: Array[int] = []
+	for j in DRONE_VOL.size():
+		d.append(_drones(c, j))
+	return d
 
 
 ## Can one more missile of type t be made / received (normal stock or a depot)?
@@ -94,18 +146,37 @@ static func missile_fits(mil: Object, c: Country, t: int) -> bool:
 		return false
 	if c.missile_stock[t] < int(mil.MT_CAP[t]):
 		return true
-	return room(mil, c) >= int(MT_VOL[t])
+	var m: Array[int] = _over_m(mil, c)
+	m[t] += 1
+	return _unplaced(_pack(depots(mil, c.id), m, _over_d(c))) == 0
 
 
 ## The stock limit of a missile type with the depots counted in (what is there + what still fits).
 static func missile_cap(mil: Object, c: Country, t: int) -> int:
 	if c == null or t < 0 or t >= MT_VOL.size():
 		return 0
-	return int(mil.MT_CAP[t]) + overflow(mil, c, t) + room(mil, c) / int(MT_VOL[t])
+	var base: int = int(mil.MT_CAP[t]) + overflow(mil, c, t)
+	var ds: Array[Facility] = depots(mil, c.id)
+	if ds.is_empty():
+		return base
+	var m: Array[int] = _over_m(mil, c)
+	var d: Array[int] = _over_d(c)
+	var extra: int = 0
+	var lim: int = capacity(mil, c.id) / int(MT_VOL[t])
+	while extra < lim:
+		m[t] += 1
+		if _unplaced(_pack(ds, m, d)) > 0:
+			break
+		extra += 1
+	return base + extra
 
 
 static func drone_fits(mil: Object, c: Country, jet: bool) -> bool:
-	return c != null and room(mil, c) >= int(DRONE_VOL[1 if jet else 0])
+	if c == null:
+		return false
+	var d: Array[int] = _over_d(c)
+	d[1 if jet else 0] += 1
+	return _unplaced(_pack(depots(mil, c.id), _over_m(mil, c), d)) == 0
 
 
 static func store_drone(mil: Object, c: Country, jet: bool) -> bool:
@@ -124,6 +195,34 @@ static func stored_drones(c: Country) -> int:
 	return n
 
 
+## Would everything above the limits still have a depot if this one were gone (demolished)?
+static func can_remove(mil: Object, f: Facility) -> bool:
+	var c: Country = mil.gw.country_by_id(f.country_id)
+	if c == null:
+		return true
+	var rest: Array[Facility] = []
+	for x: Facility in depots(mil, f.country_id):
+		if x != f:
+			rest.append(x)
+	return _unplaced(_pack(rest, _over_m(mil, c), _over_d(c))) == 0
+
+
+## Throws away what has no depot (after a handover into a country whose depots are too full).
+## Returns [missiles lost, drones lost].
+static func _trim(mil: Object, c: Country) -> Array[int]:
+	var r: Dictionary = _pack(depots(mil, c.id), _over_m(mil, c), _over_d(c))
+	var out: Array[int] = [0, 0]
+	var lm: Array = r["left_m"]
+	for t in mini(lm.size(), c.missile_stock.size()):
+		c.missile_stock[t] -= int(lm[t])
+		out[0] += int(lm[t])
+	var ld: Array = r["left_d"]
+	for j in mini(ld.size(), c.depot_drones.size()):
+		c.depot_drones[j] -= int(ld[j])
+		out[1] += int(ld[j])
+	return out
+
+
 static func _empty_share() -> Dictionary:
 	var m: Array[int] = []
 	m.resize(MT_VOL.size())
@@ -135,33 +234,10 @@ static func _empty_share() -> Dictionary:
 ## What lies in each depot of a country: {facility id: {"m": [n per missile type], "d": [delta, jet], "pts", "cap"}}.
 ## prev = lay out over the depots that were standing before this tick (used when one has just been destroyed).
 static func shares(mil: Object, cid: int, prev: bool = false) -> Dictionary:
-	var out: Dictionary = {}
 	var c: Country = mil.gw.country_by_id(cid)
 	if c == null:
-		return out
-	var left_m: Array[int] = []
-	for t in MT_VOL.size():
-		left_m.append(overflow(mil, c, t))
-	var left_d: Array[int] = [_drones(c, 0), _drones(c, 1)]
-	for f: Facility in depots(mil, cid, prev):
-		var sh: Dictionary = _empty_share()
-		var free: int = int(CAP[f.kind])
-		sh["cap"] = free
-		for t: int in FILL_ORDER:
-			var k: int = mini(left_m[t], free / int(MT_VOL[t]))
-			if k > 0:
-				(sh["m"] as Array)[t] = k
-				left_m[t] -= k
-				free -= k * int(MT_VOL[t])
-		for j in DRONE_VOL.size():
-			var k2: int = mini(left_d[j], free / int(DRONE_VOL[j]))
-			if k2 > 0:
-				(sh["d"] as Array)[j] = k2
-				left_d[j] -= k2
-				free -= k2 * int(DRONE_VOL[j])
-		sh["pts"] = int(sh["cap"]) - free
-		out[f.id] = sh
-	return out
+		return {}
+	return _pack(depots(mil, cid, prev), _over_m(mil, c), _over_d(c))["shares"]
 
 
 static func share_of(mil: Object, f: Facility) -> Dictionary:
@@ -247,6 +323,9 @@ static func _hand_over(mil: Object, f: Facility, old_id: int, new_id: int, share
 		co.depot_drones[j] -= k2
 		cn.depot_drones[j] += k2
 		got_d += k2
+	var lost: Array[int] = _trim(mil, cn)
+	got_m -= lost[0]
+	got_d -= lost[1]
 	if got_m + got_d <= 0:
 		return
 	var title: String = Loc.t(String(mil.TITLES[f.kind]))

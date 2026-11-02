@@ -34202,3 +34202,11 @@ msgstr "%s captured: the ammo is yours now — missiles %d, drones %d"
 #. ammo depots (army tab)
 msgid "%s захвачен: боеприпасы потеряны — ракет %d, дронов %d"
 msgstr "%s captured: the ammo is lost — missiles %d, drones %d"
+
+#. ammo depots (army tab)
+msgid "Склад не пуст: остальные склады не вместят боеприпасы. Сначала запустите ракеты или постройте ещё склад"
+msgstr "The depot is not empty: the other depots cannot hold its ammo. Launch some missiles or build another depot first"
+
+#. ammo depots (army tab)
+msgid "\nСНОС ЗАПРЕЩЁН: ДРУГИЕ СКЛАДЫ НЕ ВМЕСТЯТ СОДЕРЖИМОЕ"
+msgstr "\nDEMOLITION BLOCKED: OTHER DEPOTS CANNOT HOLD THE CONTENTS"

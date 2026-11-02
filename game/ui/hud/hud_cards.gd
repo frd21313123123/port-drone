@@ -405,6 +405,8 @@ func show_facility(f: Facility, mil: Military, player: Country) -> void:
 					elif dpts > 0:
 						boom = Loc.t("СЛАБЫЙ")
 					info = Loc.t("ЗАНЯТО %d/%d МЕСТ (%d%%) · ВЗРЫВ: %s\n%s") % [dpts, dcap, roundi(100.0 * dpts / dcap), boom, Military.DepotS.contents_text(mil, sh)]
+					if dpts > 0 and not Military.DepotS.can_remove(mil, f):
+						info += Loc.t("\nСНОС ЗАПРЕЩЁН: ДРУГИЕ СКЛАДЫ НЕ ВМЕСТЯТ СОДЕРЖИМОЕ")
 					detail = Loc.t("Сюда идут ракеты сверх обычного лимита и дроны, когда дронопорты заполнены (потом сами перелетают на свободное место). Места: КАБ и «в-в» — 1, КР и ЗУР — 2, баллистика и гиперзвук — 4, дрон — 2, реактивный — 3. Всего на складах страны: %d/%d. Уничтоженный склад детонирует — держите рядом ПВО и не ставьте вплотную к заводам.") % [mini(Military.DepotS.used(mil, player), Military.DepotS.capacity(mil, player.id)), Military.DepotS.capacity(mil, player.id)]
 				else:
 					info = Loc.t("СКЛАД БОЕПРИПАСОВ: ПОПАДАНИЕ ВЫЗОВЕТ ДЕТОНАЦИЮ")

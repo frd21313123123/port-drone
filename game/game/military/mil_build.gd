@@ -1478,6 +1478,8 @@ func demolish_why(country: Country, f: Facility) -> String:
 		return Loc.t("Объект в пути")
 	if f.restore_t > 0.0:
 		return Loc.t("Идёт восстановление")
+	if f.is_depot() and alive(f) and not DepotS.can_remove(self, f):
+		return Loc.t("Склад не пуст: остальные склады не вместят боеприпасы. Сначала запустите ракеты или постройте ещё склад")
 	var hc: Vector2i = _dem_cell(f)
 	for cid in country.city_ids:
 		var city: City = gw.cities[cid]
