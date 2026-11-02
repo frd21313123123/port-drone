@@ -13,7 +13,8 @@ const SPEC: Dictionary = {
 }
 const UPGRADE_COST: int = 1500
 const FIGHTER_AAM: Array = [0, 2, 4, 6]
-const BOMBER_CR: int = 30
+const BOMBER_CR: int = 8
+const BOMBER_PYLON_N: Array = [0, 8, 3]
 const AIR_CAP: int = 6
 const FUEL_PER_UNIT: float = 300.0
 const SERVICE_TIME: float = 8.0
@@ -38,8 +39,28 @@ const HELI_PATROL_R: float = 70.0
 const TITANIUM: Dictionary = {Aircraft.Type.BOMBER: 60, Aircraft.Type.FIGHTER: 20, Aircraft.Type.HELI: 10, Aircraft.Type.ATTACK: 30}
 const PYLON_N: Array = [0, 2, 1]
 const PYLON_MT: Array = [-1, 1, 4]
-const PYLON_NAMES: Array = ["ПУСТО", "2 КР", "ГИПЕРЗВУК"]
+const PYLON_NAMES: Array = ["ПУСТО", "КР", "ГИПЕРЗВУК"]
 const HYPER_RANGE: float = 5000.0
+
+
+static func has_pylon(a: Aircraft) -> bool:
+	return a.type == Aircraft.Type.FIGHTER or a.type == Aircraft.Type.BOMBER
+
+
+static func pylon_cap(a: Aircraft, p: int = -1) -> int:
+	if p < 0:
+		p = a.pylon
+	if p <= 0:
+		return 0
+	return int(BOMBER_PYLON_N[p]) if a.type == Aircraft.Type.BOMBER else int(PYLON_N[p])
+
+
+static func is_hyper(a: Aircraft) -> bool:
+	return has_pylon(a) and a.pylon == 2
+
+
+static func is_cr(a: Aircraft) -> bool:
+	return has_pylon(a) and a.pylon == 1
 
 
 
@@ -208,6 +229,8 @@ func buy(af: Facility, type: int, country: Country) -> String:
 	a.service_t = SERVICE_TIME
 	if type == Aircraft.Type.ATTACK:
 		a.nar = ATTACK_NAR
+	elif type == Aircraft.Type.BOMBER:
+		a.pylon = 1
 	aircraft.append(a)
 	gw.fx.spawn("build_spark", a.pos, 6)
 	return ""
@@ -286,11 +309,7 @@ func launch_cruise(a: Aircraft, target: Vector2, n: int) -> int:
 	if a.type == Aircraft.Type.HELI or a.type == Aircraft.Type.ATTACK or not a.airborne():
 		gw.message.emit(Loc.t("Пуск КР - только в воздухе") if a.type != Aircraft.Type.ATTACK else Loc.t("У штурмовика нет КР"))
 		return 0
-	var fighter: bool = a.type == Aircraft.Type.FIGHTER
-	if not fighter and a.payload == 1:
-		gw.message.emit(Loc.msg(Loc.mk("На бомбардировщике КАБ: смените загрузку на КР")))
-		return 0
-	if fighter and a.pylon != 1:
+	if not is_cr(a):
 		gw.message.emit(Loc.msg(Loc.mk("На подвесе нет крылатых ракет")))
 		return 0
 	if a.pos.distance_to(target) > CR_RANGE:
@@ -298,7 +317,7 @@ func launch_cruise(a: Aircraft, target: Vector2, n: int) -> int:
 		return 0
 	if gw.diplo != null and gw.diplo.strike_block_at(a.country_id, target) != "":
 		return 0
-	var k: int = mini(n, a.pylon_n if fighter else a.missiles)
+	var k: int = mini(n, a.pylon_n)
 	if k <= 0:
 		gw.message.emit(Loc.msg(Loc.mk("Нет крылатых ракет: нужен ракетный завод")))
 		return 0
@@ -307,17 +326,14 @@ func launch_cruise(a: Aircraft, target: Vector2, n: int) -> int:
 	for i in k:
 		_cr_queue.append([gw.game_time + i * CR_GAP, a, target])
 	a.cr_pend += k
-	if fighter:
-		a.pylon_n -= k
-	else:
-		a.missiles -= k
+	a.pylon_n -= k
 	return k
 
 
 
 func launch_hyper(a: Aircraft, target: Vector2) -> bool:
-	if a.type != Aircraft.Type.FIGHTER or not a.airborne():
-		gw.message.emit(Loc.msg(Loc.mk("Пуск - только с истребителя в воздухе")))
+	if not has_pylon(a) or not a.airborne():
+		gw.message.emit(Loc.msg(Loc.mk("Пуск - только с истребителя или бомбардировщика в воздухе")))
 		return false
 	if a.pylon != 2 or a.pylon_n <= 0:
 		gw.message.emit(Loc.msg(Loc.mk("На подвесе нет гиперзвуковой ракеты")))
@@ -334,8 +350,8 @@ func launch_hyper(a: Aircraft, target: Vector2) -> bool:
 
 
 func set_pylon(a: Aircraft, p: int) -> String:
-	if a.type != Aircraft.Type.FIGHTER:
-		return Loc.t("Подвес - только у истребителя")
+	if not has_pylon(a):
+		return Loc.t("Подвес - только у истребителя и бомбардировщика")
 	if a.state != Aircraft.State.PARKED:
 		return Loc.t("Смена подвеса только на аэродроме")
 	var c: Country = gw.country_by_id(a.country_id)
@@ -653,17 +669,13 @@ func _service(a: Aircraft, dt: float) -> void:
 		a.fuel = minf(fmax, a.fuel + units * FUEL_PER_UNIT)
 	if a.type == Aircraft.Type.ATTACK:
 		_rearm_attack(a, c)
-	elif a.type == Aircraft.Type.BOMBER and a.missiles < BOMBER_CR:
-		var k: int = mini(BOMBER_CR - a.missiles, c.missile_stock[Military.MT_CRUISE])
-		c.missile_stock[Military.MT_CRUISE] -= k
-		a.missiles += k
 	elif a.type == Aircraft.Type.FIGHTER and a.missiles < int(FIGHTER_AAM[a.level]):
 		var k2: int = mini(int(FIGHTER_AAM[a.level]) - a.missiles, c.missile_stock[Military.MT_AA])
 		c.missile_stock[Military.MT_AA] -= k2
 		a.missiles += k2
-	if a.type == Aircraft.Type.FIGHTER and a.pylon > 0 and a.pylon_n < int(PYLON_N[a.pylon]):
+	if has_pylon(a) and a.pylon > 0 and a.pylon_n < pylon_cap(a):
 		var mt: int = int(PYLON_MT[a.pylon])
-		var k3: int = mini(int(PYLON_N[a.pylon]) - a.pylon_n, c.missile_stock[mt])
+		var k3: int = mini(pylon_cap(a) - a.pylon_n, c.missile_stock[mt])
 		c.missile_stock[mt] -= k3
 		a.pylon_n += k3
 
@@ -1306,15 +1318,13 @@ func _auto_cr_tick() -> void:
 
 
 func _cr_load(a: Aircraft) -> int:
-	if a.type == Aircraft.Type.BOMBER:
-		return a.missiles if a.payload == 0 else 0
-	if a.type == Aircraft.Type.FIGHTER and a.pylon > 0:
+	if has_pylon(a) and a.pylon > 0:
 		return a.pylon_n
 	return 0
 
 
 func _cr_reach_of(a: Aircraft) -> float:
-	return HYPER_RANGE if a.type == Aircraft.Type.FIGHTER and a.pylon == 2 else CR_RANGE
+	return HYPER_RANGE if is_hyper(a) else CR_RANGE
 
 
 
@@ -1332,7 +1342,7 @@ func auto_cr_scramble(c: Country) -> bool:
 		if a.auto_cr > 0:
 			return false
 		var ld: int = _cr_load(a)
-		if a.type == Aircraft.Type.FIGHTER and a.pylon == 2:
+		if is_hyper(a):
 			hy_total += ld
 		else:
 			cr_total += ld
@@ -1383,7 +1393,7 @@ func auto_cr_scramble(c: Country) -> bool:
 		var best_fire: Vector2 = Vector2.ZERO
 		var bd: float = INF
 		for a: Aircraft in ready:
-			var hyper: bool = a.type == Aircraft.Type.FIGHTER and a.pylon == 2
+			var hyper: bool = is_hyper(a)
 			if (hy_total if hyper else cr_total) < 2:
 				continue
 			var rr: float = _cr_reach_of(a) * CR_FIRE_FRAC
@@ -1470,16 +1480,12 @@ func _auto_cr_step(a: Aircraft) -> void:
 
 func _ai_load(a: Aircraft, hyper: bool) -> int:
 	if hyper:
-		return a.pylon_n if a.type == Aircraft.Type.FIGHTER and a.pylon == 2 else 0
-	if a.type == Aircraft.Type.BOMBER:
-		return a.missiles if a.payload == 0 else 0
-	if a.type == Aircraft.Type.FIGHTER and a.pylon == 1:
-		return a.pylon_n
-	return 0
+		return a.pylon_n if is_hyper(a) else 0
+	return a.pylon_n if is_cr(a) else 0
 
 
 func _ai_fire(a: Aircraft, target: Vector2, n: int = 2) -> bool:
-	var hyper: bool = a.type == Aircraft.Type.FIGHTER and a.pylon == 2
+	var hyper: bool = is_hyper(a)
 	var ok: bool = launch_hyper(a, target) if hyper else launch_cruise(a, target, mini(n, _ai_load(a, false))) > 0
 	if ok:
 		var s: Array = ai_cr_stats.get(a.country_id, [0, 0, 0, 0])
@@ -1565,10 +1571,8 @@ func _ai_arm(c: Country, hyper: bool) -> void:
 		if a.country_id != c.id or a.state != Aircraft.State.PARKED:
 			continue
 		var done: bool = false
-		if a.type == Aircraft.Type.FIGHTER and a.pylon_n == 0 and a.pylon != (2 if hyper else 1):
+		if has_pylon(a) and a.pylon_n == 0 and a.pylon != (2 if hyper else 1):
 			done = set_pylon(a, 2 if hyper else 1) == ""
-		elif not hyper and a.type == Aircraft.Type.BOMBER and a.payload == 1 and c.missile_stock[mt] >= 4:
-			done = set_payload(a, 0) == ""
 		if done:
 			var s: Array = ai_cr_stats.get(c.id, [0, 0, 0, 0])
 			s[3] = int(s[3]) + 1
@@ -1610,7 +1614,7 @@ func bomber_summary(country_id: int) -> Array:
 		if a.cas > 0:
 			sn = Loc.t("ПОДДЕРЖКА")
 		out.append({"id": a.id, "type": a.type, "payload": Loc.t("КАБ") if a.type == Aircraft.Type.ATTACK else payload_name(a), "payload_i": 1 if a.type == Aircraft.Type.ATTACK else a.payload, "nar": a.nar, "state": a.state, "state_name": sn,
-			"kab_left": a.kab, "cr_left": a.missiles, "sortie": a.sortie, "fuel_frac": a.fuel / float(SPEC[a.type]["fuel"]), "note": auto_note(a)})
+			"kab_left": a.kab, "cr_left": a.pylon_n if has_pylon(a) else a.missiles, "sortie": a.sortie, "fuel_frac": a.fuel / float(SPEC[a.type]["fuel"]), "note": auto_note(a)})
 	return out
 
 
@@ -1624,12 +1628,12 @@ func auto_note(a: Aircraft) -> String:
 		return ""
 	if _cr_carrier(a) and cr_q_left(c.id) > 0:
 		var pr: Array = cr_q_progress(c.id)
-		var st: String = Loc.t("ОБСЛУЖИВАНИЕ") if a.service_t > 1.0 else (Loc.t("ПЕРЕЗАРЯДКА") if _cr_load(a) < (BOMBER_CR if a.type == Aircraft.Type.BOMBER else 2) and c.missile_stock[Military.MT_CRUISE] > 0 else (Loc.t("НЕТ ТОПЛИВА") if a.fuel < AUTO_MIN_FUEL else Loc.t("ВЫЛЕТ")))
+		var st: String = Loc.t("ОБСЛУЖИВАНИЕ") if a.service_t > 1.0 else (Loc.t("ПЕРЕЗАРЯДКА") if _cr_load(a) < pylon_cap(a) and c.missile_stock[Military.MT_CRUISE] > 0 else (Loc.t("НЕТ ТОПЛИВА") if a.fuel < AUTO_MIN_FUEL else Loc.t("ВЫЛЕТ")))
 		return Loc.t("ОЧЕРЕДЬ КР %d/%d: %s") % [int(pr[0]), int(pr[1]), st]
 	var kab_mode: bool = a.type == Aircraft.Type.ATTACK
 	if kab_mode and not auto_kab_of(c.id):
 		return ""
-	if not kab_mode and (mil.auto_strike_of(c.id) <= 0 or (a.type == Aircraft.Type.FIGHTER and a.pylon == 0)):
+	if not kab_mode and (mil.auto_strike_of(c.id) <= 0 or (has_pylon(a) and a.pylon == 0)):
 		return ""
 	var why: String = ""
 	var fmax: float = float(SPEC[a.type]["fuel"])
@@ -2103,7 +2107,7 @@ func cr_q_left(cid: int) -> int:
 
 
 func _cr_carrier(a: Aircraft) -> bool:
-	return a.state != Aircraft.State.DEAD and ((a.type == Aircraft.Type.BOMBER and a.payload == 0) or (a.type == Aircraft.Type.FIGHTER and a.pylon == 1))
+	return a.state != Aircraft.State.DEAD and is_cr(a)
 
 
 
@@ -2256,7 +2260,7 @@ func _q_tick() -> void:
 				continue
 			if a.state != Aircraft.State.PARKED or a.service_t > 1.0 or a.fuel < AUTO_MIN_FUEL:
 				continue
-			var full: int = BOMBER_CR if a.type == Aircraft.Type.BOMBER else int(PYLON_N[1])
+			var full: int = pylon_cap(a, 1)
 			if _cr_load(a) < full and c.missile_stock[Military.MT_CRUISE] > 0:
 				continue
 			var best: Array = []
@@ -2588,6 +2592,13 @@ func after_load() -> void:
 		while c.missile_stock.size() < Military.MT_CAP.size():
 			c.missile_stock.append(0)
 	for a: Aircraft in aircraft:
+		if a.type == Aircraft.Type.BOMBER and a.pylon == 0 and a.missiles > 0:
+			a.pylon = 1
+			a.pylon_n = mini(a.missiles, int(BOMBER_PYLON_N[1]))
+			var c3: Country = gw.country_by_id(a.country_id)
+			if c3 != null:
+				c3.missile_stock[Military.MT_CRUISE] += a.missiles - a.pylon_n
+			a.missiles = 0
 		if a.type == Aircraft.Type.BOMBER and (a.payload == 1 or a.kab > 0):
 			var c2: Country = gw.country_by_id(a.country_id)
 			if c2 != null:

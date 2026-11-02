@@ -668,7 +668,7 @@ func _update_ops(delta: float) -> void:
 			return
 		if _missile_multi_card():
 			return
-		var have_cr: int = b.pylon_n if b.type == Aircraft.Type.FIGHTER else b.missiles
+		var have_cr: int = b.pylon_n
 		plan_count = clampi(plan_count, 1, maxi(1, have_cr))
 		_plan_info = {"available": have_cr}
 		hud.show_cr_plan(b, plan_has_target, b.pos.distance_to(plan_target) if plan_has_target else 0.0, plan_count)

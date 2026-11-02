@@ -396,11 +396,9 @@ static func strike(gw: GameWorld, c: Country) -> bool:
 	for a: Aircraft in air.aircraft:
 		if a.country_id != c.id or a.state == Aircraft.State.DEAD:
 			continue
-		if a.type == Aircraft.Type.BOMBER:
-			cr_total += a.missiles
-		elif a.type == Aircraft.Type.FIGHTER and a.pylon == 1:
+		if Air.is_cr(a):
 			cr_total += a.pylon_n
-		elif a.type == Aircraft.Type.FIGHTER and a.pylon == 2:
+		elif Air.is_hyper(a):
 			hy_total += a.pylon_n
 		if a.airborne() and a.state != Aircraft.State.LAND:
 			flying.append(a)
@@ -420,7 +418,7 @@ static func strike(gw: GameWorld, c: Country) -> bool:
 				how = Loc.t("баллистическая ракета") if n == 1 else Loc.t("%d баллистические ракеты") % n
 		if how == "" and cr_total >= 2:
 			for a: Aircraft in flying:
-				var load: int = a.missiles if a.type == Aircraft.Type.BOMBER else (a.pylon_n if a.pylon == 1 else 0)
+				var load: int = a.pylon_n if Air.is_cr(a) else 0
 				if load <= 0 or a.pos.distance_to(p) > Air.CR_RANGE * 0.95:
 					continue
 				var n2: int = mini(mini(load, cr_total - 1), 2)
@@ -429,7 +427,7 @@ static func strike(gw: GameWorld, c: Country) -> bool:
 					break
 		if how == "" and hy_total >= 2:
 			for a2: Aircraft in flying:
-				if a2.type == Aircraft.Type.FIGHTER and a2.pylon == 2 and a2.pylon_n > 0 and a2.pos.distance_to(p) <= Air.HYPER_RANGE * 0.95:
+				if Air.is_hyper(a2) and a2.pylon_n > 0 and a2.pos.distance_to(p) <= Air.HYPER_RANGE * 0.95:
 					if air.launch_hyper(a2, p):
 						how = Loc.t("гиперзвуковая ракета")
 						break
@@ -524,10 +522,9 @@ static func summary(gw: GameWorld, country_id: int) -> Dictionary:
 	for a: Aircraft in mil.air.aircraft:
 		if a.country_id != country_id or a.state == Aircraft.State.DEAD:
 			continue
-		if a.type == Aircraft.Type.BOMBER:
-			loaded[Military.MT_CRUISE] += a.missiles
-		elif a.type == Aircraft.Type.FIGHTER:
-			loaded[Military.MT_AA] += a.missiles
+		if a.type == Aircraft.Type.BOMBER or a.type == Aircraft.Type.FIGHTER:
+			if a.type == Aircraft.Type.FIGHTER:
+				loaded[Military.MT_AA] += a.missiles
 			if a.pylon == 1:
 				loaded[Military.MT_CRUISE] += a.pylon_n
 			elif a.pylon == 2:

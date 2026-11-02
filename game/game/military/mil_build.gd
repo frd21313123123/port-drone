@@ -792,7 +792,7 @@ func has_carrier(c: Country, t: int) -> bool:
 	if t == MT_AA:
 		return air.count(c.id, Aircraft.Type.FIGHTER) > 0 or air.count(c.id, Aircraft.Type.ATTACK) > 0
 	if t == MT_HYPER:
-		return air.count(c.id, Aircraft.Type.FIGHTER) > 0
+		return air.count(c.id, Aircraft.Type.FIGHTER) > 0 or air.count(c.id, Aircraft.Type.BOMBER) > 0
 	if t == MT_KAB:
 		return air.count(c.id, Aircraft.Type.ATTACK) > 0
 	return true

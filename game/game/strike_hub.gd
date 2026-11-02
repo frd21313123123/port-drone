@@ -19,7 +19,7 @@ const W_INFO: Dictionary = {
 	"ship": {"short": "КР МОРЕ", "title": "КР с кораблей", "sub": "УВП кораблей", "icon": "icon_ship_cr", "col": Color("3fd8c4"), "unit": "КР"},
 	"art": {"short": "АРТ. УДАР", "title": "Артбатареи", "sub": "по берегу, до 400 м вглубь", "icon": "icon_ship_art", "col": Color("ffd166"), "unit": "залпов"},
 	"bomber": {"short": "КР АВИА", "title": "КР с самолётов", "sub": "носители", "icon": "icon_bomber", "col": Color("c69cff"), "unit": "КР"},
-	"hyper": {"short": "ГИПЕР", "title": "Гиперзвук", "sub": "истребители", "icon": "icon_m_hyper", "col": Color("ff72d6"), "unit": "ракет"},
+	"hyper": {"short": "ГИПЕР", "title": "Гиперзвук", "sub": "истребители и бомбардировщики", "icon": "icon_m_hyper", "col": Color("ff72d6"), "unit": "ракет"},
 }
 
 const AIR_TAKEOFF: float = 4.5
@@ -167,7 +167,7 @@ func _ready(gw: GameWorld, wid: String) -> Array:
 			var ap: Dictionary = mil.air.multi_plan(p, [], wid == "hyper")
 			var why: String = String(ap["why"])
 			if int(ap["available"]) == 0:
-				why = (Loc.t("Нет истребителя с гиперзвуком: аэродром › истребитель › подвес «ГИПЕР»") if wid == "hyper"
+				why = (Loc.t("Нет носителя с гиперзвуком: аэродром › истребитель или бомбардировщик › подвес «ГИПЕРЗВУК»") if wid == "hyper"
 					else Loc.t("Нет КР на носителях: аэродром › бомбардировщик (или подвес КР)"))
 			return [int(ap["available"]), why]
 	return [0, ""]
