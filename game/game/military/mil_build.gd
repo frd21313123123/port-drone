@@ -341,10 +341,12 @@ func build(kind: int, center: Vector2i, country: Country, parent: Facility = nul
 					f.main_obj = pid
 	elif kind == Facility.Kind.NUCLEAR_PLANT:
 		Nuclear.build_parts(gw, f, nw, country)
-	elif DepotS.is_depot(kind):
+	elif DepotS.is_depot(kind) or STORE_PARTS.has(kind):
 
 		f.depot_owner = country.id
-		for pl: Array in DEPOT_PARTS[kind]:
+		if f.is_store():
+			gw.econ._cap_bonus.erase(country.id)
+		for pl: Array in (DEPOT_PARTS[kind] if DEPOT_PARTS.has(kind) else STORE_PARTS[kind]):
 			var pid: int = gw.add_object(String(pl[0]), nw + (pl[1] as Vector2i), GameWorld.KIND_BUILDING)
 			if pid >= 0:
 				f.obj_ids.append(pid)
@@ -1110,9 +1112,16 @@ func _watch_state() -> void:
 	for cid: int in dep_cids:
 		dep_share.merge(DepotS.shares(self, cid, true))
 	for f: Facility in facilities:
+		if f.is_store() and f.depot_owner != f.country_id:
+			# Captured / handed over: the storage bonus moves to the new owner at once.
+			gw.econ._cap_bonus.erase(f.depot_owner)
+			gw.econ._cap_bonus.erase(f.country_id)
+			f.depot_owner = f.country_id
 		var a: bool = alive(f)
 		if a == f.was_alive:
 			continue
+		if f.is_store():
+			gw.econ._cap_bonus.erase(f.country_id)
 		f.was_alive = a
 		if f.restore_t > 0.0 and not a:
 			continue
@@ -1546,6 +1555,9 @@ func demolish(country: Country, f: Facility) -> String:
 
 
 func _dem_one(x: Facility) -> void:
+	if x.is_store() and gw.econ != null:
+		# Before the kind is changed below: the storage bonus of the owner goes away at once.
+		gw.econ._cap_bonus.erase(x.country_id)
 	_stop_fx(x)
 	if gw.army != null:
 		for u: Unit in gw.army.units:

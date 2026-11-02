@@ -414,6 +414,14 @@ func show_facility(f: Facility, mil: Military, player: Country) -> void:
 					detail = Loc.t("Сюда в первую очередь кладутся все ракеты страны, а сверх обычного лимита они хранятся только на складах. Дроны — когда дронопорты заполнены (потом сами перелетают на свободное место). Места: КАБ и «в-в» — 1, КР и ЗУР — 2, баллистика и гиперзвук — 4, дрон — 2, реактивный — 3. Всего на складах страны: %d/%d. Не поместилось (обычный запас): %s. Уничтоженный склад детонирует вместе с содержимым — держите рядом ПВО и не ставьте вплотную к заводам.") % [mini(Military.DepotS.used(mil, player), Military.DepotS.capacity(mil, player.id)), Military.DepotS.capacity(mil, player.id), Military.DepotS.contents_text(mil, out_sh)]
 				else:
 					info = Loc.t("СКЛАД БОЕПРИПАСОВ: ПОПАДАНИЕ ВЫЗОВЕТ ДЕТОНАЦИЮ")
+			Facility.Kind.STORE_S, Facility.Kind.STORE_M, Facility.Kind.STORE_L:
+				var scap: Dictionary = Economy.STORE_CAP[f.kind]
+				info = Loc.t("СКЛАД СЫРЬЯ: +%d УРАН · +%d ТИТАН · +%d МЕТАЛЛ · +%d НЕФТЬ · +%d ДЕРЕВО · +%d ДРАГМЕТ.") % [scap["uranium"], scap["titanium"], scap["metal"], scap["oil"], scap["wood"], scap["precious"]]
+				if player != null and f.country_id == player.id:
+					var tot: Array = []
+					for sr: String in Economy.STORE_RES:
+						tot.append("%s %d/%d" % [Loc.t(String(Economy.RES_SHORT[sr])), int(player.get(sr)), gw.econ.res_cap(player, sr)])
+					detail = Loc.t("Поднимает лимит хранения сырья страны; склады суммируются. Не взрывается, но если склад разрушат, лимит упадёт. Сейчас на складах страны: %s.") % ", ".join(tot)
 			Facility.Kind.AD_RADAR:
 				info = (Loc.t("ОБЗОР %d М: ПВО ВИДИТ ДАЛЬШЕ") % int(Defense.RADAR_R)) if mil.has_power(f) else Loc.t("НЕТ ПИТАНИЯ — РЛС ОТКЛЮЧЕНА")
 			Facility.Kind.AD_EW:

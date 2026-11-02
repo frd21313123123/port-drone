@@ -62,6 +62,7 @@ func _set_mode(m: int) -> void:
 	for k: String in BUILD_KEYS:
 		hud.set_key_pressed(k, m == int(BUILD_KEYS[k]))
 	hud.set_key_pressed("depot", m == Mode.DEPOT_S or m == Mode.DEPOT_M or m == Mode.DEPOT_L)
+	hud.set_key_pressed("store", m == Mode.STORE_S or m == Mode.STORE_M or m == Mode.STORE_L)
 	hud.set_key_pressed("launch", m == Mode.TARGET)
 	hud.set_key_pressed("missile", m == Mode.MISSILE)
 	hud.set_key_pressed("ship_cr", m == Mode.SHIP_CR)
@@ -142,7 +143,7 @@ func _set_mode(m: int) -> void:
 			hud.set_hint(RB.hint(self, m))
 		Mode.TRENCH_H, Mode.TEETH_H:
 			hud.set_hint(Loc.t("%s: ВЕДИТЕ ПАЛЬЦЕМ ПО СВОЕЙ ЗЕМЛЕ (%d/КЛЕТКА). КАРТА - ДВУМЯ ПАЛЬЦАМИ") % [Loc.t("ОКОП") if m == Mode.TRENCH_H else Loc.t("ЗУБЫ ДРАКОНА"), Military.cost_of(BUILD_KIND[m])])
-		Mode.FARM, Mode.CIV, Mode.MINE, Mode.BARRACKS, Mode.AD_MFG, Mode.AD_SPAAG, Mode.AD_SAM, Mode.AD_PATRIOT, Mode.AD_INT, Mode.AD_RADAR, Mode.AD_EW, Mode.DUGOUT, Mode.COASTAL_ASM, Mode.DEPOT_S, Mode.DEPOT_M, Mode.DEPOT_L:
+		Mode.FARM, Mode.CIV, Mode.MINE, Mode.BARRACKS, Mode.AD_MFG, Mode.AD_SPAAG, Mode.AD_SAM, Mode.AD_PATRIOT, Mode.AD_INT, Mode.AD_RADAR, Mode.AD_EW, Mode.DUGOUT, Mode.COASTAL_ASM, Mode.DEPOT_S, Mode.DEPOT_M, Mode.DEPOT_L, Mode.STORE_S, Mode.STORE_M, Mode.STORE_L:
 			var kind2: int = BUILD_KIND[m]
 			var bc2: Dictionary = Economy.build_cost(kind2)
 			if world.player != null and world.mil.has_method("price_of") and bc2.has("money"):

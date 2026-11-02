@@ -402,6 +402,84 @@ func open_depot_pick() -> void:
 		vb.add_child(st)
 
 
+## CITIES › СКЛАД СЫРЬЯ: pick the size of a civil resource warehouse, then tap the map to build it.
+func open_store_pick() -> void:
+	var vb: VBoxContainer = _window(Loc.t("Склад сырья"), "store_pick")
+	panel_kind = "store_pick"
+	var intro: Label = UiKit.lbl(Loc.t("Гражданский склад: поднимает лимит хранения урана, титана, металла, нефти, дерева и драгметаллов. Склады суммируются, не взрываются; захваченный склад работает на нового владельца."), 9, UiKit.MUTED, 1, 1)
+	intro.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	vb.add_child(intro)
+	var p: Country = gw.player if gw != null else null
+	# Text width: window minus its padding, the button's side offsets, the icon and the gap.
+	var tw: float = maxf(120.0, panel.custom_minimum_size.x - 24.0 - 12.0 - 40.0 - 8.0)
+	for i in Economy.STORE_KINDS.size():
+		var kind: int = int(Economy.STORE_KINDS[i])
+		var key: String = String(Economy.STORE_KEYS[i])
+		var bc: Dictionary = Economy.build_cost(kind)
+		if p != null and gw.mil.has_method("price_of") and bc.has("money"):
+			bc = bc.duplicate()
+			bc["money"] = gw.mil.price_of(kind, p)
+		var have: int = 0
+		if p != null:
+			for f: Facility in gw.mil.facilities:
+				if f.kind == kind and f.country_id == p.id and gw.mil.alive(f):
+					have += 1
+		var b: = Button.new()
+		b.add_theme_stylebox_override("normal", UiKit.sb("wb_panel_dark", 6, 4))
+		b.add_theme_stylebox_override("hover", UiKit.sb("wb_slot_red", 6, 4))
+		b.add_theme_stylebox_override("pressed", UiKit.sb("wb_slot_red", 6, 4))
+		b.pressed.connect(func() -> void:
+			UiKit.snd("ui_click")
+			close_panel()
+			action.emit(key))
+		vb.add_child(b)
+		var row: = HBoxContainer.new()
+		row.add_theme_constant_override("separation", 8)
+		row.set_anchors_preset(Control.PRESET_FULL_RECT)
+		row.offset_left = 6
+		row.offset_right = -6
+		row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		b.add_child(row)
+		var ic: Control = UiKit.icon_rect("icon_store", 24.0 + 8.0 * i)
+		ic.custom_minimum_size = Vector2(40, 40)
+		ic.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		ic.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		row.add_child(ic)
+		var col: = VBoxContainer.new()
+		col.add_theme_constant_override("separation", 0)
+		col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		col.alignment = BoxContainer.ALIGNMENT_CENTER
+		col.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		row.add_child(col)
+		var head: String = "%s · %s" % [Military.title_of(kind).to_upper(), Economy.cost_text(bc).to_upper()]
+		var t: Label = UiKit.lbl(head, 12, UiKit.GOLD, 2, 2)
+		t.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		t.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		t.custom_minimum_size.x = tw
+		col.add_child(t)
+		var caps: Dictionary = Economy.STORE_CAP[kind]
+		var sz: Vector2i = Military.size_of(kind)
+		var d: Label = UiKit.lbl(Loc.t("+%d УРАН · +%d ТИТАН · +%d МЕТАЛЛ · +%d НЕФТЬ · +%d ДЕРЕВО · +%d ДРАГМЕТ.") % [caps["uranium"], caps["titanium"], caps["metal"], caps["oil"], caps["wood"], caps["precious"]] + Loc.t("\n%d×%d М · У ВАС: %d") % [sz.x * GameWorld.CELL, sz.y * GameWorld.CELL, have], 9, UiKit.MUTED, 1, 1)
+		d.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		d.custom_minimum_size.x = tw
+		d.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		col.add_child(d)
+		# The button does not size itself from its children: measure the wrapped text and set the height.
+		b.custom_minimum_size = Vector2(0, maxf(62.0, _wrap_h(t, tw) + _wrap_h(d, tw) + 14.0))
+	if p != null:
+		var st: Label = UiKit.lbl(Loc.t("СКЛАДЫ СЫРЬЯ: УРАН %d / %d · ТИТАН %d / %d") % [p.uranium, gw.econ.res_cap(p, "uranium"), p.titanium, gw.econ.res_cap(p, "titanium")], 10, UiKit.TEXT, 1, 1)
+		st.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		st.custom_minimum_size.x = tw + 48.0
+		vb.add_child(st)
+
+
+## Height of a label's text when wrapped to `w` pixels.
+func _wrap_h(l: Label, w: float) -> float:
+	var f: Font = l.get_theme_font("font")
+	var fs: int = l.get_theme_font_size("font_size")
+	return f.get_multiline_string_size(l.text, HORIZONTAL_ALIGNMENT_LEFT, w, fs, -1, TextServer.BREAK_WORD_BOUND | TextServer.BREAK_MANDATORY).y + float(l.get_theme_constant("outline_size"))
+
+
 func open_map_modes() -> void:
 	var vb: VBoxContainer = _window("Режимы карты", "map_modes")
 	panel_kind = "map_modes"
