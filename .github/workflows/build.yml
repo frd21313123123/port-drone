@@ -8,11 +8,18 @@ on:
   workflow_dispatch:
     inputs:
       release_version:
-        description: "Publish a release with this version (e.g. 0.32.2). Empty = only build."
+        description: "Optional numeric version (e.g. 0.33.2.4). Empty = automatic build version and release."
         required: false
+        type: string
 
 permissions:
-  contents: write
+  contents: read
+
+# Serialize complete publishing workflows so an older build cannot replace Latest.
+# Superseded pending workflows have not started building yet. PRs run separately.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || 'releases' }}
+  cancel-in-progress: false
 
 env:
   GODOT_VERSION: 4.7.2-stable
@@ -20,26 +27,20 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.v.outputs.version }}
+      release: ${{ steps.v.outputs.release }}
     steps:
       - uses: actions/checkout@v4
+
+      - name: Check release automation
+        run: python3 -m unittest discover -s tests -p 'test_release.py'
 
       - name: Version
         id: v
         env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -e
-          BASE="$(sed -n 's/^version="\(.*\)"/\1/p' game/pc/version.cfg)"
-          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
-            echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"; echo "release=true" >> "$GITHUB_OUTPUT"
-          elif [[ -n "${{ github.event.inputs.release_version }}" ]]; then
-            echo "version=${{ github.event.inputs.release_version }}" >> "$GITHUB_OUTPUT"; echo "release=true" >> "$GITHUB_OUTPUT"
-          elif [[ "$GITHUB_EVENT_NAME" == "push" && "$GITHUB_REF" == "refs/heads/main" ]] && ! gh release view "v$BASE" >/dev/null 2>&1; then
-            # a new version number in game/pc/version.cfg on main = a release (no tag push needed)
-            echo "version=${BASE}" >> "$GITHUB_OUTPUT"; echo "release=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "version=${BASE}" >> "$GITHUB_OUTPUT"; echo "release=false" >> "$GITHUB_OUTPUT"
-          fi
+          RELEASE_VERSION: ${{ inputs.release_version }}
+        run: python3 tools/release.py version
 
       - uses: actions/cache@v4
         with:
@@ -50,26 +51,37 @@ jobs:
         run: python3 tools/fetch_godot.py godot_dl
 
       - name: Build DroneFlames.exe
+        env:
+          VERSION: ${{ steps.v.outputs.version }}
         run: |
           python3 tools/build.py --godot godot_dl/godot --template godot_dl/windows_release_x86_64.exe \
-            --version "${{ steps.v.outputs.version }}" --repo "$GITHUB_REPOSITORY" --out dist
+            --version "$VERSION" --repo "$GITHUB_REPOSITORY" --out dist
           ls -la dist
 
       - uses: actions/upload-artifact@v4
         with:
           name: DroneFlames-${{ steps.v.outputs.version }}
           path: dist/*
+          if-no-files-found: error
 
-      - name: Publish release
-        if: steps.v.outputs.release == 'true'
+  release:
+    needs: build
+    if: github.event_name != 'pull_request' && needs.build.outputs.release == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: DroneFlames-${{ needs.build.outputs.version }}
+          path: dist
+
+      - name: Publish complete release
         env:
           GH_TOKEN: ${{ github.token }}
-          VER: ${{ steps.v.outputs.version }}
+          VERSION: ${{ needs.build.outputs.version }}
         run: |
-          set -e
-          if gh release view "v$VER" >/dev/null 2>&1; then
-            gh release upload "v$VER" dist/* --clobber
-          else
-            gh release create "v$VER" dist/* --target "${GITHUB_SHA}" --title "DroneFlames PC v$VER" \
-              --notes "Автоматическая сборка. Игра сама предложит обновиться до этой версии при запуске."
-          fi
+          python3 tools/release.py publish --version "$VERSION" --repo "$GITHUB_REPOSITORY" \
+            --commit "$GITHUB_SHA" --dist dist
