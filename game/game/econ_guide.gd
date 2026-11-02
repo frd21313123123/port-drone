@@ -1614,7 +1614,7 @@ func _chain_missiles(p: Country, st: Dictionary) -> Dictionary:
 	var made: float = 0.0
 	for f: Facility in fs:
 		var t: int = f.prod_type
-		made += 60.0 / float(Military.MT_TIME[t]) if f.producing else 0.0
+		made += 60.0 / float(Military.MT_TIME[t]) if f.producing and f.prod_t < float(Military.MT_TIME[t]) else 0.0
 		var rc: Dictionary = Economy.res_cost("missile_%d" % t)
 		rc["money"] = int(Military.MT_COST[t])
 		var tn: String = String(Military.MT_NAMES[t]).to_lower()
@@ -1627,7 +1627,7 @@ func _chain_missiles(p: Country, st: Dictionary) -> Dictionary:
 			wst = "bad"
 			worst = Loc.t("Ракетный завод без питания — постройте ТЭЦ или солнечную станцию.")
 			ch["fix_key"] = _power_key(p)
-		elif f.producing:
+		elif f.producing and f.prod_t < float(Military.MT_TIME[t]):
 			continue
 		elif not Military.DepotS.missile_fits(mil, p, t):
 			if wst == "ok":
@@ -1717,7 +1717,7 @@ func _problems(p: Country) -> Array:
 							icon = res_icon("metal" if p.metal < int(cost.get("metal", 0)) else "money")
 							text = Loc.t("Не хватает: %s") % p.missing_res(cost)
 				Facility.Kind.MISSILE_FACTORY:
-					if not f.producing:
+					if not f.producing or f.prod_t >= float(Military.MT_TIME[f.prod_type]):
 						var t: int = f.prod_type
 						var rc: Dictionary = Economy.res_cost("missile_%d" % t)
 						rc["money"] = int(Military.MT_COST[t])

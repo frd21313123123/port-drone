@@ -1,8 +1,10 @@
 extends RefCounted
 ## Ammo depots (ARMY tab): small / medium / large.
 ##
-## A depot keeps what does not fit into the country's normal stock: missiles above Military.MT_CAP
-## of their type and drones when every drone port is full. Room is counted in places:
+## A depot keeps the country's missiles: what is above Military.MT_CAP of their type must lie in a depot
+## (that is what a depot adds to the limit), and the rest of the stock is put into depots too while there
+## is room, so a produced missile shows up in a depot instead of an invisible stock. Only what does not fit
+## into any depot stays in the normal stock (at most MT_CAP). Drones go in when every drone port is full. Room is counted in places:
 ## a cruise missile takes 2, so the depots hold 5 / 15 / 40 cruise missiles; small munitions
 ## (KAB, air-to-air) take 1, ballistic and hypersonic missiles take 4, drones 2 (jets 3).
 ##
@@ -75,12 +77,11 @@ static func _drones(c: Country, j: int) -> int:
 	return int(c.depot_drones[j]) if j < c.depot_drones.size() else 0
 
 
+## Places taken in all depots of a country (what the depot cards show, summed).
 static func used(mil: Object, c: Country) -> int:
 	var n: int = 0
-	for t in mini(MT_VOL.size(), c.missile_stock.size()):
-		n += overflow(mil, c, t) * int(MT_VOL[t])
-	for j in DRONE_VOL.size():
-		n += _drones(c, j) * int(DRONE_VOL[j])
+	for sh: Dictionary in shares(mil, c.id).values():
+		n += int(sh["pts"])
 	return n
 
 
@@ -88,7 +89,11 @@ static func used(mil: Object, c: Country) -> int:
 ## in the given order, big munitions first, whole items only. Admission (fits / cap), the contents shown
 ## on the card, hand-over and demolition checks all go through this, so an item that was accepted
 ## always belongs to some depot.
-static func _pack(ds: Array, m: Array, d: Array) -> Dictionary:
+## `base` (optional, per missile type) is the part of the stock within the normal limits: it is laid into
+## the room that is still free after that, so the depots hold the missiles first. It never decides
+## admission (left_m counts only what is above the limits), it only fills the depots for the card,
+## a hand-over and a detonation.
+static func _pack(ds: Array, m: Array, d: Array, base: Array = []) -> Dictionary:
 	var left_m: Array[int] = []
 	for t in MT_VOL.size():
 		left_m.append(int(m[t]) if t < m.size() else 0)
@@ -112,8 +117,25 @@ static func _pack(ds: Array, m: Array, d: Array) -> Dictionary:
 				(sh["d"] as Array)[j] = k2
 				left_d[j] -= k2
 				free -= k2 * int(DRONE_VOL[j])
-		sh["pts"] = int(sh["cap"]) - free
+		sh["free"] = free
 		out[f.id] = sh
+	if not base.is_empty():
+		var left_b: Array[int] = []
+		for t in MT_VOL.size():
+			left_b.append(int(base[t]) if t < base.size() else 0)
+		for f: Facility in ds:
+			var sh2: Dictionary = out[f.id]
+			var free2: int = int(sh2["free"])
+			for t: int in FILL_ORDER:
+				var k3: int = mini(left_b[t], free2 / int(MT_VOL[t]))
+				if k3 > 0:
+					(sh2["m"] as Array)[t] = int((sh2["m"] as Array)[t]) + k3
+					left_b[t] -= k3
+					free2 -= k3 * int(MT_VOL[t])
+			sh2["free"] = free2
+	for sh3: Dictionary in out.values():
+		sh3["pts"] = int(sh3["cap"]) - int(sh3["free"])
+		sh3.erase("free")
 	return {"shares": out, "left_m": left_m, "left_d": left_d}
 
 
@@ -131,6 +153,14 @@ static func _over_m(mil: Object, c: Country) -> Array[int]:
 	for t in MT_VOL.size():
 		m.append(overflow(mil, c, t))
 	return m
+
+
+## The part of each missile stock within the normal limit (MT_CAP).
+static func _base_m(mil: Object, c: Country) -> Array[int]:
+	var b: Array[int] = []
+	for t in MT_VOL.size():
+		b.append(mini(c.missile_stock[t], int(mil.MT_CAP[t])) if t < c.missile_stock.size() else 0)
+	return b
 
 
 static func _over_d(c: Country) -> Array[int]:
@@ -237,11 +267,23 @@ static func shares(mil: Object, cid: int, prev: bool = false) -> Dictionary:
 	var c: Country = mil.gw.country_by_id(cid)
 	if c == null:
 		return {}
-	return _pack(depots(mil, cid, prev), _over_m(mil, c), _over_d(c))["shares"]
+	return _pack(depots(mil, cid, prev), _over_m(mil, c), _over_d(c), _base_m(mil, c))["shares"]
 
 
 static func share_of(mil: Object, f: Facility) -> Dictionary:
 	return shares(mil, f.country_id).get(f.id, _empty_share())
+
+
+## Missiles of a country that lie in no depot (the normal stock): [n per missile type].
+static func outside(mil: Object, c: Country) -> Array[int]:
+	var out: Array[int] = []
+	for t in MT_VOL.size():
+		out.append(c.missile_stock[t] if t < c.missile_stock.size() else 0)
+	for sh: Dictionary in shares(mil, c.id).values():
+		var m: Array = sh["m"]
+		for t in mini(m.size(), out.size()):
+			out[t] = maxi(0, out[t] - int(m[t]))
+	return out
 
 
 ## Short text of the contents for the facility card: "КР 12 · КАБ 6 · ДРОНЫ 2".

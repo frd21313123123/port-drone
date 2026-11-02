@@ -251,6 +251,10 @@ func _produce_missiles(f: Facility, dt: float) -> void:
 	f.prod_t = minf(f.prod_t + dt, float(MT_TIME[t]))
 	if f.prod_t < float(MT_TIME[t]):
 		return
+	# Room is checked again when the missile is ready: a depot may have been destroyed or captured meanwhile,
+	# or other factories / deliveries took the last places. A missile without room waits at the factory.
+	if not DepotS.missile_fits(self, c, t):
+		return
 	c.missile_stock[t] += 1
 	f.producing = false
 	f.prod_t = 0.0
