@@ -231,7 +231,7 @@ func show_facility(f: Facility, mil: Military, player: Country) -> void:
 				for t2: int in [Aircraft.Type.BOMBER, Aircraft.Type.FIGHTER, Aircraft.Type.HELI, Aircraft.Type.ATTACK]:
 					var cost: int = int(Air.SPEC[t2]["cost"])
 					acts.append(_act("%s\n%d" % [anames[t2], cost], ["icon_bomber", "icon_fighter", "icon_heli", "icon_attack_jet"][t2], ["buy_bomber", "buy_fighter", "buy_heli", "buy_attack"][t2], player.money >= cost and player.titanium >= int(Air.TITANIUM.get(t2, 0))))
-				detail = Loc.t("Бомбардировщик несёт крылатые ракеты, истребитель — ракеты «воздух-воздух» и подвес, вертолёт патрулирует. Штурмовик: 4 КАБ (делает ракетный завод), НАРы, пушка, 2 ракеты «воздух-воздух». Нужен титан.")
+				detail = Loc.t("Бомбардировщик несёт 8 крылатых или 3 гиперзвуковые ракеты (подвес на стоянке), истребитель — ракеты «воздух-воздух» и подвес (2 КР или 1 гиперзвук), вертолёт патрулирует. Штурмовик: 4 КАБ (делает ракетный завод), НАРы, пушка, 2 ракеты «воздух-воздух». Нужен титан.")
 			Facility.Kind.DRONE_FACTORY:
 				var jt: bool = f.prod_type == 1
 				var cost_d: Dictionary = mil.drone_cost(false)
@@ -634,8 +634,7 @@ func show_aircraft(a: Aircraft, air: Air, player: Country) -> void:
 	var amax: int = 1
 	match a.type:
 		Aircraft.Type.BOMBER:
-			ammo = Loc.t(" · КР %d/%d") % [a.missiles, Air.BOMBER_CR]
-			amax = Air.BOMBER_CR
+			amax = 1
 		Aircraft.Type.ATTACK:
 			ammo = Loc.t(" · КАБ %d · НАР %d · В-В %d") % [a.kab, a.nar, a.missiles]
 			amax = 2
@@ -645,12 +644,15 @@ func show_aircraft(a: Aircraft, air: Air, player: Country) -> void:
 		Aircraft.Type.HELI:
 			ammo = Loc.t(" · ПУШКА")
 	var svc: String = Loc.t(" · ЗАПРАВКА") if a.state == Aircraft.State.PARKED and a.service_t > 1.0 else ""
-	if a.type == Aircraft.Type.FIGHTER and a.pylon > 0:
+	if Air.has_pylon(a) and a.pylon > 0:
 		ammo += Loc.t(" · ПОДВЕС %s %d") % [Loc.t(Air.PYLON_NAMES[a.pylon]), a.pylon_n]
 	var an: String = air.auto_note(a) if air.has_method("auto_note") else ""
 	_set_info(Loc.t("ТОПЛИВО %d%%%s%s%s") % [roundi(100.0 * a.fuel / fmax), ammo, svc, ("\n" + an) if an != "" else ""], a.fuel < fmax * 0.2 or an != "")
 	_set_bar(0, a.fuel / fmax, "res_fuel")
-	_set_bar(1, float(a.missiles) / float(maxi(amax, 1)) if a.type != Aircraft.Type.HELI else 1.0, "res_jet")
+	if a.type == Aircraft.Type.BOMBER:
+		_set_bar(1, float(a.pylon_n) / float(maxi(Air.pylon_cap(a), 1)) if a.pylon > 0 else 0.0, "res_jet")
+	else:
+		_set_bar(1, float(a.missiles) / float(maxi(amax, 1)) if a.type != Aircraft.Type.HELI else 1.0, "res_jet")
 	var acts: Array = []
 	if a.airborne():
 		acts.append(_act("ПОСАДКА", "icon_land", "air_land", a.state != Aircraft.State.RTB and a.state != Aircraft.State.LAND))
@@ -658,22 +660,20 @@ func show_aircraft(a: Aircraft, air: Air, player: Country) -> void:
 		acts.append(_act("ПАТРУЛЬ", "icon_patrol", "air_patrol", a.state != Aircraft.State.DEAD))
 	if a.type == Aircraft.Type.FIGHTER and a.level < 3:
 		acts.append(_act(Loc.t("УЛУЧШИТЬ\n%d") % Air.UPGRADE_COST, "icon_upgrade", "air_upgrade", a.state == Aircraft.State.PARKED and player.money >= Air.UPGRADE_COST))
-	if a.type == Aircraft.Type.BOMBER:
-		acts.append(_act("ПУСК КР", "icon_cr_launch", "air_cr", a.airborne() and a.missiles > 0))
 	if a.type == Aircraft.Type.ATTACK:
 
 		var kav: int = int(main_node.call("jet_kab_avail", a)) if main_node != null and main_node.has_method("jet_kab_avail") else a.kab
 		acts.append(_act("УДАР КАБ", "icon_m_kab", "air_kab", a.state != Aircraft.State.DEAD and kav > 0, -1, "%d" % kav))
 		acts.append(_act("ПОДДЕРЖКА", "icon_attack_jet", "air_cas", a.state != Aircraft.State.DEAD and (a.nar > 0 or a.state == Aircraft.State.PARKED), -1, "%d" % a.nar))
-	if a.type == Aircraft.Type.FIGHTER:
+	if Air.has_pylon(a):
 		if a.state == Aircraft.State.PARKED:
-			acts.append(_act("2 КРЫЛАТЫЕ", "icon_m_cruise", "pylon_1", true, 1 if a.pylon == 1 else 0))
+			acts.append(_act(Loc.t("%d КРЫЛАТЫЕ") % Air.pylon_cap(a, 1), "icon_m_cruise", "pylon_1", true, 1 if a.pylon == 1 else 0))
 			acts.append(_act("ГИПЕРЗВУК", "icon_m_hyper", "pylon_2", true, 1 if a.pylon == 2 else 0))
 		elif a.pylon == 1:
 			acts.append(_act("ПУСК КР", "icon_cr_launch", "air_cr", a.airborne() and a.pylon_n > 0, -1, "%d" % a.pylon_n))
 		elif a.pylon == 2:
 			acts.append(_act("ГИПЕРЗВУК", "icon_m_hyper", "air_hyp", a.airborne() and a.pylon_n > 0, -1, "%d" % a.pylon_n))
-	ops_detail.visible = a.type == Aircraft.Type.FIGHTER and a.state == Aircraft.State.PARKED
+	ops_detail.visible = Air.has_pylon(a) and a.state == Aircraft.State.PARKED
 	ops_detail.text = "Подвес выбирается на стоянке: крылатые ракеты или гиперзвук (берутся со склада ракетного завода)."
 	_fill_acts("air%d" % a.id, acts)
 
@@ -687,10 +687,10 @@ func show_cr_plan(a: Aircraft, has_target: bool, dist: float, count: int) -> voi
 		var head: String = Loc.t("ЦЕЛЬ %.1f КМ · ПОЛЁТ %s\n") % [dist / 1000.0, _mmss(dist / Air.CR_SPEED)]
 		if dist > Air.CR_RANGE:
 			_set_info(head + Loc.t("ВНЕ ДАЛЬНОСТИ: МАКС %.1f КМ") % (Air.CR_RANGE / 1000.0), true)
-		elif (a.pylon_n if a.type == Aircraft.Type.FIGHTER else a.missiles) <= 0:
+		elif a.pylon_n <= 0:
 			_set_info(head + Loc.t("НЕТ КРЫЛАТЫХ РАКЕТ"), true)
 		else:
-			_set_info(head + Loc.t("НА БОРТУ %d") % (a.pylon_n if a.type == Aircraft.Type.FIGHTER else a.missiles), false)
+			_set_info(head + Loc.t("НА БОРТУ %d") % a.pylon_n, false)
 			ok = true
 	ops_count.text = "x%d" % count
 	ops_launch.disabled = not ok

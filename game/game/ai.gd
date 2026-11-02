@@ -1826,9 +1826,9 @@ func _has_cr_load(c: Country, hyper: bool = false) -> bool:
 		if a.country_id != c.id or a.state == Aircraft.State.DEAD:
 			continue
 		if hyper:
-			if a.type == Aircraft.Type.FIGHTER and a.pylon == 2 and a.pylon_n > 0:
+			if Air.is_hyper(a) and a.pylon_n > 0:
 				return true
-		elif (a.type == Aircraft.Type.BOMBER and a.payload == 0 and a.missiles > 0) or (a.type == Aircraft.Type.FIGHTER and a.pylon == 1 and a.pylon_n > 0):
+		elif Air.is_cr(a) and a.pylon_n > 0:
 			return true
 	return false
 
