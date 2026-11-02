@@ -89,7 +89,20 @@ const BUILD_COST: Dictionary = {
 	Facility.Kind.DEPOT_S: {"metal": 4, "wood": 4},
 	Facility.Kind.DEPOT_M: {"metal": 10, "wood": 10},
 	Facility.Kind.DEPOT_L: {"metal": 22, "wood": 16},
+	Facility.Kind.STORE_S: {"metal": 6, "wood": 8},
+	Facility.Kind.STORE_M: {"metal": 14, "wood": 18},
+	Facility.Kind.STORE_L: {"metal": 30, "wood": 34},
 }
+## Civil resource warehouses (CITIES tab): how much each one adds to the storage limit of every raw material.
+## They stack, they do not explode, a captured one works for its new owner.
+const STORE_CAP: Dictionary = {
+	Facility.Kind.STORE_S: {"metal": 100, "titanium": 60, "wood": 100, "oil": 100, "precious": 20, "uranium": 20},
+	Facility.Kind.STORE_M: {"metal": 250, "titanium": 150, "wood": 250, "oil": 250, "precious": 50, "uranium": 50},
+	Facility.Kind.STORE_L: {"metal": 600, "titanium": 360, "wood": 600, "oil": 600, "precious": 120, "uranium": 120},
+}
+const STORE_KINDS: Array = [Facility.Kind.STORE_S, Facility.Kind.STORE_M, Facility.Kind.STORE_L]
+const STORE_KEYS: Array = ["store_s", "store_m", "store_l"]
+const STORE_RES: Array[String] = ["metal", "titanium", "wood", "oil", "precious", "uranium"]
 const DEP_AMOUNT: Dictionary = {"metal": 900, "titanium": 600, "oil": 900, "precious": 250, "uranium": 240}
 const CAP_DEP: Dictionary = {"metal": 400, "oil": 300, "titanium": 200}
 const DEP_SPRITE: Dictionary = {"metal": ["ore_metal", "ore_metal_small"], "titanium": ["ore_ti", "ore_ti_small"],

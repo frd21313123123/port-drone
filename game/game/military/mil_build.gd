@@ -341,10 +341,10 @@ func build(kind: int, center: Vector2i, country: Country, parent: Facility = nul
 					f.main_obj = pid
 	elif kind == Facility.Kind.NUCLEAR_PLANT:
 		Nuclear.build_parts(gw, f, nw, country)
-	elif DepotS.is_depot(kind):
+	elif DepotS.is_depot(kind) or STORE_PARTS.has(kind):
 
 		f.depot_owner = country.id
-		for pl: Array in DEPOT_PARTS[kind]:
+		for pl: Array in (DEPOT_PARTS[kind] if DEPOT_PARTS.has(kind) else STORE_PARTS[kind]):
 			var pid: int = gw.add_object(String(pl[0]), nw + (pl[1] as Vector2i), GameWorld.KIND_BUILDING)
 			if pid >= 0:
 				f.obj_ids.append(pid)

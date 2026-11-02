@@ -34217,3 +34217,75 @@ msgstr "READY: NO ROOM IN THE DEPOT"
 
 msgid " · НЕТ НОСИТЕЛЯ (ДЛЯ ПУСКА НУЖНА АВИАЦИЯ)"
 msgstr " · NO CARRIER (AIRCRAFT NEEDED TO LAUNCH)"
+
+#. civil resource warehouses (cities tab)
+msgid "Малый склад сырья"
+msgstr "Small raw-material warehouse"
+
+#. civil resource warehouses (cities tab)
+msgid "Средний склад сырья"
+msgstr "Medium raw-material warehouse"
+
+#. civil resource warehouses (cities tab)
+msgid "Большой склад сырья"
+msgstr "Large raw-material warehouse"
+
+#. civil resource warehouses (cities tab)
+msgid "Склад сырья"
+msgstr "Raw-material warehouse"
+
+#. civil resource warehouses (cities tab)
+msgid "СКЛАД СЫРЬЯ"
+msgstr "RAW WAREHOUSE"
+
+#. civil resource warehouses (cities tab)
+msgid "МАЛ.СКЛ.СЫРЬЯ"
+msgstr "SM.RAW WH."
+
+#. civil resource warehouses (cities tab)
+msgid "СР.СКЛ.СЫРЬЯ"
+msgstr "MD.RAW WH."
+
+#. civil resource warehouses (cities tab)
+msgid "БОЛ.СКЛ.СЫРЬЯ"
+msgstr "LG.RAW WH."
+
+#. civil resource warehouses (cities tab)
+msgid "Малый, средний или большой: поднимает лимит хранения урана, титана, металла, нефти, дерева и драгметаллов"
+msgstr "Small, medium or large: raises the storage limit of uranium, titanium, metal, oil, wood and precious metals"
+
+#. civil resource warehouses (cities tab)
+msgid "СКЛАД СЫРЬЯ: +100 МЕТАЛЛА, +60 ТИТАНА, +20 УРАНА И ДРУГОЕ СВЕРХ ЛИМИТА"
+msgstr "RAW WAREHOUSE: +100 METAL, +60 TITANIUM, +20 URANIUM AND MORE ABOVE THE LIMIT"
+
+#. civil resource warehouses (cities tab)
+msgid "СКЛАД СЫРЬЯ: +250 МЕТАЛЛА, +150 ТИТАНА, +50 УРАНА И ДРУГОЕ СВЕРХ ЛИМИТА"
+msgstr "RAW WAREHOUSE: +250 METAL, +150 TITANIUM, +50 URANIUM AND MORE ABOVE THE LIMIT"
+
+#. civil resource warehouses (cities tab)
+msgid "СКЛАД СЫРЬЯ: +600 МЕТАЛЛА, +360 ТИТАНА, +120 УРАНА И ДРУГОЕ СВЕРХ ЛИМИТА"
+msgstr "RAW WAREHOUSE: +600 METAL, +360 TITANIUM, +120 URANIUM AND MORE ABOVE THE LIMIT"
+
+#. civil resource warehouses (cities tab)
+msgid "Гражданский склад: поднимает лимит хранения урана, титана, металла, нефти, дерева и драгметаллов. Склады суммируются, не взрываются; захваченный склад работает на нового владельца."
+msgstr "Civil warehouse: raises the storage limit of uranium, titanium, metal, oil, wood and precious metals. Warehouses stack and do not explode; a captured one works for its new owner."
+
+#. civil resource warehouses (cities tab)
+msgid "+%d УРАН · +%d ТИТАН · +%d МЕТАЛЛ · +%d НЕФТЬ · +%d ДЕРЕВО · +%d ДРАГМЕТ."
+msgstr "+%d URANIUM · +%d TITANIUM · +%d METAL · +%d OIL · +%d WOOD · +%d PRECIOUS"
+
+#. civil resource warehouses (cities tab)
+msgid "\n%d×%d М · У ВАС: %d"
+msgstr "\n%d×%d M · YOU HAVE: %d"
+
+#. civil resource warehouses (cities tab)
+msgid "СКЛАДЫ СЫРЬЯ: УРАН %d / %d · ТИТАН %d / %d"
+msgstr "RAW WAREHOUSES: URANIUM %d / %d · TITANIUM %d / %d"
+
+#. civil resource warehouses (cities tab)
+msgid "СКЛАД СЫРЬЯ: +%d УРАН · +%d ТИТАН · +%d МЕТАЛЛ · +%d НЕФТЬ · +%d ДЕРЕВО · +%d ДРАГМЕТ."
+msgstr "RAW WAREHOUSE: +%d URANIUM · +%d TITANIUM · +%d METAL · +%d OIL · +%d WOOD · +%d PRECIOUS"
+
+#. civil resource warehouses (cities tab)
+msgid "Поднимает лимит хранения сырья страны; склады суммируются. Не взрывается, но если склад разрушат, лимит упадёт. Сейчас на складах страны: %s."
+msgstr "Raises the country's raw-material storage limit; warehouses stack. It does not explode, but if it is destroyed the limit drops. Stored in the country now: %s."

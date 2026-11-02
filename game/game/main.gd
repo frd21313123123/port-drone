@@ -599,12 +599,23 @@ func _on_action(nm: String) -> void:
 		"bar_4":
 			if selected_fac != null and selected_fac.kind == Facility.Kind.BARRACKS:
 				_sim("", "cmd_field", [selected_fac, "prod_type", 4])
-		"factory", "droneport", "tel", "mfactory", "refinery", "power", "airfield", "farm", "civ", "mine", "barracks", "ad_mfg", "ad_spaag", "ad_sam", "ad_patriot", "ad_int", "ad_radar", "ad_ew", "trench", "teeth", "dugout", "sawmill", "oil_rig", "port", "solar_farm", "navbase", "coastal_asm", "npp", "umine", "depot_s", "depot_m", "depot_l":  # QA v0.27.1: + coastal_asm; v0.30 URAN30: + npp, umine; ammo depots
+		"factory", "droneport", "tel", "mfactory", "refinery", "power", "airfield", "farm", "civ", "mine", "barracks", "ad_mfg", "ad_spaag", "ad_sam", "ad_patriot", "ad_int", "ad_radar", "ad_ew", "trench", "teeth", "dugout", "sawmill", "oil_rig", "port", "solar_farm", "navbase", "coastal_asm", "npp", "umine", "depot_s", "depot_m", "depot_l", "store_s", "store_m", "store_l":  # QA v0.27.1: + coastal_asm; v0.30 URAN30: + npp, umine; ammo depots
 			var bm: int = BUILD_KEYS[nm]
 			if not _has_capital():
 				_set_mode(mode)
 			else:
 				_set_mode(Mode.NONE if mode == bm else bm)
+		"store":
+			if mode == Mode.STORE_S or mode == Mode.STORE_M or mode == Mode.STORE_L:
+				_set_mode(Mode.NONE)
+			elif hud.panel_kind == "store_pick":
+				hud.close_panel()
+				hud.set_key_pressed("store", false)
+			elif not _has_capital():
+				_set_mode(mode)
+			else:
+				hud.open_store_pick()
+				hud.set_key_pressed("store", true)
 		"depot":
 			if mode == Mode.DEPOT_S or mode == Mode.DEPOT_M or mode == Mode.DEPOT_L:
 				_set_mode(Mode.NONE)

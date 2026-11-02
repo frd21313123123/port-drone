@@ -100,6 +100,7 @@ const AF_SPOTS: Array = [Vector2(58, 25), Vector2(72, 25), Vector2(86, 25), Vect
 
 const SIZES: Dictionary = {
 	Facility.Kind.DEPOT_S: Vector2i(4, 2), Facility.Kind.DEPOT_M: Vector2i(7, 4), Facility.Kind.DEPOT_L: Vector2i(10, 5),
+	Facility.Kind.STORE_S: Vector2i(5, 4), Facility.Kind.STORE_M: Vector2i(11, 5), Facility.Kind.STORE_L: Vector2i(11, 10),
 	Facility.Kind.NUCLEAR_PLANT: Vector2i(18, 11), Facility.Kind.URANIUM_MINE: Vector2i(6, 6),
 	Facility.Kind.COASTAL_ASM: Vector2i(6, 2),
 	Facility.Kind.NAVAL_BASE: Vector2i(24, 12),
@@ -118,6 +119,7 @@ const SIZES: Dictionary = {
 }
 const COSTS: Dictionary = {
 	Facility.Kind.DEPOT_S: 300, Facility.Kind.DEPOT_M: 750, Facility.Kind.DEPOT_L: 1600,
+	Facility.Kind.STORE_S: 400, Facility.Kind.STORE_M: 1000, Facility.Kind.STORE_L: 2200,
 	Facility.Kind.NUCLEAR_PLANT: 9000, Facility.Kind.URANIUM_MINE: 3200,
 	Facility.Kind.NAVAL_BASE: 3000, Facility.Kind.COASTAL_ASM: 2200,
 	Facility.Kind.SAWMILL: 500, Facility.Kind.OIL_RIG: 900, Facility.Kind.PORT: 1500, Facility.Kind.PORT_CRANE: 600, Facility.Kind.SOLAR_FARM: 450,
@@ -131,6 +133,7 @@ const COSTS: Dictionary = {
 }
 const TITLES: Dictionary = {
 	Facility.Kind.DEPOT_S: "Малый склад", Facility.Kind.DEPOT_M: "Средний склад", Facility.Kind.DEPOT_L: "Большой склад",
+	Facility.Kind.STORE_S: "Малый склад сырья", Facility.Kind.STORE_M: "Средний склад сырья", Facility.Kind.STORE_L: "Большой склад сырья",
 	Facility.Kind.NUCLEAR_PLANT: "АЭС", Facility.Kind.URANIUM_MINE: "Урановая шахта",
 	Facility.Kind.NAVAL_BASE: "Морская база", Facility.Kind.COASTAL_ASM: "Береговой ПКР-комплекс",
 	Facility.Kind.SAWMILL: "Лесопилка", Facility.Kind.OIL_RIG: "Нефтевышка", Facility.Kind.PORT: "Морской порт", Facility.Kind.PORT_CRANE: "Портовый кран", Facility.Kind.SOLAR_FARM: "Солнечная станция",
@@ -149,6 +152,9 @@ const PURPOSE: Dictionary = {
 	Facility.Kind.DEPOT_S: "БОЕПРИПАСЫ СВЕРХ ЛИМИТА: 5 КР, 10 КАБ ИЛИ 2 БАЛЛИСТИКИ. ВЗРЫВАЕТСЯ",
 	Facility.Kind.DEPOT_M: "БОЕПРИПАСЫ СВЕРХ ЛИМИТА: 15 КР, 30 КАБ ИЛИ 7 БАЛЛИСТИК. ВЗРЫВАЕТСЯ",
 	Facility.Kind.DEPOT_L: "БОЕПРИПАСЫ СВЕРХ ЛИМИТА: 40 КР, 80 КАБ ИЛИ 20 БАЛЛИСТИК. ВЗРЫВАЕТСЯ",
+	Facility.Kind.STORE_S: "СКЛАД СЫРЬЯ: +100 МЕТАЛЛА, +60 ТИТАНА, +20 УРАНА И ДРУГОЕ СВЕРХ ЛИМИТА",
+	Facility.Kind.STORE_M: "СКЛАД СЫРЬЯ: +250 МЕТАЛЛА, +150 ТИТАНА, +50 УРАНА И ДРУГОЕ СВЕРХ ЛИМИТА",
+	Facility.Kind.STORE_L: "СКЛАД СЫРЬЯ: +600 МЕТАЛЛА, +360 ТИТАНА, +120 УРАНА И ДРУГОЕ СВЕРХ ЛИМИТА",
 	Facility.Kind.NUCLEAR_PLANT: "+40 ЭНЕРГИИ НА УРАНЕ — СЕТКИ И БЕТОН НЕ ЗАЩИЩАЮТ, НУЖНА ПВО",
 	Facility.Kind.URANIUM_MINE: "ДОБЫВАЕТ УРАН НА РЕДКОЙ ЗАЛЕЖИ: ТОПЛИВО АЭС, ДОРОГО ПРОДАЁТСЯ",
 	Facility.Kind.SAWMILL: "ДЕРЕВО: РУБИТ ЛЕС ВОКРУГ СЕБЯ", Facility.Kind.OIL_RIG: "ДОБЫВАЕТ НЕФТЬ ИЗ МЕСТОРОЖДЕНИЯ",
@@ -174,6 +180,7 @@ const PURPOSE: Dictionary = {
 }
 const SPRITES: Dictionary = {
 	Facility.Kind.DEPOT_S: "col_cont", Facility.Kind.DEPOT_M: "airfield_hangar", Facility.Kind.DEPOT_L: "port_seg_wh",
+	Facility.Kind.STORE_S: "dp_store", Facility.Kind.STORE_M: "port_seg_wh", Facility.Kind.STORE_L: "port_seg_wh",
 	Facility.Kind.NUCLEAR_PLANT: "npp_core", Facility.Kind.URANIUM_MINE: "umine",
 	Facility.Kind.NAVAL_BASE: "navbase", Facility.Kind.COASTAL_ASM: "coastal_asm",
 	Facility.Kind.SAWMILL: "sawmill", Facility.Kind.OIL_RIG: "oil_rig", Facility.Kind.PORT: "port", Facility.Kind.PORT_CRANE: "port_crane", Facility.Kind.SOLAR_FARM: "solar",
@@ -194,6 +201,13 @@ const DEPOT_PARTS: Dictionary = {
 	Facility.Kind.DEPOT_S: [["col_cont", Vector2i(0, 0)], ["col_cont", Vector2i(2, 0)]],
 	Facility.Kind.DEPOT_M: [["airfield_hangar", Vector2i(0, 0)], ["col_cont", Vector2i(5, 2)]],
 	Facility.Kind.DEPOT_L: [["port_seg_wh", Vector2i(0, 0)], ["airfield_hangar", Vector2i(5, 1)]],
+}
+
+## Civil resource warehouses are built from these sprites: [sprite, offset of its NW cell].
+const STORE_PARTS: Dictionary = {
+	Facility.Kind.STORE_S: [["dp_store", Vector2i(0, 0)]],
+	Facility.Kind.STORE_M: [["port_seg_wh", Vector2i(0, 0)], ["port_seg_wh", Vector2i(6, 0)]],
+	Facility.Kind.STORE_L: [["port_seg_wh", Vector2i(0, 0)], ["port_seg_wh", Vector2i(6, 0)], ["airfield_hangar", Vector2i(0, 6)], ["airfield_hangar", Vector2i(6, 6)]],
 }
 
 const PLANT_CAP: int = 6
@@ -349,6 +363,7 @@ const ICON_OF: Dictionary = {
 	Facility.Kind.SOLAR_FARM: "icon_solar", Facility.Kind.NAVAL_BASE: "icon_port", Facility.Kind.COASTAL_ASM: "icon_coastal_asm",
 	Facility.Kind.NUCLEAR_PLANT: "icon_npp", Facility.Kind.URANIUM_MINE: "icon_umine",
 	Facility.Kind.DEPOT_S: "icon_inventory", Facility.Kind.DEPOT_M: "icon_inventory", Facility.Kind.DEPOT_L: "icon_inventory",
+	Facility.Kind.STORE_S: "icon_store", Facility.Kind.STORE_M: "icon_store", Facility.Kind.STORE_L: "icon_store",
 }
 
 

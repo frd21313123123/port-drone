@@ -181,7 +181,7 @@ const PAGE_DEFS: Array = [
 
 
 	["tabi_world", [["zoom_out", "icon_minus", false], ["zoom_in", "icon_plus", false], ["center", "icon_center", false], ["borders", "icon_border", true], ["map_modes", "icon_map_political", false], ["own_icons", "icon_map_mine", true], ["ores", "icon_map_ores", false]]],
-	["tabi_city", [["capital", "icon_capital", true], ["town", "icon_city", true], ["farm", "icon_farm", true], ["civ", "icon_civ_factory", true], ["power", "icon_power", true], ["solar_farm", "icon_solar", true], ["npp", "icon_npp", true], ["mine", "icon_mine", true], ["sawmill", "icon_sawmill", true], ["oil_rig", "icon_oil_rig", true], ["refinery", "icon_refinery", true], ["rail_st", "icon_rail_station", true], ["rail_line", "u335_rail_line", true]]],
+	["tabi_city", [["capital", "icon_capital", true], ["town", "icon_city", true], ["farm", "icon_farm", true], ["civ", "icon_civ_factory", true], ["power", "icon_power", true], ["solar_farm", "icon_solar", true], ["npp", "icon_npp", true], ["mine", "icon_mine", true], ["store", "icon_store", true], ["sawmill", "icon_sawmill", true], ["oil_rig", "icon_oil_rig", true], ["refinery", "icon_refinery", true], ["rail_st", "icon_rail_station", true], ["rail_line", "u335_rail_line", true]]],
 	["tabi_military", [["launch", "icon_launch", true], ["route", "icon_route", true], ["recon", "icon_recon_drone", true], ["factory", "icon_dronefactory", true], ["droneport", "icon_droneport", true], ["missile", "icon_target", true], ["tel", "icon_tel", true], ["mfactory", "icon_missile_factory", true], ["airfield", "icon_airfield_b", true]]],
 	["icon_ad_sam", [["ad_mfg", "icon_ad_mfg", true], ["ad_spaag", "icon_ad_spaag", true], ["ad_sam", "icon_ad_sam", true], ["ad_patriot", "icon_ad_patriot", true], ["ad_int", "icon_int_drone", true], ["ad_radar", "icon_ad_radar", true], ["ad_ew", "icon_ad_ew", true], ["ad_rules", "u335_ad_rules", false]]],
 	["icon_tank", [["barracks", "icon_barracks", true], ["armies", "icon_armies", true], ["command", "icon_op_operation", false], ["doctrine", "icon_doctrine", false], ["hold", "icon_infantry", false], ["defend", "icon_defend", true], ["trench", "icon_trench", true], ["teeth", "icon_teeth", true], ["dugout", "icon_dugout", true], ["depot", "icon_inventory", true], ["battle_cam", "icon_battle_cam", false]]],
@@ -206,6 +206,7 @@ const BUILD_KIND_OF: Dictionary = {
 	"navbase": Facility.Kind.NAVAL_BASE, "coastal_asm": Facility.Kind.COASTAL_ASM,
 	"npp": Facility.Kind.NUCLEAR_PLANT, "umine": Facility.Kind.URANIUM_MINE,
 	"depot_s": Facility.Kind.DEPOT_S, "depot_m": Facility.Kind.DEPOT_M, "depot_l": Facility.Kind.DEPOT_L,
+	"store_s": Facility.Kind.STORE_S, "store_m": Facility.Kind.STORE_M, "store_l": Facility.Kind.STORE_L,
 }
 
 const KEY_INFO: Dictionary = {
@@ -261,6 +262,8 @@ const KEY_INFO: Dictionary = {
 	"npp": ["АЭС", "", ""], "umine": ["УРАН.ШАХТ", "", ""],
 	"depot": ["СКЛАД", "Склад боеприпасов", "Малый, средний или большой: ракеты и дроны сверх лимита. При попадании детонирует"],
 	"depot_s": ["МАЛ.СКЛАД", "", ""], "depot_m": ["СР.СКЛАД", "", ""], "depot_l": ["БОЛ.СКЛАД", "", ""],
+	"store": ["СКЛАД СЫРЬЯ", "Склад сырья", "Малый, средний или большой: поднимает лимит хранения урана, титана, металла, нефти, дерева и драгметаллов"],
+	"store_s": ["МАЛ.СКЛ.СЫРЬЯ", "", ""], "store_m": ["СР.СКЛ.СЫРЬЯ", "", ""], "store_l": ["БОЛ.СКЛ.СЫРЬЯ", "", ""],
 	"satellite": ["СПУТНИК", "Спутниковый снимок", "Платно: снимок 220 м находит постройки и войска на 14 с"],
 	"ores": ["СВОБ.РУДЫ", "Свободные залежи", "Залежи на вашей земле, которые никто не добывает"],
 }

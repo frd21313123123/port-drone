@@ -1846,7 +1846,11 @@ func _bonus(c: Country) -> Dictionary:
 		return _cap_bonus[c.id]
 	var out: Dictionary = {}
 	for f: Facility in gw.mil.facilities:
-		if f.country_id == c.id and f.level > 1 and gw.mil.alive(f):
+		if f.country_id == c.id and STORE_CAP.has(f.kind) and gw.mil.alive(f):
+			var sc: Dictionary = STORE_CAP[f.kind]
+			for sr: String in sc:
+				out[sr] = int(out.get(sr, 0)) + int(sc[sr])
+		elif f.country_id == c.id and f.level > 1 and gw.mil.alive(f):
 			var r: String = out_res(f)
 			if r != "":
 				out[r] = int(out.get(r, 0)) + LEVEL_CAP * (f.level - 1)

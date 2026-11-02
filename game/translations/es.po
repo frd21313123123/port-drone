@@ -22448,3 +22448,75 @@ msgstr "\nDEMOLICIÓN BLOQUEADA: LOS DEMÁS DEPÓSITOS NO CABEN EL CONTENIDO"
 #. ammo depots (army tab)
 msgid "ГОТОВО: НЕТ МЕСТА НА СКЛАДЕ"
 msgstr "LISTO: SIN SITIO EN EL DEPÓSITO"
+
+#. civil resource warehouses (cities tab)
+msgid "Малый склад сырья"
+msgstr "Almacén pequeño de materias primas"
+
+#. civil resource warehouses (cities tab)
+msgid "Средний склад сырья"
+msgstr "Almacén mediano de materias primas"
+
+#. civil resource warehouses (cities tab)
+msgid "Большой склад сырья"
+msgstr "Almacén grande de materias primas"
+
+#. civil resource warehouses (cities tab)
+msgid "Склад сырья"
+msgstr "Almacén de materias primas"
+
+#. civil resource warehouses (cities tab)
+msgid "СКЛАД СЫРЬЯ"
+msgstr "ALMACÉN MAT.PR."
+
+#. civil resource warehouses (cities tab)
+msgid "МАЛ.СКЛ.СЫРЬЯ"
+msgstr "ALM.PEQ.MP"
+
+#. civil resource warehouses (cities tab)
+msgid "СР.СКЛ.СЫРЬЯ"
+msgstr "ALM.MED.MP"
+
+#. civil resource warehouses (cities tab)
+msgid "БОЛ.СКЛ.СЫРЬЯ"
+msgstr "ALM.GRA.MP"
+
+#. civil resource warehouses (cities tab)
+msgid "Малый, средний или большой: поднимает лимит хранения урана, титана, металла, нефти, дерева и драгметаллов"
+msgstr "Pequeño, mediano o grande: sube el límite de almacenamiento de uranio, titanio, metal, petróleo, madera y metales preciosos"
+
+#. civil resource warehouses (cities tab)
+msgid "СКЛАД СЫРЬЯ: +100 МЕТАЛЛА, +60 ТИТАНА, +20 УРАНА И ДРУГОЕ СВЕРХ ЛИМИТА"
+msgstr "ALMACÉN DE MATERIAS PRIMAS: +100 METAL, +60 TITANIO, +20 URANIO Y MÁS SOBRE EL LÍMITE"
+
+#. civil resource warehouses (cities tab)
+msgid "СКЛАД СЫРЬЯ: +250 МЕТАЛЛА, +150 ТИТАНА, +50 УРАНА И ДРУГОЕ СВЕРХ ЛИМИТА"
+msgstr "ALMACÉN DE MATERIAS PRIMAS: +250 METAL, +150 TITANIO, +50 URANIO Y MÁS SOBRE EL LÍMITE"
+
+#. civil resource warehouses (cities tab)
+msgid "СКЛАД СЫРЬЯ: +600 МЕТАЛЛА, +360 ТИТАНА, +120 УРАНА И ДРУГОЕ СВЕРХ ЛИМИТА"
+msgstr "ALMACÉN DE MATERIAS PRIMAS: +600 METAL, +360 TITANIO, +120 URANIO Y MÁS SOBRE EL LÍMITE"
+
+#. civil resource warehouses (cities tab)
+msgid "Гражданский склад: поднимает лимит хранения урана, титана, металла, нефти, дерева и драгметаллов. Склады суммируются, не взрываются; захваченный склад работает на нового владельца."
+msgstr "Almacén civil: sube el límite de almacenamiento de uranio, titanio, metal, petróleo, madera y metales preciosos. Los almacenes se suman y no explotan; uno capturado trabaja para su nuevo dueño."
+
+#. civil resource warehouses (cities tab)
+msgid "+%d УРАН · +%d ТИТАН · +%d МЕТАЛЛ · +%d НЕФТЬ · +%d ДЕРЕВО · +%d ДРАГМЕТ."
+msgstr "+%d URANIO · +%d TITANIO · +%d METAL · +%d PETRÓLEO · +%d MADERA · +%d PRECIOSOS"
+
+#. civil resource warehouses (cities tab)
+msgid "\n%d×%d М · У ВАС: %d"
+msgstr "\n%d×%d M · TIENES: %d"
+
+#. civil resource warehouses (cities tab)
+msgid "СКЛАДЫ СЫРЬЯ: УРАН %d / %d · ТИТАН %d / %d"
+msgstr "ALMACENES MP: URANIO %d / %d · TITANIO %d / %d"
+
+#. civil resource warehouses (cities tab)
+msgid "СКЛАД СЫРЬЯ: +%d УРАН · +%d ТИТАН · +%d МЕТАЛЛ · +%d НЕФТЬ · +%d ДЕРЕВО · +%d ДРАГМЕТ."
+msgstr "ALMACÉN MP: +%d URANIO · +%d TITANIO · +%d METAL · +%d PETRÓLEO · +%d MADERA · +%d PRECIOSOS"
+
+#. civil resource warehouses (cities tab)
+msgid "Поднимает лимит хранения сырья страны; склады суммируются. Не взрывается, но если склад разрушат, лимит упадёт. Сейчас на складах страны: %s."
+msgstr "Sube el límite de materias primas del país; los almacenes se suman. No explota, pero si lo destruyen el límite baja. Ahora en los almacenes del país: %s."

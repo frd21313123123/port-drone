@@ -214,7 +214,7 @@ func _tap(pos: Vector2) -> void:
 					_set_mode(Mode.NONE))
 		Mode.HYP_TARGET:
 			_missile_tap(pos, wp)
-		Mode.FACTORY, Mode.DRONEPORT, Mode.TEL, Mode.MFACTORY, Mode.REFINERY, Mode.POWER, Mode.AIRFIELD, Mode.FARM, Mode.CIV, Mode.MINE, Mode.BARRACKS, Mode.AD_MFG, Mode.AD_SPAAG, Mode.AD_SAM, Mode.AD_PATRIOT, Mode.AD_INT, Mode.AD_RADAR, Mode.AD_EW, Mode.DUGOUT, Mode.SAWMILL, Mode.OIL_RIG, Mode.PORT, Mode.SOLAR_FARM, Mode.NAVBASE, Mode.COASTAL_ASM, Mode.NPP, Mode.UMINE, Mode.DEPOT_S, Mode.DEPOT_M, Mode.DEPOT_L:
+		Mode.FACTORY, Mode.DRONEPORT, Mode.TEL, Mode.MFACTORY, Mode.REFINERY, Mode.POWER, Mode.AIRFIELD, Mode.FARM, Mode.CIV, Mode.MINE, Mode.BARRACKS, Mode.AD_MFG, Mode.AD_SPAAG, Mode.AD_SAM, Mode.AD_PATRIOT, Mode.AD_INT, Mode.AD_RADAR, Mode.AD_EW, Mode.DUGOUT, Mode.SAWMILL, Mode.OIL_RIG, Mode.PORT, Mode.SOLAR_FARM, Mode.NAVBASE, Mode.COASTAL_ASM, Mode.NPP, Mode.UMINE, Mode.DEPOT_S, Mode.DEPOT_M, Mode.DEPOT_L, Mode.STORE_S, Mode.STORE_M, Mode.STORE_L:
 			var kind: int = BUILD_KIND[mode]
 			if kind == Facility.Kind.MINE and not world.econ.deposit_near(cell, 3, ["uranium"]).is_empty():
 				kind = Facility.Kind.URANIUM_MINE
