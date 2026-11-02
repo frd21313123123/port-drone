@@ -196,8 +196,8 @@ func show_facility(f: Facility, mil: Military, player: Country) -> void:
 				var st: String = Loc.t("ГОТОВО ЧЕРЕЗ %s") % _mmss(float(Military.MT_TIME[t]) - f.prod_t) if f.producing else Loc.t("ОЖИДАНИЕ: НУЖНЫ ДЕНЬГИ ИЛИ МЕСТО")
 				if f.producing and f.prod_t >= float(Military.MT_TIME[t]):
 					st = Loc.t("ГОТОВО: НЕТ МЕСТА НА СКЛАДЕ")
-				if not mil.has_carrier(player, t):
-					st = Loc.t("НЕТ НОСИТЕЛЯ: НУЖНА АВИАЦИЯ")
+				if Military.MT_NEEDS_CARRIER[t] and not mil.has_carrier(player, t):
+					st += Loc.t(" · НЕТ НОСИТЕЛЯ (ДЛЯ ПУСКА НУЖНА АВИАЦИЯ)")
 				if not mil.has_power(f):
 					st = Loc.t("НЕТ ПИТАНИЯ — ПРОИЗВОДСТВО СТОИТ")
 				info = Loc.t("ДЕЛАЕТ: %s · %s") % [Loc.t(String(Military.MT_NAMES[t])), st]

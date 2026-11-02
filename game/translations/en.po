@@ -34214,3 +34214,6 @@ msgstr "\nDEMOLITION BLOCKED: OTHER DEPOTS CANNOT HOLD THE CONTENTS"
 #. ammo depots (army tab)
 msgid "ГОТОВО: НЕТ МЕСТА НА СКЛАДЕ"
 msgstr "READY: NO ROOM IN THE DEPOT"
+
+msgid " · НЕТ НОСИТЕЛЯ (ДЛЯ ПУСКА НУЖНА АВИАЦИЯ)"
+msgstr " · NO CARRIER (AIRCRAFT NEEDED TO LAUNCH)"

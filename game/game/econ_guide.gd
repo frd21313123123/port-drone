@@ -1633,11 +1633,6 @@ func _chain_missiles(p: Country, st: Dictionary) -> Dictionary:
 			if wst == "ok":
 				wst = "warn"
 				worst = Loc.t("Склад ракет (%s) полон: %d — запускайте, смените тип или постройте склад (АРМИЯ › СКЛАД).") % [tn, p.missile_stock[t]]
-		elif not mil.has_carrier(p, t):
-			if wst == "ok":
-				wst = "warn"
-				worst = Loc.t("Ракетам (%s) нужен носитель — самолёт на аэродроме.") % tn
-				ch["fix_key"] = "airfield"
 		elif not p.has_res(rc):
 			wst = "bad"
 			var ti_short: bool = p.titanium < int(rc.get("titanium", 0))
@@ -1725,10 +1720,6 @@ func _problems(p: Country) -> Array:
 							kind = "full"
 							icon = "icon_store"
 							text = Loc.t("Склад ракет полон")
-						elif not mil.has_carrier(p, t):
-							kind = "idle"
-							icon = "icon_airfield_b"
-							text = Loc.t("Нужен самолёт-носитель")
 						elif not p.has_res(rc):
 							kind = "no_input"
 							icon = res_icon("titanium" if p.titanium < int(rc.get("titanium", 0)) else "money")
