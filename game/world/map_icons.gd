@@ -50,7 +50,7 @@ static func category_color(kind: int) -> Color:
 			return CAT_AD
 		Facility.Kind.POWER_PLANT, Facility.Kind.SOLAR, Facility.Kind.SOLAR_FARM, Facility.Kind.NUCLEAR_PLANT:
 			return CAT_POWER
-		Facility.Kind.BARRACKS, Facility.Kind.TRENCH_H, Facility.Kind.TRENCH_V, Facility.Kind.TEETH_H, Facility.Kind.TEETH_V, Facility.Kind.DUGOUT:
+		Facility.Kind.BARRACKS, Facility.Kind.TRENCH_H, Facility.Kind.TRENCH_V, Facility.Kind.TEETH_H, Facility.Kind.TEETH_V, Facility.Kind.DUGOUT, Facility.Kind.DEPOT_S, Facility.Kind.DEPOT_M, Facility.Kind.DEPOT_L:
 
 			return CAT_ARMY
 		Facility.Kind.PORT, Facility.Kind.PORT_CRANE, Facility.Kind.RAIL_STATION:

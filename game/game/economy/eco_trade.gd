@@ -1296,7 +1296,7 @@ func _stall_tip(c: Country) -> String:
 					what = Loc.t("Казармы стоят")
 			Facility.Kind.MISSILE_FACTORY:
 				var t: int = f.prod_type
-				if not f.producing and c.missile_stock[t] < int(Military.MT_CAP[t]) and mil.has_carrier(c, t):
+				if not f.producing and Military.DepotS.missile_fits(mil, c, t) and mil.has_carrier(c, t):
 					var rc: Dictionary = res_cost("missile_%d" % t)
 					rc["money"] = int(Military.MT_COST[t])
 					miss = c.first_missing(rc)

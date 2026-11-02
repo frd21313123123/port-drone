@@ -86,6 +86,9 @@ var arch: int = 0
 
 var uranium: int = 0
 
+## Drones kept in ammo depots (army tab): [delta, jet]. They go to a drone port as soon as it has room.
+var depot_drones: Array[int] = [0, 0]
+
 var ai_diff: int = -1
 
 

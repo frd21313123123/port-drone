@@ -22300,3 +22300,131 @@ msgstr "BANDERA Y NOMBRE DEL PAÍS"
 
 msgid "НИК МЕНЯЕТСЯ ВНЕ КОМНАТЫ"
 msgstr "EL NICK SE CAMBIA FUERA DE UNA SALA"
+
+#. ammo depots (army tab)
+msgid "Малый склад"
+msgstr "Depósito pequeño"
+
+#. ammo depots (army tab)
+msgid "Средний склад"
+msgstr "Depósito mediano"
+
+#. ammo depots (army tab)
+msgid "Большой склад"
+msgstr "Depósito grande"
+
+#. ammo depots (army tab)
+msgid "БОЕПРИПАСЫ СВЕРХ ЛИМИТА: 5 КР, 10 КАБ ИЛИ 2 БАЛЛИСТИКИ. ВЗРЫВАЕТСЯ"
+msgstr "MUNICIÓN SOBRE EL LÍMITE: 5 MC, 10 BOMBAS GUIADAS O 2 BALÍSTICOS. EXPLOTA"
+
+#. ammo depots (army tab)
+msgid "БОЕПРИПАСЫ СВЕРХ ЛИМИТА: 15 КР, 30 КАБ ИЛИ 7 БАЛЛИСТИК. ВЗРЫВАЕТСЯ"
+msgstr "MUNICIÓN SOBRE EL LÍMITE: 15 MC, 30 BOMBAS GUIADAS O 7 BALÍSTICOS. EXPLOTA"
+
+#. ammo depots (army tab)
+msgid "БОЕПРИПАСЫ СВЕРХ ЛИМИТА: 40 КР, 80 КАБ ИЛИ 20 БАЛЛИСТИК. ВЗРЫВАЕТСЯ"
+msgstr "MUNICIÓN SOBRE EL LÍMITE: 40 MC, 80 BOMBAS GUIADAS O 20 BALÍSTICOS. EXPLOTA"
+
+#. ammo depots (army tab)
+msgid "Склад боеприпасов"
+msgstr "Depósito de munición"
+
+#. ammo depots (army tab)
+msgid "Малый, средний или большой: ракеты и дроны сверх лимита. При попадании детонирует"
+msgstr "Pequeño, mediano o grande: misiles y drones sobre el límite. Detona si lo alcanzan"
+
+#. ammo depots (army tab)
+msgid "МАЛ.СКЛАД"
+msgstr "DEP.PEQ."
+
+#. ammo depots (army tab)
+msgid "СР.СКЛАД"
+msgstr "DEP.MED."
+
+#. ammo depots (army tab)
+msgid "БОЛ.СКЛАД"
+msgstr "DEP.GRA."
+
+#. ammo depots (army tab)
+msgid "Казармы, штаб, окопы, оборона, склады"
+msgstr "Cuarteles, cuartel general, trincheras, defensa, depósitos"
+
+#. ammo depots (army tab)
+msgid "Хранит ракеты и дроны сверх обычного лимита. Мелкое (КАБ, «воздух-воздух») занимает меньше места, баллистика и гиперзвук — больше. При попадании склад детонирует: чем он полнее, тем сильнее взрыв."
+msgstr "Guarda misiles y drones por encima del límite normal. Lo pequeño (bombas guiadas, aire-aire) ocupa menos, los balísticos e hipersónicos más. Un impacto lo hace detonar: cuanto más lleno, mayor la explosión."
+
+#. ammo depots (army tab)
+msgid "%d КР · %d КАБ или «в-в» · %d ЗУР · %d баллист./гиперзв. · %d дронов"
+msgstr "%d MC · %d bombas guiadas o AA · %d SAM · %d balíst./hipers. · %d drones"
+
+#. ammo depots (army tab)
+msgid "\nМЕСТ %d · %d×%d М · У ВАС: %d"
+msgstr "\nESPACIO %d · %d×%d M · TIENES: %d"
+
+#. ammo depots (army tab)
+msgid "ЗАНЯТО МЕСТ НА СКЛАДАХ: %d / %d"
+msgstr "ESPACIO OCUPADO EN DEPÓSITOS: %d / %d"
+
+#. ammo depots (army tab)
+msgid "НЕТ — СКЛАД ПУСТ"
+msgstr "NINGUNA — DEPÓSITO VACÍO"
+
+#. ammo depots (army tab)
+msgid "ОГРОМНЫЙ"
+msgstr "ENORME"
+
+#. ammo depots (army tab)
+msgid "СИЛЬНЫЙ"
+msgstr "FUERTE"
+
+#. ammo depots (army tab)
+msgid "СЛАБЫЙ"
+msgstr "DÉBIL"
+
+#. ammo depots (army tab)
+msgid "ЗАНЯТО %d/%d МЕСТ (%d%%) · ВЗРЫВ: %s\n%s"
+msgstr "OCUPADO %d/%d (%d%%) · EXPLOSIÓN: %s\n%s"
+
+#. ammo depots (army tab)
+msgid "Сюда идут ракеты сверх обычного лимита и дроны, когда дронопорты заполнены (потом сами перелетают на свободное место). Места: КАБ и «в-в» — 1, КР и ЗУР — 2, баллистика и гиперзвук — 4, дрон — 2, реактивный — 3. Всего на складах страны: %d/%d. Уничтоженный склад детонирует — держите рядом ПВО и не ставьте вплотную к заводам."
+msgstr "Aquí van los misiles por encima del límite normal y los drones cuando los dronopuertos están llenos (luego vuelan solos a un hueco libre). Espacio: bomba guiada y AA — 1, misil de crucero y SAM — 2, balístico e hipersónico — 4, dron — 2, a reacción — 3. Todos los depósitos del país: %d/%d. Un depósito destruido detona: ten defensa antiaérea cerca y no lo pegues a las fábricas."
+
+#. ammo depots (army tab)
+msgid "СКЛАД БОЕПРИПАСОВ: ПОПАДАНИЕ ВЫЗОВЕТ ДЕТОНАЦИЮ"
+msgstr "DEPÓSITO DE MUNICIÓN: UN IMPACTO LO HARÁ DETONAR"
+
+#. ammo depots (army tab)
+msgid "БАЛЛ."
+msgstr "BAL."
+
+#. ammo depots (army tab)
+msgid "В-В"
+msgstr "AA"
+
+#. ammo depots (army tab)
+msgid "ЗУР"
+msgstr "SAM"
+
+#. ammo depots (army tab)
+msgid "ГИПЕР."
+msgstr "HIPER."
+
+#. ammo depots (army tab)
+msgid "ДРОНЫ %d"
+msgstr "DRONES %d"
+
+#. ammo depots (army tab)
+msgid "РЕАКТ. %d"
+msgstr "REACC. %d"
+
+#. ammo depots (army tab)
+msgid "%s: детонация боеприпасов! Потеряно ракет %d, дронов %d"
+msgstr "%s: ¡detonación de munición! Misiles perdidos %d, drones %d"
+
+#. ammo depots (army tab)
+msgid "Завод ждёт: нужен дронопорт со свободным местом или склад (АРМИЯ › СКЛАД)"
+msgstr "La fábrica espera: hace falta un dronopuerto con hueco o un depósito (EJÉRCITO › DEPÓSITO)"
+
+#. ammo depots (army tab)
+msgid "Склад ракет (%s) полон: %d — запускайте, смените тип или постройте склад (АРМИЯ › СКЛАД)."
+msgstr "Reserva de misiles (%s) llena: %d — lanza, cambia de tipo o construye un depósito (EJÉRCITO › DEPÓSITO)."

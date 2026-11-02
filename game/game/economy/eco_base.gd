@@ -86,6 +86,9 @@ const BUILD_COST: Dictionary = {
 	Facility.Kind.COASTAL_ASM: {"metal": 12, "titanium": 3},
 	Facility.Kind.URANIUM_MINE: {"metal": 30, "titanium": 10, "wood": 10},
 	Facility.Kind.NUCLEAR_PLANT: {"metal": 60, "titanium": 20, "uranium": 12},
+	Facility.Kind.DEPOT_S: {"metal": 4, "wood": 4},
+	Facility.Kind.DEPOT_M: {"metal": 10, "wood": 10},
+	Facility.Kind.DEPOT_L: {"metal": 22, "wood": 16},
 }
 const DEP_AMOUNT: Dictionary = {"metal": 900, "titanium": 600, "oil": 900, "precious": 250, "uranium": 240}
 const CAP_DEP: Dictionary = {"metal": 400, "oil": 300, "titanium": 200}

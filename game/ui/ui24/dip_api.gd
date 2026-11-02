@@ -252,11 +252,11 @@ func mil_aid(cid: int) -> Array:
 				"drones":
 					room = int(gw.mil.drone_room(ct))
 				"missile_b":
-					room = maxi(0, int(Military.MT_CAP[Military.MT_BALLISTIC]) - int(ct.missile_stock[Military.MT_BALLISTIC]))
+					room = maxi(0, Military.DepotS.missile_cap(gw.mil, ct, Military.MT_BALLISTIC) - int(ct.missile_stock[Military.MT_BALLISTIC]))
 				"missile_c":
-					room = maxi(0, int(Military.MT_CAP[Military.MT_CRUISE]) - int(ct.missile_stock[Military.MT_CRUISE]))
+					room = maxi(0, Military.DepotS.missile_cap(gw.mil, ct, Military.MT_CRUISE) - int(ct.missile_stock[Military.MT_CRUISE]))
 				"missile_sam":
-					room = maxi(0, int(Military.MT_CAP[Military.MT_SAM]) - int(ct.missile_stock[Military.MT_SAM]))
+					room = maxi(0, Military.DepotS.missile_cap(gw.mil, ct, Military.MT_SAM) - int(ct.missile_stock[Military.MT_SAM]))
 		var d: Dictionary = o.duplicate()
 		d["room"] = maxi(0, room)
 		out.append(d)

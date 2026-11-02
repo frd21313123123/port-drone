@@ -23,6 +23,7 @@ const ICON: Dictionary = {
 	Facility.Kind.SAWMILL: "icon_sawmill", Facility.Kind.OIL_RIG: "icon_oil_rig", Facility.Kind.PORT: "icon_port",
 	Facility.Kind.SOLAR: "icon_solar", Facility.Kind.RAIL_STATION: "icon_rail_station",
 	Facility.Kind.NUCLEAR_PLANT: "icon_npp", Facility.Kind.URANIUM_MINE: "icon_umine",
+	Facility.Kind.DEPOT_S: "icon_inventory", Facility.Kind.DEPOT_M: "icon_inventory", Facility.Kind.DEPOT_L: "icon_inventory",
 }
 const PIN_SCREEN: float = 0.5
 
