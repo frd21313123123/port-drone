@@ -31,13 +31,29 @@ tools/gdc2gd.py        the decompiler used to get game/ out of the APK's binary 
 
 ### Releases
 
-* **Bump `version` in `game/pc/version.cfg` and push to `main`** — if there is no release `v<version>` yet, CI publishes it.
-  (A tag `v0.32.2` or running the *Build* workflow with `release_version` works too.)
-  CI builds `DroneFlames.exe`, `DroneFlames-libs-r1.zip`, `SHA256SUMS.txt` and publishes the release.
-  Players' games see it on next start and offer the update.
+* **Every successful push build on `main` or `codex/performance-0.33.2.2` publishes a release automatically.**
+  Running the *Build* workflow manually also publishes, even with an empty `release_version`.
+  Pull requests build downloadable Actions artifacts without publishing a release.
+* Automatic versions are `<version.cfg version>.<Actions run number>.<run attempt>`;
+  for example, base `0.33.2.3`, run 42, attempt 1 becomes `v0.33.2.3.42.1`.
+  The next run and a full rerun both get higher versions, so the existing updater detects them
+  without a manual version bump. Bump the base version for a new game version.
+  A pushed tag such as `v0.33.2.4`, or a manual `release_version` of `0.33.2.4`, uses that exact numeric version.
+* CI builds `DroneFlames.exe`, `DroneFlames-libs-r1.zip` and `SHA256SUMS.txt`.
+  It verifies checksums, uploads all assets to a draft, then publishes the complete release.
+  Publishing workflows run in sequence; a superseded pending workflow may be replaced before it starts building.
+  Only a numerically newer release becomes **Latest**, which the game checks at its next start.
+  Players press **UPDATE** to download, replace the executable and restart.
+  Published versions are never overwritten: use a new version, or fully rerun the workflow for a new automatic version.
+  A failed upload leaves a draft; rerunning the failed release job resumes it.
+* The workflow uses the automatic `GITHUB_TOKEN` (`contents: write` only for the release job);
+  no personal token or additional repository secrets are needed. If organization policy prevents release creation,
+  allow Actions write access to repository contents in that policy.
 * The released version is written into the exe (CI writes it into the exe and into `Menus.VERSION`, which the multiplayer lobby compares).
 * Changed anything in `libs/`? Bump `libs_rev` in `game/pc/version.cfg` — the game re-downloads the libs.
 * Version order: all numbers in the tag are compared left to right (`0.32.2` > `0.32.1` > `0.32.0.1`).
+
+Check versioning and draft publication locally: `python3 -m unittest discover -s tests -p 'test_release.py'`.
 
 ### Updater (game/pc/updater.gd)
 
