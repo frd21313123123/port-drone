@@ -238,7 +238,7 @@ func _produce_missiles(f: Facility, dt: float) -> void:
 	var t: int = f.prod_type
 	if not f.producing:
 		var mrc: Dictionary = Economy.res_cost("missile_%d" % t)
-		if not MT_READY[t] or not DepotS.missile_fits(self, c, t) or c.money < int(MT_COST[t]) or not c.has_res(mrc) or not has_carrier(c, t):
+		if not MT_READY[t] or not DepotS.missile_fits(self, c, t) or c.money < int(MT_COST[t]) or not c.has_res(mrc):
 			return
 		c.money -= int(MT_COST[t])
 		c.pay_res(mrc)
