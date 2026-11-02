@@ -8,7 +8,9 @@ extends RefCounted
 ##
 ## The contents are not stored per depot: the overflow of the country is laid out over its depots
 ## in a fixed order (facility id, big munitions first), so it stays deterministic in multiplayer and
-## needs nothing new in the save. When a depot is destroyed its share is lost and detonates:
+## needs nothing new in the save. A depot that changes hands (captured, handed to an ally, ceded in peace)
+## takes its share with it: the ammo goes from the old owner's stock to the new owner's (check_owners).
+## When a depot is destroyed its share is lost and detonates:
 ## the more is inside, the bigger and wider the blast; an empty depot does not blow up.
 ##
 ## Military is not referenced by name here (it preloads this script); its constants are read
@@ -187,6 +189,71 @@ const SHORT: Array = ["БАЛЛ.", "КР", "В-В", "ЗУР", "ГИПЕР.", "К
 ## How strong the blast of a depot with this many places inside is, 0..1 (for the card).
 static func danger(pts: int) -> float:
 	return clampf(float(pts) / float(CAP[Facility.Kind.DEPOT_L]), 0.0, 1.0)
+
+
+## A depot that changed hands (captured, handed to an ally, ceded in peace) takes its contents with it:
+## they leave the old owner's stock and go to the new owner's. Run every tick before anything else looks at depots.
+static func check_owners(mil: Object) -> void:
+	var moved: Array[Facility] = []
+	var now_id: Dictionary = {}
+	for f: Facility in mil.facilities:
+		if not CAP.has(f.kind):
+			continue
+		if f.depot_owner < 0:
+			f.depot_owner = f.country_id
+		elif f.depot_owner != f.country_id:
+			moved.append(f)
+			now_id[f.id] = f.country_id
+	if moved.is_empty():
+		return
+	var olds: Dictionary = {}
+	for f: Facility in moved:
+		olds[f.depot_owner] = true
+	for old_id: int in olds:
+		# Lay the old owner's overflow out as it was before the handover: the moved depots count for it again.
+		for f: Facility in moved:
+			if f.depot_owner == old_id:
+				f.country_id = old_id
+		var sh: Dictionary = shares(mil, old_id)
+		for f: Facility in moved:
+			if f.depot_owner == old_id:
+				f.country_id = int(now_id[f.id])
+		for f: Facility in moved:
+			if f.depot_owner == old_id and sh.has(f.id):
+				_hand_over(mil, f, old_id, int(now_id[f.id]), sh[f.id])
+	for f: Facility in moved:
+		f.depot_owner = f.country_id
+
+
+static func _hand_over(mil: Object, f: Facility, old_id: int, new_id: int, share: Dictionary) -> void:
+	var gw: GameWorld = mil.gw
+	var co: Country = gw.country_by_id(old_id)
+	var cn: Country = gw.country_by_id(new_id)
+	if co == null or cn == null or int(share.get("pts", 0)) <= 0:
+		return
+	var got_m: int = 0
+	var got_d: int = 0
+	var m: Array = share["m"]
+	for t in mini(m.size(), mini(co.missile_stock.size(), cn.missile_stock.size())):
+		var k: int = mini(int(m[t]), co.missile_stock[t])
+		co.missile_stock[t] -= k
+		cn.missile_stock[t] += k
+		got_m += k
+	var d: Array = share["d"]
+	while cn.depot_drones.size() < DRONE_VOL.size():
+		cn.depot_drones.append(0)
+	for j in mini(d.size(), co.depot_drones.size()):
+		var k2: int = mini(int(d[j]), co.depot_drones[j])
+		co.depot_drones[j] -= k2
+		cn.depot_drones[j] += k2
+		got_d += k2
+	if got_m + got_d <= 0:
+		return
+	var title: String = Loc.t(String(mil.TITLES[f.kind]))
+	if cn.is_player:
+		gw.say(cn, Loc.mk("%s захвачен: боеприпасы теперь ваши — ракет %d, дронов %d", [title, got_m, got_d]))
+	elif co.is_player:
+		gw.say(co, Loc.mk("%s захвачен: боеприпасы потеряны — ракет %d, дронов %d", [title, got_m, got_d]))
 
 
 ## The depot has just been destroyed: its share is lost and goes off.

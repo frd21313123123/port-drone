@@ -343,6 +343,7 @@ func build(kind: int, center: Vector2i, country: Country, parent: Facility = nul
 		Nuclear.build_parts(gw, f, nw, country)
 	elif DepotS.is_depot(kind):
 
+		f.depot_owner = country.id
 		for pl: Array in DEPOT_PARTS[kind]:
 			var pid: int = gw.add_object(String(pl[0]), nw + (pl[1] as Vector2i), GameWorld.KIND_BUILDING)
 			if pid >= 0:
@@ -1100,7 +1101,7 @@ func _update_fuel() -> void:
 
 
 func _watch_state() -> void:
-
+	DepotS.check_owners(self)
 	var dep_cids: Dictionary = {}
 	for f: Facility in facilities:
 		if f.is_depot() and f.was_alive and f.restore_t <= 0.0 and not alive(f):

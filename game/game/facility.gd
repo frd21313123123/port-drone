@@ -114,6 +114,10 @@ var mag_t: float = 0.0
 var mb: bool = false
 
 
+## Ammo depots: who owned it when its contents were last accounted (-1 = not yet). A change means capture or handover.
+var depot_owner: int = -1
+
+
 func is_line() -> bool:
 	return kind == Kind.TRENCH_H or kind == Kind.TEETH_H
 

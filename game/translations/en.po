@@ -34194,3 +34194,11 @@ msgstr "Factory waits: needs a drone port with a free spot or a depot (ARMY › 
 #. ammo depots (army tab)
 msgid "Склад ракет (%s) полон: %d — запускайте, смените тип или постройте склад (АРМИЯ › СКЛАД)."
 msgstr "Missile stock (%s) is full: %d — launch, switch type or build a depot (ARMY › DEPOT)."
+
+#. ammo depots (army tab)
+msgid "%s захвачен: боеприпасы теперь ваши — ракет %d, дронов %d"
+msgstr "%s captured: the ammo is yours now — missiles %d, drones %d"
+
+#. ammo depots (army tab)
+msgid "%s захвачен: боеприпасы потеряны — ракет %d, дронов %d"
+msgstr "%s captured: the ammo is lost — missiles %d, drones %d"

@@ -22428,3 +22428,11 @@ msgstr "La fábrica espera: hace falta un dronopuerto con hueco o un depósito (
 #. ammo depots (army tab)
 msgid "Склад ракет (%s) полон: %d — запускайте, смените тип или постройте склад (АРМИЯ › СКЛАД)."
 msgstr "Reserva de misiles (%s) llena: %d — lanza, cambia de tipo o construye un depósito (EJÉRCITO › DEPÓSITO)."
+
+#. ammo depots (army tab)
+msgid "%s захвачен: боеприпасы теперь ваши — ракет %d, дронов %d"
+msgstr "%s capturado: la munición ahora es tuya — misiles %d, drones %d"
+
+#. ammo depots (army tab)
+msgid "%s захвачен: боеприпасы потеряны — ракет %d, дронов %d"
+msgstr "%s capturado: la munición se ha perdido — misiles %d, drones %d"
