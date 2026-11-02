@@ -1555,6 +1555,9 @@ func demolish(country: Country, f: Facility) -> String:
 
 
 func _dem_one(x: Facility) -> void:
+	if x.is_store() and gw.econ != null:
+		# Before the kind is changed below: the storage bonus of the owner goes away at once.
+		gw.econ._cap_bonus.erase(x.country_id)
 	_stop_fx(x)
 	if gw.army != null:
 		for u: Unit in gw.army.units:
