@@ -194,6 +194,8 @@ func show_facility(f: Facility, mil: Military, player: Country) -> void:
 			Facility.Kind.MISSILE_FACTORY:
 				var t: int = f.prod_type
 				var st: String = Loc.t("ГОТОВО ЧЕРЕЗ %s") % _mmss(float(Military.MT_TIME[t]) - f.prod_t) if f.producing else Loc.t("ОЖИДАНИЕ: НУЖНЫ ДЕНЬГИ ИЛИ МЕСТО")
+				if f.producing and f.prod_t >= float(Military.MT_TIME[t]):
+					st = Loc.t("ГОТОВО: НЕТ МЕСТА НА СКЛАДЕ")
 				if not mil.has_carrier(player, t):
 					st = Loc.t("НЕТ НОСИТЕЛЯ: НУЖНА АВИАЦИЯ")
 				if not mil.has_power(f):
@@ -407,7 +409,9 @@ func show_facility(f: Facility, mil: Military, player: Country) -> void:
 					info = Loc.t("ЗАНЯТО %d/%d МЕСТ (%d%%) · ВЗРЫВ: %s\n%s") % [dpts, dcap, roundi(100.0 * dpts / dcap), boom, Military.DepotS.contents_text(mil, sh)]
 					if dpts > 0 and not Military.DepotS.can_remove(mil, f):
 						info += Loc.t("\nСНОС ЗАПРЕЩЁН: ДРУГИЕ СКЛАДЫ НЕ ВМЕСТЯТ СОДЕРЖИМОЕ")
-					detail = Loc.t("Сюда идут ракеты сверх обычного лимита и дроны, когда дронопорты заполнены (потом сами перелетают на свободное место). Места: КАБ и «в-в» — 1, КР и ЗУР — 2, баллистика и гиперзвук — 4, дрон — 2, реактивный — 3. Всего на складах страны: %d/%d. Уничтоженный склад детонирует — держите рядом ПВО и не ставьте вплотную к заводам.") % [mini(Military.DepotS.used(mil, player), Military.DepotS.capacity(mil, player.id)), Military.DepotS.capacity(mil, player.id)]
+					var outm: Array[int] = Military.DepotS.outside(mil, player)
+					var out_sh: Dictionary = {"m": outm, "d": [0, 0]}
+					detail = Loc.t("Сюда в первую очередь кладутся все ракеты страны, а сверх обычного лимита они хранятся только на складах. Дроны — когда дронопорты заполнены (потом сами перелетают на свободное место). Места: КАБ и «в-в» — 1, КР и ЗУР — 2, баллистика и гиперзвук — 4, дрон — 2, реактивный — 3. Всего на складах страны: %d/%d. Не поместилось (обычный запас): %s. Уничтоженный склад детонирует вместе с содержимым — держите рядом ПВО и не ставьте вплотную к заводам.") % [mini(Military.DepotS.used(mil, player), Military.DepotS.capacity(mil, player.id)), Military.DepotS.capacity(mil, player.id), Military.DepotS.contents_text(mil, out_sh)]
 				else:
 					info = Loc.t("СКЛАД БОЕПРИПАСОВ: ПОПАДАНИЕ ВЫЗОВЕТ ДЕТОНАЦИЮ")
 			Facility.Kind.AD_RADAR:
