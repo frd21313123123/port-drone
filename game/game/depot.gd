@@ -269,6 +269,8 @@ static func danger(pts: int) -> float:
 
 ## A depot that changed hands (captured, handed to an ally, ceded in peace) takes its contents with it:
 ## they leave the old owner's stock and go to the new owner's. Run every tick before anything else looks at depots.
+## Several depots can change hands in one tick (even A <-> B at once), so every old owner's layout is taken
+## first, with all moved depots back where they were; only then is any stock touched.
 static func check_owners(mil: Object) -> void:
 	var moved: Array[Facility] = []
 	var now_id: Dictionary = {}
@@ -284,29 +286,46 @@ static func check_owners(mil: Object) -> void:
 		return
 	var olds: Dictionary = {}
 	for f: Facility in moved:
+		f.country_id = f.depot_owner
 		olds[f.depot_owner] = true
+	var snap: Dictionary = {}
 	for old_id: int in olds:
-		# Lay the old owner's overflow out as it was before the handover: the moved depots count for it again.
-		for f: Facility in moved:
-			if f.depot_owner == old_id:
-				f.country_id = old_id
-		var sh: Dictionary = shares(mil, old_id)
-		for f: Facility in moved:
-			if f.depot_owner == old_id:
-				f.country_id = int(now_id[f.id])
-		for f: Facility in moved:
-			if f.depot_owner == old_id and sh.has(f.id):
-				_hand_over(mil, f, old_id, int(now_id[f.id]), sh[f.id])
+		snap[old_id] = shares(mil, old_id)
+	for f: Facility in moved:
+		f.country_id = int(now_id[f.id])
+	var done: Array = []
+	for f: Facility in moved:
+		var sh: Dictionary = (snap[f.depot_owner] as Dictionary).get(f.id, {})
+		if not sh.is_empty():
+			var got: Array = _hand_over(mil, f, f.depot_owner, f.country_id, sh)
+			if not got.is_empty():
+				done.append(got)
+	# What the new owners have no depot for goes now, once all the transfers are in.
+	var lost: Dictionary = {}
+	for f: Facility in moved:
+		var cid: int = f.country_id
+		if not lost.has(cid):
+			var cn: Country = mil.gw.country_by_id(cid)
+			if cn != null:
+				lost[cid] = _trim(mil, cn)
+	for got: Array in done:
+		var l: Array = lost.get(int(got[1]), [0, 0])
+		var tm: int = mini(int(got[3]), int(l[0]))
+		var td: int = mini(int(got[4]), int(l[1]))
+		l[0] = int(l[0]) - tm
+		l[1] = int(l[1]) - td
+		_say_handover(mil, got, int(got[3]) - tm, int(got[4]) - td)
 	for f: Facility in moved:
 		f.depot_owner = f.country_id
 
 
-static func _hand_over(mil: Object, f: Facility, old_id: int, new_id: int, share: Dictionary) -> void:
+## Moves one depot's share between the stocks. Returns [facility, new id, old id, missiles, drones] (or []).
+static func _hand_over(mil: Object, f: Facility, old_id: int, new_id: int, share: Dictionary) -> Array:
 	var gw: GameWorld = mil.gw
 	var co: Country = gw.country_by_id(old_id)
 	var cn: Country = gw.country_by_id(new_id)
 	if co == null or cn == null or int(share.get("pts", 0)) <= 0:
-		return
+		return []
 	var got_m: int = 0
 	var got_d: int = 0
 	var m: Array = share["m"]
@@ -323,16 +342,21 @@ static func _hand_over(mil: Object, f: Facility, old_id: int, new_id: int, share
 		co.depot_drones[j] -= k2
 		cn.depot_drones[j] += k2
 		got_d += k2
-	var lost: Array[int] = _trim(mil, cn)
-	got_m -= lost[0]
-	got_d -= lost[1]
-	if got_m + got_d <= 0:
+	return [f, new_id, old_id, got_m, got_d] if got_m + got_d > 0 else []
+
+
+static func _say_handover(mil: Object, got: Array, m: int, d: int) -> void:
+	if m + d <= 0:
 		return
+	var gw: GameWorld = mil.gw
+	var f: Facility = got[0]
 	var title: String = Loc.t(String(mil.TITLES[f.kind]))
-	if cn.is_player:
-		gw.say(cn, Loc.mk("%s захвачен: боеприпасы теперь ваши — ракет %d, дронов %d", [title, got_m, got_d]))
-	elif co.is_player:
-		gw.say(co, Loc.mk("%s захвачен: боеприпасы потеряны — ракет %d, дронов %d", [title, got_m, got_d]))
+	var cn: Country = gw.country_by_id(int(got[1]))
+	var co: Country = gw.country_by_id(int(got[2]))
+	if cn != null and cn.is_player:
+		gw.say(cn, Loc.mk("%s захвачен: боеприпасы теперь ваши — ракет %d, дронов %d", [title, m, d]))
+	elif co != null and co.is_player:
+		gw.say(co, Loc.mk("%s захвачен: боеприпасы потеряны — ракет %d, дронов %d", [title, m, d]))
 
 
 ## The depot has just been destroyed: its share is lost and goes off.
@@ -359,19 +383,31 @@ static func detonate(mil: Object, f: Facility, share: Dictionary) -> void:
 	var n: int = clampi(ceili(float(pts) / 4.0), 1, BLASTS_MAX)
 	var t0: float = 0.05
 	if pts >= CORE_FROM:
-		gw._delay(t0, gw.strike_big.bind(center, 0))
+		_blast(gw, center, t0, true)
 		t0 += 0.25
 	for i in n:
 		var a: float = gw.rng.roll() * TAU
 		var r: float = reach * sqrt(gw.rng.roll())
 		var cell: Vector2i = center + Vector2i(roundi(cos(a) * r), roundi(sin(a) * r))
 		if pts >= BIG_FROM and i % 3 == 0:
-			gw._delay(t0, gw.strike_big.bind(cell, 0))
+			_blast(gw, cell, t0, true)
 		else:
-			gw._delay(t0, gw.strike.bind(cell, 0))
+			_blast(gw, cell, t0, false)
 		t0 += 0.12 + gw.rng.roll() * 0.22
 	if c.is_player:
 		gw.say(c, Loc.mk("%s: детонация боеприпасов! Потеряно ракет %d, дронов %d", [Loc.t(String(mil.TITLES[f.kind])), lost_m, lost_d]))
+
+
+## One blast of a detonation, `at` seconds from now. The damage is queued right away as _apply_strike
+## (the callback a save keeps), so a save made in the middle of a detonation does not lose the rest of it;
+## the look and sound are queued next to it and are not part of the save, like every other strike.
+static func _blast(gw: GameWorld, cell: Vector2i, at: float, big: bool) -> void:
+	if big:
+		gw._delay(at, gw._strike_big_fx.bind(cell))
+		gw._delay(at + 0.14, gw._apply_strike.bind(cell, 7, "crater_l", 30.0, 0))
+	else:
+		gw._delay(at, gw._strike_fx.bind(cell))
+		gw._delay(at + 0.14, gw._apply_strike.bind(cell, 3, "crater_m", 14.0, 0))
 
 
 ## Drones waiting in depots fly over to a drone port as soon as one has a free spot.

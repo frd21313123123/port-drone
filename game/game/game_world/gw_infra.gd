@@ -698,6 +698,12 @@ func camera_shake_launch(p: Vector2) -> void:
 
 
 func strike_big(cell: Vector2i, by: int = 0) -> void:
+	_strike_big_fx(cell)
+	_delay(0.14, _apply_strike.bind(cell, 7, "crater_l", 30.0, by))
+
+
+## The look and sound of a big strike. The damage is _apply_strike (the only part a save keeps).
+func _strike_big_fx(cell: Vector2i) -> void:
 	var p: = Vector2(cell.x * CELL + 2, cell.y * CELL + 2)
 	var water: bool = data.inside(cell.x, cell.y) and Biome.is_water(data.get_biome(cell.x, cell.y))
 
@@ -711,7 +717,6 @@ func strike_big(cell: Vector2i, by: int = 0) -> void:
 	elif _on_screen(p, camera.view_size().x):
 		camera.shake_pattern([Vector2(1, 0), Vector2(-1, 0), Vector2(0, 1), Vector2(0, 0)], 0.033)
 	_delay(0.07, fx.debris_burst.bind(p, 8, false))
-	_delay(0.14, _apply_strike.bind(cell, 7, "crater_l", 30.0, by))
 	if not water:
 		var burn_end: float = game_time + (18.0 if wild else 40.0)
 		var offs: Array = [Vector2(-2, 1)] if wild else [Vector2(-7, -2), Vector2(5, -5), Vector2(-2, 6), Vector2(7, 4)]
@@ -723,13 +728,17 @@ func strike_big(cell: Vector2i, by: int = 0) -> void:
 
 
 func strike(cell: Vector2i, by: int = 0) -> void:
+	_strike_fx(cell)
+	_delay(0.14, _apply_strike.bind(cell, 3, "crater_m", 14.0, by))
+
+
+func _strike_fx(cell: Vector2i) -> void:
 	var p: = Vector2(cell.x * CELL + 2, cell.y * CELL + 2)
 	fx.spawn("explosion_m", p, 6)
 	Sfx.play("expl_small", p, 2.0)
 	if camera != null and _on_screen(p, 100.0):
 		camera.shake(true)
 	fx.debris_burst(p, 6, false)
-	_delay(0.14, _apply_strike.bind(cell, 3, "crater_m", 14.0, by))
 
 
 func _apply_strike(cell: Vector2i, r: int = 3, crater: String = "crater_m", r_px: float = 14.0, by: int = 0) -> void:
