@@ -3,7 +3,7 @@ extends RefCounted
 
 
 
-enum Kind {DRONE_FACTORY, AIRFIELD, DRONE_PORT, DP_RAMP, DP_RUNWAY, DP_STORE, TEL, MISSILE_FACTORY, REFINERY, POWER_PLANT, SOLAR, FARM, CIV_FACTORY, MINE, BARRACKS, AD_MFG, AD_SPAAG, AD_SAM, AD_PATRIOT, AD_INT, AD_RADAR, AD_EW, TRENCH_H, TRENCH_V, TEETH_H, TEETH_V, DUGOUT, SAWMILL, OIL_RIG, PORT, PORT_CRANE, RAIL_STATION, SOLAR_FARM, NAVAL_BASE, COASTAL_ASM, URANIUM_MINE, NUCLEAR_PLANT}
+enum Kind {DRONE_FACTORY, AIRFIELD, DRONE_PORT, DP_RAMP, DP_RUNWAY, DP_STORE, TEL, MISSILE_FACTORY, REFINERY, POWER_PLANT, SOLAR, FARM, CIV_FACTORY, MINE, BARRACKS, AD_MFG, AD_SPAAG, AD_SAM, AD_PATRIOT, AD_INT, AD_RADAR, AD_EW, TRENCH_H, TRENCH_V, TEETH_H, TEETH_V, DUGOUT, SAWMILL, OIL_RIG, PORT, PORT_CRANE, RAIL_STATION, SOLAR_FARM, NAVAL_BASE, COASTAL_ASM, URANIUM_MINE, NUCLEAR_PLANT, DEPOT_S, DEPOT_M, DEPOT_L}
 
 var id: int = 0
 var kind: int = Kind.DRONE_FACTORY
@@ -114,6 +114,10 @@ var mag_t: float = 0.0
 var mb: bool = false
 
 
+## Ammo depots: who owned it when its contents were last accounted (-1 = not yet). A change means capture or handover.
+var depot_owner: int = -1
+
+
 func is_line() -> bool:
 	return kind == Kind.TRENCH_H or kind == Kind.TEETH_H
 
@@ -128,6 +132,10 @@ func center_px() -> Vector2:
 
 func runway_ok() -> bool:
 	return craters.is_empty()
+
+
+func is_depot() -> bool:
+	return kind == Kind.DEPOT_S or kind == Kind.DEPOT_M or kind == Kind.DEPOT_L
 
 
 func is_launcher() -> bool:

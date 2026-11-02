@@ -341,6 +341,15 @@ func build(kind: int, center: Vector2i, country: Country, parent: Facility = nul
 					f.main_obj = pid
 	elif kind == Facility.Kind.NUCLEAR_PLANT:
 		Nuclear.build_parts(gw, f, nw, country)
+	elif DepotS.is_depot(kind):
+
+		f.depot_owner = country.id
+		for pl: Array in DEPOT_PARTS[kind]:
+			var pid: int = gw.add_object(String(pl[0]), nw + (pl[1] as Vector2i), GameWorld.KIND_BUILDING)
+			if pid >= 0:
+				f.obj_ids.append(pid)
+				if f.main_obj < 0:
+					f.main_obj = pid
 	elif kind == Facility.Kind.COASTAL_ASM and not gw.spr_index.has("coastal_asm"):
 		f.main_obj = gw.add_object("ad_sam", nw, GameWorld.KIND_BUILDING)
 		f.obj_ids.append(f.main_obj)
@@ -469,6 +478,12 @@ func alive(f: Facility) -> bool:
 		return false
 	if f.kind == Facility.Kind.NUCLEAR_PLANT and f.main_obj >= 0:
 		return gw.obj_state[f.main_obj] == 0
+	if f.is_depot():
+
+		for did in f.obj_ids:
+			if gw.obj_kind[did] == GameWorld.KIND_BUILDING and gw.obj_state[did] != 0:
+				return false
+		return not f.obj_ids.is_empty()
 	if f.is_line():
 		return not f.cells.is_empty()
 	var any_b: bool = false
@@ -1086,6 +1101,14 @@ func _update_fuel() -> void:
 
 
 func _watch_state() -> void:
+	DepotS.check_owners(self)
+	var dep_cids: Dictionary = {}
+	for f: Facility in facilities:
+		if f.is_depot() and f.was_alive and f.restore_t <= 0.0 and not alive(f):
+			dep_cids[f.country_id] = true
+	var dep_share: Dictionary = {}
+	for cid: int in dep_cids:
+		dep_share.merge(DepotS.shares(self, cid, true))
 	for f: Facility in facilities:
 		var a: bool = alive(f)
 		if a == f.was_alive:
@@ -1096,6 +1119,8 @@ func _watch_state() -> void:
 		if not a:
 			f.ruined_at = gw.game_time
 			_stop_fx(f)
+			if dep_share.has(f.id):
+				DepotS.detonate(self, f, dep_share[f.id])
 			if gw.vfx != null:
 				gw.vfx.on_burn(f)
 			if f.kind == Facility.Kind.REFINERY:
@@ -1453,6 +1478,8 @@ func demolish_why(country: Country, f: Facility) -> String:
 		return Loc.t("Объект в пути")
 	if f.restore_t > 0.0:
 		return Loc.t("Идёт восстановление")
+	if f.is_depot() and alive(f) and not DepotS.can_remove(self, f):
+		return Loc.t("Склад не пуст: остальные склады не вместят боеприпасы. Сначала запустите ракеты или постройте ещё склад")
 	var hc: Vector2i = _dem_cell(f)
 	for cid in country.city_ids:
 		var city: City = gw.cities[cid]
@@ -1659,7 +1686,7 @@ static func unpave_cells(gw: GameWorld, cells: Array[Vector2i]) -> int:
 func transfer_missiles(a: Country, b: Country, t: int, n: int) -> int:
 	if a == null or b == null or t < 0 or t >= MT_CAP.size() or n <= 0:
 		return 0
-	var k: int = mini(mini(n, a.missile_stock[t]), maxi(0, int(MT_CAP[t]) - b.missile_stock[t]))
+	var k: int = mini(mini(n, a.missile_stock[t]), maxi(0, DepotS.missile_cap(self, b, t) - b.missile_stock[t]))
 	if k <= 0:
 		return 0
 	a.missile_stock[t] -= k

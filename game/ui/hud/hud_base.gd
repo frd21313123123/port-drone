@@ -184,12 +184,12 @@ const PAGE_DEFS: Array = [
 	["tabi_city", [["capital", "icon_capital", true], ["town", "icon_city", true], ["farm", "icon_farm", true], ["civ", "icon_civ_factory", true], ["power", "icon_power", true], ["solar_farm", "icon_solar", true], ["npp", "icon_npp", true], ["mine", "icon_mine", true], ["sawmill", "icon_sawmill", true], ["oil_rig", "icon_oil_rig", true], ["refinery", "icon_refinery", true], ["rail_st", "icon_rail_station", true], ["rail_line", "u335_rail_line", true]]],
 	["tabi_military", [["launch", "icon_launch", true], ["route", "icon_route", true], ["recon", "icon_recon_drone", true], ["factory", "icon_dronefactory", true], ["droneport", "icon_droneport", true], ["missile", "icon_target", true], ["tel", "icon_tel", true], ["mfactory", "icon_missile_factory", true], ["airfield", "icon_airfield_b", true]]],
 	["icon_ad_sam", [["ad_mfg", "icon_ad_mfg", true], ["ad_spaag", "icon_ad_spaag", true], ["ad_sam", "icon_ad_sam", true], ["ad_patriot", "icon_ad_patriot", true], ["ad_int", "icon_int_drone", true], ["ad_radar", "icon_ad_radar", true], ["ad_ew", "icon_ad_ew", true], ["ad_rules", "u335_ad_rules", false]]],
-	["icon_tank", [["barracks", "icon_barracks", true], ["armies", "icon_armies", true], ["command", "icon_op_operation", false], ["doctrine", "icon_doctrine", false], ["hold", "icon_infantry", false], ["defend", "icon_defend", true], ["trench", "icon_trench", true], ["teeth", "icon_teeth", true], ["dugout", "icon_dugout", true], ["battle_cam", "icon_battle_cam", false]]],
+	["icon_tank", [["barracks", "icon_barracks", true], ["armies", "icon_armies", true], ["command", "icon_op_operation", false], ["doctrine", "icon_doctrine", false], ["hold", "icon_infantry", false], ["defend", "icon_defend", true], ["trench", "icon_trench", true], ["teeth", "icon_teeth", true], ["dugout", "icon_dugout", true], ["depot", "icon_inventory", true], ["battle_cam", "icon_battle_cam", false]]],
 	["icon_relations", [["diplomacy", "icon_relations", false], ["trade", "icon_trade", false], ["economy", "icon_stats", false], ["ultimatum", "icon_ultimatum", false], ["scores", "icon_trophy", false]]],
 	["icon_ship", [["port", "icon_port", true], ["navbase", "icon_navbase", true], ["fleet", "icon_fleet", false], ["ship_cr", "icon_cr_launch", true], ["coastal_asm", "icon_ad_sam", true]]],
 ]
 const PAGE_TITLES: Array = ["Карта и время", "Города, производство, недра", "Удары: дроны, ракеты, авиация", "Противовоздушная оборона", "Наземная армия", "Политика, торговля, экономика", "Флот и море"]
-const PAGE_SUBS: Array = ["Масштаб, режимы карты, значки, залежи", "Столица, заводы, энергия, рудники, нефть", "Дроны, разведка, ОТРК, аэродром", "ЗСУ, ЗРК, перехватчики, РЛС, РЭБ", "Казармы, штаб, окопы, оборона", "Отношения, договоры, рынок, экономика", "Порт, морбаза, корабли, КР с кораблей, береговые ПКР"]
+const PAGE_SUBS: Array = ["Масштаб, режимы карты, значки, залежи", "Столица, заводы, энергия, рудники, нефть", "Дроны, разведка, ОТРК, аэродром", "ЗСУ, ЗРК, перехватчики, РЛС, РЭБ", "Казармы, штаб, окопы, оборона, склады", "Отношения, договоры, рынок, экономика", "Порт, морбаза, корабли, КР с кораблей, береговые ПКР"]
 const COLS: int = 5
 const TAB_SHORT: Array = ["КАРТА", "ГОРОДА", "УДАР", "ПВО", "АРМИЯ", "ПОЛИТ.", "ФЛОТ"]
 
@@ -205,6 +205,7 @@ const BUILD_KIND_OF: Dictionary = {
 	"oil_rig": Facility.Kind.OIL_RIG, "port": Facility.Kind.PORT, "solar_farm": Facility.Kind.SOLAR_FARM,
 	"navbase": Facility.Kind.NAVAL_BASE, "coastal_asm": Facility.Kind.COASTAL_ASM,
 	"npp": Facility.Kind.NUCLEAR_PLANT, "umine": Facility.Kind.URANIUM_MINE,
+	"depot_s": Facility.Kind.DEPOT_S, "depot_m": Facility.Kind.DEPOT_M, "depot_l": Facility.Kind.DEPOT_L,
 }
 
 const KEY_INFO: Dictionary = {
@@ -258,6 +259,8 @@ const KEY_INFO: Dictionary = {
 	"ad_radar": ["РЛС", "", ""], "ad_ew": ["РЭБ", "", ""], "trench": ["ОКОП", "", ""], "teeth": ["ЗУБЫ", "", ""],
 	"dugout": ["БЛИНДАЖ", "", ""], "sawmill": ["ЛЕСОПИЛКА", "", ""], "oil_rig": ["НЕФТЬ", "", ""], "port": ["ПОРТ", "", ""], "solar_farm": ["СОЛНЦЕ", "", ""], "coastal_asm": ["БЕРЕГ.ПКР", "", ""],
 	"npp": ["АЭС", "", ""], "umine": ["УРАН.ШАХТ", "", ""],
+	"depot": ["СКЛАД", "Склад боеприпасов", "Малый, средний или большой: ракеты и дроны сверх лимита. При попадании детонирует"],
+	"depot_s": ["МАЛ.СКЛАД", "", ""], "depot_m": ["СР.СКЛАД", "", ""], "depot_l": ["БОЛ.СКЛАД", "", ""],
 	"satellite": ["СПУТНИК", "Спутниковый снимок", "Платно: снимок 220 м находит постройки и войска на 14 с"],
 	"ores": ["СВОБ.РУДЫ", "Свободные залежи", "Залежи на вашей земле, которые никто не добывает"],
 }

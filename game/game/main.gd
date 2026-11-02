@@ -599,12 +599,23 @@ func _on_action(nm: String) -> void:
 		"bar_4":
 			if selected_fac != null and selected_fac.kind == Facility.Kind.BARRACKS:
 				_sim("", "cmd_field", [selected_fac, "prod_type", 4])
-		"factory", "droneport", "tel", "mfactory", "refinery", "power", "airfield", "farm", "civ", "mine", "barracks", "ad_mfg", "ad_spaag", "ad_sam", "ad_patriot", "ad_int", "ad_radar", "ad_ew", "trench", "teeth", "dugout", "sawmill", "oil_rig", "port", "solar_farm", "navbase", "coastal_asm", "npp", "umine":  # QA v0.27.1: + coastal_asm; v0.30 URAN30: + npp, umine
+		"factory", "droneport", "tel", "mfactory", "refinery", "power", "airfield", "farm", "civ", "mine", "barracks", "ad_mfg", "ad_spaag", "ad_sam", "ad_patriot", "ad_int", "ad_radar", "ad_ew", "trench", "teeth", "dugout", "sawmill", "oil_rig", "port", "solar_farm", "navbase", "coastal_asm", "npp", "umine", "depot_s", "depot_m", "depot_l":  # QA v0.27.1: + coastal_asm; v0.30 URAN30: + npp, umine; ammo depots
 			var bm: int = BUILD_KEYS[nm]
 			if not _has_capital():
 				_set_mode(mode)
 			else:
 				_set_mode(Mode.NONE if mode == bm else bm)
+		"depot":
+			if mode == Mode.DEPOT_S or mode == Mode.DEPOT_M or mode == Mode.DEPOT_L:
+				_set_mode(Mode.NONE)
+			elif hud.panel_kind == "depot_pick":
+				hud.close_panel()
+				hud.set_key_pressed("depot", false)
+			elif not _has_capital():
+				_set_mode(mode)
+			else:
+				hud.open_depot_pick()
+				hud.set_key_pressed("depot", true)
 		"rail_st", "rail_line":  # R335 RAIL335
 			var rm: int = Mode.RAIL_ST if nm == "rail_st" else Mode.RAIL_LINE
 			if _has_capital():

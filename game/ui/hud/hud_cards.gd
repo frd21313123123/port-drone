@@ -202,7 +202,7 @@ func show_facility(f: Facility, mil: Military, player: Country) -> void:
 				for k in Military.MT_NAMES.size():
 					acts.append(_act(String(MT_SHORT[k]), String(Military.MT_ICONS[k]), "mtype_%d" % k, bool(Military.MT_READY[k]), 1 if k == t else 0, "%d" % player.missile_stock[k]))
 				_solar_act(f, mil, player, acts)
-				detail = Loc.t("%s — %s. Цена %d, %d с, на складе %d из %d. Цифра на кнопке — запас на складе. «+Солнце» — резервное питание завода.") % [_sentence(Loc.t(String(Military.MT_NAMES[t]))), String(MT_PURPOSE[t]), int(Military.MT_COST[t]), int(Military.MT_TIME[t]), player.missile_stock[t], int(Military.MT_CAP[t])]
+				detail = Loc.t("%s — %s. Цена %d, %d с, на складе %d из %d. Цифра на кнопке — запас на складе. «+Солнце» — резервное питание завода.") % [_sentence(Loc.t(String(Military.MT_NAMES[t]))), String(MT_PURPOSE[t]), int(Military.MT_COST[t]), int(Military.MT_TIME[t]), player.missile_stock[t], Military.DepotS.missile_cap(mil, player, t)]
 			Facility.Kind.REFINERY:
 				info = Loc.t("%s · ПРОДАНО НА %d") % [_rate_line(f, player), player.fuel_sold]
 				if player.oil <= 0:
@@ -392,6 +392,24 @@ func show_facility(f: Facility, mil: Military, player: Country) -> void:
 				if f.ammo < Navy.COAST_AMMO:
 					info += Loc.t(" · +1 ЧЕРЕЗ %d С") % ceili(maxf(0.0, Navy.COAST_RELOAD - f.reload_t))
 				info += Loc.t("\nБЬЁТ ТОЛЬКО ПО КОРАБЛЯМ СТРАН В ВОЙНЕ")
+			Facility.Kind.DEPOT_S, Facility.Kind.DEPOT_M, Facility.Kind.DEPOT_L:
+				if player != null and f.country_id == player.id:
+					var sh: Dictionary = Military.DepotS.share_of(mil, f)
+					var dpts: int = int(sh.get("pts", 0))
+					var dcap: int = maxi(1, int(sh.get("cap", Military.DepotS.cap_of(f.kind))))
+					var boom: String = Loc.t("НЕТ — СКЛАД ПУСТ")
+					if dpts >= Military.DepotS.BIG_FROM:
+						boom = Loc.t("ОГРОМНЫЙ")
+					elif dpts >= Military.DepotS.CORE_FROM:
+						boom = Loc.t("СИЛЬНЫЙ")
+					elif dpts > 0:
+						boom = Loc.t("СЛАБЫЙ")
+					info = Loc.t("ЗАНЯТО %d/%d МЕСТ (%d%%) · ВЗРЫВ: %s\n%s") % [dpts, dcap, roundi(100.0 * dpts / dcap), boom, Military.DepotS.contents_text(mil, sh)]
+					if dpts > 0 and not Military.DepotS.can_remove(mil, f):
+						info += Loc.t("\nСНОС ЗАПРЕЩЁН: ДРУГИЕ СКЛАДЫ НЕ ВМЕСТЯТ СОДЕРЖИМОЕ")
+					detail = Loc.t("Сюда идут ракеты сверх обычного лимита и дроны, когда дронопорты заполнены (потом сами перелетают на свободное место). Места: КАБ и «в-в» — 1, КР и ЗУР — 2, баллистика и гиперзвук — 4, дрон — 2, реактивный — 3. Всего на складах страны: %d/%d. Уничтоженный склад детонирует — держите рядом ПВО и не ставьте вплотную к заводам.") % [mini(Military.DepotS.used(mil, player), Military.DepotS.capacity(mil, player.id)), Military.DepotS.capacity(mil, player.id)]
+				else:
+					info = Loc.t("СКЛАД БОЕПРИПАСОВ: ПОПАДАНИЕ ВЫЗОВЕТ ДЕТОНАЦИЮ")
 			Facility.Kind.AD_RADAR:
 				info = (Loc.t("ОБЗОР %d М: ПВО ВИДИТ ДАЛЬШЕ") % int(Defense.RADAR_R)) if mil.has_power(f) else Loc.t("НЕТ ПИТАНИЯ — РЛС ОТКЛЮЧЕНА")
 			Facility.Kind.AD_EW:

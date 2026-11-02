@@ -1629,10 +1629,10 @@ func _chain_missiles(p: Country, st: Dictionary) -> Dictionary:
 			ch["fix_key"] = _power_key(p)
 		elif f.producing:
 			continue
-		elif p.missile_stock[t] >= int(Military.MT_CAP[t]):
+		elif not Military.DepotS.missile_fits(mil, p, t):
 			if wst == "ok":
 				wst = "warn"
-				worst = Loc.t("Склад ракет (%s) полон: %d — запускайте или смените тип.") % [tn, p.missile_stock[t]]
+				worst = Loc.t("Склад ракет (%s) полон: %d — запускайте, смените тип или постройте склад (АРМИЯ › СКЛАД).") % [tn, p.missile_stock[t]]
 		elif not mil.has_carrier(p, t):
 			if wst == "ok":
 				wst = "warn"
@@ -1721,7 +1721,7 @@ func _problems(p: Country) -> Array:
 						var t: int = f.prod_type
 						var rc: Dictionary = Economy.res_cost("missile_%d" % t)
 						rc["money"] = int(Military.MT_COST[t])
-						if p.missile_stock[t] >= int(Military.MT_CAP[t]):
+						if not Military.DepotS.missile_fits(mil, p, t):
 							kind = "full"
 							icon = "icon_store"
 							text = Loc.t("Склад ракет полон")

@@ -336,6 +336,72 @@ func _ui29_beside_ok(ch: Control, y: float, left: float) -> bool:
 
 
 
+## ARMY › СКЛАД: pick the size of the ammo depot, then tap the map to build it.
+func open_depot_pick() -> void:
+	var vb: VBoxContainer = _window(Loc.t("Склад боеприпасов"), "depot_pick")
+	panel_kind = "depot_pick"
+	var D: Variant = Military.DepotS
+	var intro: Label = UiKit.lbl(Loc.t("Хранит ракеты и дроны сверх обычного лимита. Мелкое (КАБ, «воздух-воздух») занимает меньше места, баллистика и гиперзвук — больше. При попадании склад детонирует: чем он полнее, тем сильнее взрыв."), 9, UiKit.MUTED, 1, 1)
+	intro.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	vb.add_child(intro)
+	var p: Country = gw.player if gw != null else null
+	for i in D.KINDS.size():
+		var kind: int = int(D.KINDS[i])
+		var key: String = String(D.KEYS[i])
+		var bc: Dictionary = Economy.build_cost(kind)
+		if p != null and gw.mil.has_method("price_of") and bc.has("money"):
+			bc = bc.duplicate()
+			bc["money"] = gw.mil.price_of(kind, p)
+		var have: int = 0
+		if p != null:
+			for f: Facility in gw.mil.facilities:
+				if f.kind == kind and f.country_id == p.id and gw.mil.alive(f):
+					have += 1
+		var b: = Button.new()
+		b.add_theme_stylebox_override("normal", UiKit.sb("wb_panel_dark", 6, 4))
+		b.add_theme_stylebox_override("hover", UiKit.sb("wb_slot_red", 6, 4))
+		b.add_theme_stylebox_override("pressed", UiKit.sb("wb_slot_red", 6, 4))
+		b.custom_minimum_size = Vector2(0, 62)
+		b.pressed.connect(func() -> void:
+			UiKit.snd("ui_click")
+			close_panel()
+			action.emit(key))
+		vb.add_child(b)
+		var row: = HBoxContainer.new()
+		row.add_theme_constant_override("separation", 8)
+		row.set_anchors_preset(Control.PRESET_FULL_RECT)
+		row.offset_left = 6
+		row.offset_right = -6
+		row.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		b.add_child(row)
+		var ic: Control = UiKit.icon_rect("icon_inventory", 24.0 + 8.0 * i)
+		ic.custom_minimum_size = Vector2(40, 40)
+		ic.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		ic.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		row.add_child(ic)
+		var col: = VBoxContainer.new()
+		col.add_theme_constant_override("separation", 0)
+		col.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		col.alignment = BoxContainer.ALIGNMENT_CENTER
+		col.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		row.add_child(col)
+		var head: String = "%s · %s" % [Military.title_of(kind).to_upper(), Economy.cost_text(bc).to_upper()]
+		var t: Label = UiKit.lbl(head, 12, UiKit.GOLD, 2, 2)
+		t.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		col.add_child(t)
+		var fit: String = Loc.t("%d КР · %d КАБ или «в-в» · %d ЗУР · %d баллист./гиперзв. · %d дронов") % [D.fits_type(kind, Military.MT_CRUISE), D.fits_type(kind, Military.MT_KAB), D.fits_type(kind, Military.MT_SAM), D.fits_type(kind, Military.MT_BALLISTIC), D.cap_of(kind) / int(D.DRONE_VOL[0])]
+		var sz: Vector2i = Military.size_of(kind)
+		var d: Label = UiKit.lbl(fit + Loc.t("\nМЕСТ %d · %d×%d М · У ВАС: %d") % [D.cap_of(kind), sz.x * GameWorld.CELL, sz.y * GameWorld.CELL, have], 9, UiKit.MUTED, 1, 1)
+		d.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		d.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		col.add_child(d)
+	if p != null:
+		var cap: int = D.capacity(gw.mil, p.id)
+		var used: int = mini(cap, D.used(gw.mil, p))
+		var st: Label = UiKit.lbl(Loc.t("ЗАНЯТО МЕСТ НА СКЛАДАХ: %d / %d") % [used, cap], 10, UiKit.TEXT, 1, 1)
+		vb.add_child(st)
+
+
 func open_map_modes() -> void:
 	var vb: VBoxContainer = _window("Режимы карты", "map_modes")
 	panel_kind = "map_modes"

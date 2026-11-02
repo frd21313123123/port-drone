@@ -1128,7 +1128,7 @@ func aid_options(from: int, to: int) -> Array:
 	out.append({"what": "money", "icon": "res_money", "label": Loc.t("ДЕНЬГИ"), "have": cf.money, "max": cf.money, "step": 100, "each": 1, "why": ""})
 	for t: int in [Military.MT_BALLISTIC, Military.MT_CRUISE, Military.MT_SAM]:
 		var w: String = "missile_b" if t == Military.MT_BALLISTIC else ("missile_c" if t == Military.MT_CRUISE else "missile_sam")
-		var room: int = maxi(0, int(Military.MT_CAP[t]) - ct.missile_stock[t])
+		var room: int = maxi(0, Military.DepotS.missile_cap(gw.mil, ct, t) - ct.missile_stock[t])
 		var why: String = ""
 		if not aid_carrier(ct, t):
 			why = _carrier_why(t)

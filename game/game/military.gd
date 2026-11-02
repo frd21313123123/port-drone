@@ -54,6 +54,7 @@ func update(dt: float) -> void:
 	_prod_acc += dt
 	if _prod_acc >= 0.5:
 		_produce(_prod_acc)
+		DepotS.dispatch(self)
 		_prod_acc = 0.0
 	_repair(dt)
 	if int(gw.game_time / HEAL_DT) != int((gw.game_time - dt) / HEAL_DT):
@@ -160,7 +161,7 @@ func _produce(dt: float) -> void:
 			var sk: int = 901 if jet else 900
 			if gw.econ.get("upk") != null:
 				cost["money"] = roundi(float(int(cost["money"])) * gw.econ.upk.series_mult(c.id, sk))
-			if stock_count(c.id) >= drone_capacity(c.id):
+			if stock_count(c.id) >= drone_capacity(c.id) and not DepotS.drone_fits(self, c, jet):
 				continue
 			if jet and not _port_runway(c):
 				if c.is_player and not _warned.has(-f.id - 100000):
@@ -172,10 +173,10 @@ func _produce(dt: float) -> void:
 					_warned[-f.id] = true
 					gw.say(c, Loc.mk("Завод ждёт: не хватает — %s", [c.missing_res(cost)]))
 				continue
-			if _port_with_space(c, f.center_px()) == null:
+			if _port_with_space(c, f.center_px()) == null and not DepotS.drone_fits(self, c, jet):
 				if c.is_player and not _warned.has(f.id):
 					_warned[f.id] = true
-					gw.say(c, Loc.mk("Завод ждёт: нужен дронопорт со свободным местом"))
+					gw.say(c, Loc.mk("Завод ждёт: нужен дронопорт со свободным местом или склад (АРМИЯ › СКЛАД)"))
 				continue
 			c.pay_res(cost)
 			if gw.econ.get("upk") != null:
@@ -199,24 +200,34 @@ func _produce(dt: float) -> void:
 			continue
 		var port: Facility = _port_with_space(c, f.center_px())
 		if port == null:
-			continue
-		var k: int = _free_ok_spot(port)
-		var d: = Drone.new()
-		d.id = _next_drone_id
-		_next_drone_id += 1
-		d.country_id = c.id
-		if f.prod_jet:
-			d.kind = 2
-		d.airfield = port
-		d.spot = k
-		d.pos = port.spots[k]
-		port.parked[k] = d
-		drones.append(d)
+			if not DepotS.store_drone(self, c, f.prod_jet):
+				continue
+		else:
+			park_new_drone(c, port, f.prod_jet)
 		f.producing = false
 		f.prod_t = 0.0
 		f.flash_until = gw.game_time + 0.48
 		_warned.erase(f.id)
-		gw.fx.spawn("build_spark", d.pos, 6)
+
+
+## A new drone on a free spot of the port (from a factory or out of an ammo depot).
+func park_new_drone(c: Country, port: Facility, jet: bool) -> Drone:
+	var k: int = _free_ok_spot(port)
+	if k < 0:
+		return null
+	var d: = Drone.new()
+	d.id = _next_drone_id
+	_next_drone_id += 1
+	d.country_id = c.id
+	if jet:
+		d.kind = 2
+	d.airfield = port
+	d.spot = k
+	d.pos = port.spots[k]
+	port.parked[k] = d
+	drones.append(d)
+	gw.fx.spawn("build_spark", d.pos, 6)
+	return d
 
 
 func _produce_missiles(f: Facility, dt: float) -> void:
@@ -227,7 +238,7 @@ func _produce_missiles(f: Facility, dt: float) -> void:
 	var t: int = f.prod_type
 	if not f.producing:
 		var mrc: Dictionary = Economy.res_cost("missile_%d" % t)
-		if not MT_READY[t] or c.missile_stock[t] >= int(MT_CAP[t]) or c.money < int(MT_COST[t]) or not c.has_res(mrc) or not has_carrier(c, t):
+		if not MT_READY[t] or not DepotS.missile_fits(self, c, t) or c.money < int(MT_COST[t]) or not c.has_res(mrc) or not has_carrier(c, t):
 			return
 		c.money -= int(MT_COST[t])
 		c.pay_res(mrc)

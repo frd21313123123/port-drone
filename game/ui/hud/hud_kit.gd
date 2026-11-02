@@ -48,7 +48,7 @@ func key_icon(nm: String) -> String:
 		for it: Array in def[1]:
 			if String(it[0]) == nm:
 				return String(it[1])
-	return {"pause": "icon_pause", "speed": "icon_speed"}.get(nm, "")
+	return {"pause": "icon_pause", "speed": "icon_speed", "depot_s": "icon_inventory", "depot_m": "icon_inventory", "depot_l": "icon_inventory"}.get(nm, "")
 
 
 static func _sentence(s: String) -> String:
