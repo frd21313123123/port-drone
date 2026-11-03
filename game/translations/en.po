@@ -34289,3 +34289,83 @@ msgstr "RAW WAREHOUSE: +%d URANIUM · +%d TITANIUM · +%d METAL · +%d OIL · +%
 #. civil resource warehouses (cities tab)
 msgid "Поднимает лимит хранения сырья страны; склады суммируются. Не взрывается, но если склад разрушат, лимит упадёт. Сейчас на складах страны: %s."
 msgstr "Raises the country's raw-material storage limit; warehouses stack. It does not explode, but if it is destroyed the limit drops. Stored in the country now: %s."
+
+#. cat=static zone=ui uses=1
+msgid "РЕМОНТ ПО ТИПАМ"
+msgstr "REPAIRS BY TYPE"
+
+#. cat=static zone=ui uses=1
+msgid "УЛУЧШЕНИЯ ПО ТИПАМ"
+msgstr "UPGRADES BY TYPE"
+
+#. cat=static zone=ui uses=1
+msgid "Нажмите тип, чтобы отстроить все его разрушенные объекты, пока хватает денег."
+msgstr "Tap a type to rebuild all its destroyed facilities while money lasts."
+
+#. cat=static zone=ui uses=1
+msgid "УР.2 или УР.3 поднимает на один шаг все готовые объекты этого типа ниже этого уровня. Дешёвые идут первыми, строящиеся не трогаем."
+msgstr "LVL 2 or LVL 3 raises every ready facility of this type below that level by one step. Cheapest first; facilities under construction are left alone."
+
+#. cat=static zone=ui uses=1
+msgid "Разрушенных объектов нет"
+msgstr "No destroyed facilities"
+
+#. cat=static zone=ui uses=1
+msgid "ЧИНИТЬ · %d"
+msgstr "REPAIR · %d"
+
+#. cat=static zone=ui uses=1
+msgid "→ УР.2 · %s"
+msgstr "→ LVL 2 · %s"
+
+#. cat=static zone=ui uses=1
+msgid "→ УР.2 · нет"
+msgstr "→ LVL 2 · none"
+
+#. cat=static zone=ui uses=1
+msgid "→ УР.3 · %s"
+msgstr "→ LVL 3 · %s"
+
+#. cat=static zone=ui uses=1
+msgid "→ УР.3 · нет"
+msgstr "→ LVL 3 · none"
+
+#. cat=static zone=ui uses=1
+msgid "к ур.2: готовы %d, строятся %d"
+msgstr "to lvl 2: ready %d, building %d"
+
+#. cat=static zone=ui uses=1
+msgid "к ур.3: готовы %d, строятся %d"
+msgstr "to lvl 3: ready %d, building %d"
+
+#. cat=static zone=ui uses=1
+msgid "Улучшаемых объектов нет"
+msgstr "No upgradable facilities"
+
+#. cat=static zone=ui uses=1
+msgid "Улучшено: %d объект(ов), −%d%s"
+msgstr "Upgraded: %d facility(ies), −%d%s"
+
+#. cat=static zone=ui uses=1
+msgid "Улучшать нечего: "
+msgstr "Nothing to upgrade: "
+
+#. cat=static zone=ui uses=1
+msgid "Улучшать нечего"
+msgstr "Nothing to upgrade"
+
+#. cat=static zone=ui uses=1
+msgid "РЕМ. ПО ТИПАМ"
+msgstr "REPAIR BY TYPE"
+
+#. cat=static zone=ui uses=1
+msgid "Выбрать тип зданий и отстроить разрушенные только их"
+msgstr "Pick a building type and rebuild only its destroyed facilities"
+
+#. cat=static zone=ui uses=1
+msgid "УЛУЧШ. ПО ТИПАМ"
+msgstr "UPGRADE BY TYPE"
+
+#. cat=static zone=ui uses=1
+msgid "Выбрать тип зданий и поднять их уровень сразу у всех готовых"
+msgstr "Pick a building type and raise the level of all its ready facilities at once"

@@ -1663,7 +1663,7 @@ func _restack_cmd() -> void:
 		var open_all: bool = Time.get_ticks_msec() < int(hud.rail_more_ms) or bool(hud.get("ores_open"))
 		if not open_all:
 			var drop: int = vis.size() - (2 * per - 1)
-			for k: String in ["repair_all", "ore", "order_2", "jet_menu", "battle_cam", "order_1", "order_0", "command"]:
+			for k: String in ["upgrade_kind", "repair_kind", "repair_all", "ore", "order_2", "jet_menu", "battle_cam", "order_1", "order_0", "command"]:
 				if drop <= 0:
 					break
 				for b3: Variant in vis:

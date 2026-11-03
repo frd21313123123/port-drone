@@ -1546,3 +1546,60 @@ func army_supply(c: Country) -> Dictionary:
 
 func occupied_at(cell: Vector2i, c: Country) -> bool:
 	return upk != null and upk.occupied(cell, c)
+
+
+## KINDMASS: own facilities that one upgrade step can still lift toward `target` (the rail button counts them).
+func upgrade_ready_count(c: Country) -> int:
+	var n: int = 0
+	for f: Facility in gw.mil.facilities:
+		if f.country_id == c.id and can_upgrade(f):
+			n += 1
+	return n
+
+
+## KINDMASS sheet data: {kind: {"owned", "ready", "busy", "cost"}} for the upgradable kinds the country owns.
+## "ready" = one step toward `target` possible now, "busy" = a step already under construction, "cost" = sum of those steps.
+func upgrade_kinds_summary(c: Country, target: int) -> Dictionary:
+	var out: Dictionary = {}
+	for f: Facility in gw.mil.facilities:
+		if f.country_id != c.id or not UPG_RES.has(f.kind) or not gw.mil.alive(f):
+			continue
+		var s: Dictionary = out.get(f.kind, {"owned": 0, "ready": 0, "busy": 0, "cost": {}})
+		s["owned"] = int(s["owned"]) + 1
+		if f.level < mini(target, MAX_LEVEL):
+			if f.upg_t > 0.0:
+				s["busy"] = int(s["busy"]) + 1
+			elif can_upgrade(f):
+				s["ready"] = int(s["ready"]) + 1
+				var cost: Dictionary = upgrade_cost(f)
+				var sum: Dictionary = s["cost"]
+				for r: String in cost:
+					sum[r] = int(sum.get(r, 0)) + int(cost[r])
+		out[f.kind] = s
+	return out
+
+
+## KINDMASS: one upgrade step for every ready facility of `kinds` below `target`, cheapest first, while the treasury holds.
+## Returns [done, money spent, failed, first failure reason] like Military.restore_all.
+func upgrade_kinds(c: Country, kinds: Array, target: int) -> Array:
+	var list: Array[Facility] = []
+	for f: Facility in gw.mil.facilities:
+		if f.country_id == c.id and kinds.has(f.kind) and f.level < mini(target, MAX_LEVEL) and can_upgrade(f):
+			list.append(f)
+	list.sort_custom(func(a: Facility, b: Facility) -> bool:
+		return int(upgrade_cost(a).get("money", 0)) < int(upgrade_cost(b).get("money", 0)))
+	var done: int = 0
+	var spent: int = 0
+	var fail: int = 0
+	var reason: String = ""
+	for f: Facility in list:
+		var m0: int = c.money
+		var why: String = upgrade(f, c)
+		if why == "":
+			done += 1
+			spent += m0 - c.money
+		else:
+			fail += 1
+			if reason == "":
+				reason = why
+	return [done, spent, fail, reason]

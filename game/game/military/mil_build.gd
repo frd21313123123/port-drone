@@ -650,6 +650,29 @@ func restore_all(country: Country) -> Array:
 	for f: Facility in facilities:
 		if f.country_id == country.id and _repair_all_ok(f) and can_restore(f) and not (f.kind == Facility.Kind.NUCLEAR_PLANT and alive(f)):
 			list.append(f)
+	return _restore_list(country, list)
+
+
+## KINDMASS: repair only the chosen building kinds (`kinds` = Facility.Kind ints), same rules as restore_all.
+func restore_kinds(country: Country, kinds: Array) -> Array:
+	var list: Array[Facility] = []
+	for f: Facility in facilities:
+		if f.country_id == country.id and kinds.has(f.kind) and _repair_all_ok(f) and can_restore(f) and not (f.kind == Facility.Kind.NUCLEAR_PLANT and alive(f)):
+			list.append(f)
+	return _restore_list(country, list)
+
+
+## KINDMASS: ruined own facilities per kind: {kind: [count, rebuild money]} for the repair-by-type sheet.
+func ruined_kinds(country_id: int) -> Dictionary:
+	var out: Dictionary = {}
+	for f: Facility in facilities:
+		if f.country_id == country_id and _repair_all_ok(f) and can_restore(f) and not (f.kind == Facility.Kind.NUCLEAR_PLANT and alive(f)):
+			var e: Array = out.get(f.kind, [0, 0])
+			out[f.kind] = [int(e[0]) + 1, int(e[1]) + restore_cost(f)]
+	return out
+
+
+func _restore_list(country: Country, list: Array[Facility]) -> Array:
 	var key: = func(f: Facility) -> int:
 		return 0 if f.kind == Facility.Kind.POWER_PLANT or f.kind == Facility.Kind.NUCLEAR_PLANT else (1 if f.kind == Facility.Kind.REFINERY or f.kind == Facility.Kind.CIV_FACTORY else 2)
 	list.sort_custom(func(a: Facility, b: Facility) -> bool:

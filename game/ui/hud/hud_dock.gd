@@ -88,6 +88,7 @@ func _cmd_process(delta: float) -> void:
 		_cmd_t = 0.5
 		_cam_ok = gw.get("battle_watch") != null and p != null and (not gw.battle_watch.hot_spot().is_empty() or not gw.battle_watch.last_impact().is_empty())
 		_ruin = gw.mil.ruined_own(p.id) if p != null and not p.eliminated and gw.mil.has_method("ruined_own") else [0, 0]
+		_upg_n = gw.econ.upgrade_ready_count(p) if p != null and not p.eliminated and gw.get("econ") != null and gw.econ.has_method("upgrade_ready_count") else 0
 		_jet_has = main_node != null and main_node.has_method("has_attack_jet") and bool(main_node.call("has_attack_jet"))
 
 
@@ -96,12 +97,14 @@ func _cmd_process(delta: float) -> void:
 		_cam_hold_ms = now_ms + 8000
 	if int(_ruin[0]) > 0:
 		_ruin_hold_ms = now_ms + 5000
+	if _upg_n > 0:
+		_upg_hold_ms = now_ms + 5000
 	var docked: bool = _rail_docked()
 	var appeared: bool = false
 	for e: Array in cmd_btns:
 		var b: Button = e[0]
 		var key: String = String(e[2])
-		var show: bool = not busy_ui and ((now_ms < _cam_hold_ms) if key == "battle_cam" else (p != null and p.capital_id >= 0 if key == "command" else ((now_ms < _ruin_hold_ms) if key == "repair_all" else war)))
+		var show: bool = not busy_ui and ((now_ms < _cam_hold_ms) if key == "battle_cam" else (p != null and p.capital_id >= 0 if key == "command" else ((now_ms < _ruin_hold_ms) if key == "repair_all" or key == "repair_kind" else ((now_ms < _upg_hold_ms) if key == "upgrade_kind" else war))))
 		if key.begins_with("jet_"):
 			show = show and _jet_has
 		if _spect:
@@ -120,6 +123,10 @@ func _cmd_process(delta: float) -> void:
 		if not show:
 			continue
 		if key == "battle_cam" or key == "command" or key.begins_with("jet_"):
+			continue
+		if key == "repair_kind" or key == "upgrade_kind":
+			var kn: int = int(_ruin[0]) if key == "repair_kind" else _upg_n
+			_rail_cd(b, e[1] as Label, 0.0, str(kn) if kn > 0 else "")
 			continue
 		if key == "repair_all":
 

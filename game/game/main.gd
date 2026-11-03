@@ -1068,6 +1068,14 @@ func _on_action(nm: String) -> void:
 					else:
 						hud.show_toast((Loc.t("Ремонт не начат: ") + rwhy) if rwhy != "" else "Ремонтировать нечего")
 						UiKit.snd("ui_error"))
+		"repair_kind":
+			if world.player != null:
+				hud.open_kind_mass("repair")
+		"upgrade_kind":
+			if world.player != null:
+				hud.open_kind_mass("upgrade")
+		_ when nm.begins_with("kind_repair:") or nm.begins_with("kind_upg:"):
+			_kind_act(nm)
 		"fac_restore":
 			if selected_fac != null:
 				_sim("mil", "restore", [selected_fac, world.player])
@@ -1601,3 +1609,37 @@ func _resume_btn_tick(show: bool) -> float:
 func _on_net_player_left(nick: String, lost: bool = true) -> void:
 	hud.show_toast((Loc.t("У %s ПРОПАЛА СВЯЗЬ · СТРАНУ ВЕДЁТ ИИ") if lost else Loc.t("%s ВЫШЕЛ · СТРАНУ ВЕДЁТ ИИ")) % nick.to_upper())  # R340
 	UiKit.snd("ui_select")
+
+
+## KINDMASS: "kind_repair:<kind>" / "kind_upg:<kind>:<target>" from the rail sheets. One building kind per tap.
+func _kind_act(nm: String) -> void:
+	var parts: PackedStringArray = nm.split(":")
+	var p: Country = world.player
+	if p == null or parts.size() < 2:
+		return
+	var kind: int = int(parts[1])
+	if parts[0] == "kind_repair":
+		_sim("mil", "restore_kinds", [p, [kind]], func(r: Variant) -> void:
+			var rr: Array = r if r is Array else [0, 0, 0, ""]
+			var rwhy: String = String(rr[3]) if rr.size() > 3 else ""
+			if int(rr[0]) > 0:
+				hud.show_toast(Loc.msg(Loc.mk("Ремонт: %d объект(ов), −%d%s", [int(rr[0]), int(rr[1]), (Loc.t(" · не начато: ") + rwhy) if rwhy != "" else ""])))
+				UiKit.snd("ui_build")
+			else:
+				hud.show_toast((Loc.t("Ремонт не начат: ") + rwhy) if rwhy != "" else Loc.t("Ремонтировать нечего"))
+				UiKit.snd("ui_error")
+			if hud.panel_kind == "kind_repair":
+				hud.open_kind_mass("repair"))
+	else:
+		var target: int = int(parts[2])
+		_sim("econ", "upgrade_kinds", [p, [kind], target], func(r: Variant) -> void:
+			var ur: Array = r if r is Array else [0, 0, 0, ""]
+			var uwhy: String = String(ur[3]) if ur.size() > 3 else ""
+			if int(ur[0]) > 0:
+				hud.show_toast(Loc.msg(Loc.mk("Улучшено: %d объект(ов), −%d%s", [int(ur[0]), int(ur[1]), (Loc.t(" · не начато: ") + uwhy) if uwhy != "" else ""])))
+				UiKit.snd("ui_build")
+			else:
+				hud.show_toast((Loc.t("Улучшать нечего: ") + uwhy) if uwhy != "" else Loc.t("Улучшать нечего"))
+				UiKit.snd("ui_error")
+			if hud.panel_kind == "kind_upgrade":
+				hud.open_kind_mass("upgrade"))

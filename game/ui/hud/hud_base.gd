@@ -321,7 +321,7 @@ var _cc_cd: Array = []
 
 
 
-const RAIL_RANK: Dictionary = {"command": 0, "battle_cam": 1, "ore": 2, "order_0": 3, "jet_menu": 4, "order_1": 6, "order_2": 7, "repair_all": 8}
+const RAIL_RANK: Dictionary = {"command": 0, "battle_cam": 1, "ore": 2, "order_0": 3, "jet_menu": 4, "order_1": 6, "order_2": 7, "repair_all": 8, "repair_kind": 9, "upgrade_kind": 10}
 var _cam_hold_ms: int = 0
 
 
@@ -330,6 +330,8 @@ var rail_fold: Dictionary = {}
 var rail_more_on: bool = false
 var rail_more_ms: int = 0
 var _ruin_hold_ms: int = 0
+var _upg_n: int = 0  # KINDMASS: own facilities one upgrade step can lift now
+var _upg_hold_ms: int = 0
 
 
 
