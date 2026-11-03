@@ -12,6 +12,55 @@ func open_command() -> void:
 
 
 
+## KINDMASS: the rail sheets "РЕМ.ТИП" (repair by building type) and "УЛУЧШ." (upgrade by type, to a chosen level).
+## One row per building kind the player owns; each button is one mass action on that kind (the server does the rest).
+func open_kind_mass(mode: String) -> void:
+	var p: Country = gw.player
+	if p == null or p.eliminated or gw.mil == null or gw.econ == null:
+		return
+	var repair: bool = mode == "repair"
+	var vb: VBoxContainer = _window(Loc.t("РЕМОНТ ПО ТИПАМ") if repair else Loc.t("УЛУЧШЕНИЯ ПО ТИПАМ"), "kind_" + mode)
+	panel_kind = "kind_" + mode
+	var hint: Label = UiKit.lbl(Loc.t("Нажмите тип, чтобы отстроить все его разрушенные объекты, пока хватает денег.") if repair else Loc.t("УР.2 или УР.3 поднимает на один шаг все готовые объекты этого типа ниже этого уровня. Дешёвые идут первыми, строящиеся не трогаем."), 10, UiKit.MUTED, 1)
+	hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	vb.add_child(hint)
+	if repair:
+		var rk: Dictionary = gw.mil.ruined_kinds(p.id)
+		if rk.is_empty():
+			vb.add_child(UiKit.lbl(Loc.t("Разрушенных объектов нет"), 11, UiKit.GREEN, 2))
+			return
+		vb.add_child(_small_btn(Loc.t("РЕМОНТ ВСЕГО"), "repair_all", true, "gold"))
+		var kinds: Array = rk.keys()
+		kinds.sort_custom(func(a: int, b: int) -> bool: return Military.title_of(a) < Military.title_of(b))
+		for k: int in kinds:
+			var e: Array = rk[k]
+			vb.add_child(UiKit.lbl("%s ×%d" % [Loc.t(Military.title_of(k)), int(e[0])], 12, UiKit.TEXT, 2))
+			vb.add_child(_small_btn(Loc.t("ЧИНИТЬ · %d") % int(e[1]), "kind_repair:%d" % k, true, "stone"))
+		return
+	var s2: Dictionary = gw.econ.upgrade_kinds_summary(p, 2)
+	var s3: Dictionary = gw.econ.upgrade_kinds_summary(p, 3)
+	var ukinds: Array = s2.keys()
+	for k2: int in s3.keys():
+		if not ukinds.has(k2):
+			ukinds.append(k2)
+	if ukinds.is_empty():
+		vb.add_child(UiKit.lbl(Loc.t("Улучшаемых объектов нет"), 11, UiKit.MUTED, 2))
+		return
+	ukinds.sort_custom(func(a: int, b: int) -> bool: return Military.title_of(a) < Military.title_of(b))
+	for k3: int in ukinds:
+		var a: Dictionary = s2.get(k3, {"owned": 0, "ready": 0, "busy": 0, "cost": {}})
+		var b3: Dictionary = s3.get(k3, {"owned": 0, "ready": 0, "busy": 0, "cost": {}})
+		vb.add_child(UiKit.lbl("%s ×%d" % [Loc.t(Military.title_of(k3)), int(a["owned"])], 12, UiKit.TEXT, 2))
+		var sub: Label = UiKit.lbl(Loc.t("к ур.2: готовы %d, строятся %d") % [int(a["ready"]), int(a["busy"])] + "\n" + Loc.t("к ур.3: готовы %d, строятся %d") % [int(b3["ready"]), int(b3["busy"])], 10, UiKit.MUTED, 1)
+		sub.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		vb.add_child(sub)
+		var row: = HBoxContainer.new()
+		row.add_theme_constant_override("separation", 6)
+		vb.add_child(row)
+		row.add_child(_small_btn(Loc.t("→ УР.2 · %s") % Economy.cost_text(a["cost"]) if int(a["ready"]) > 0 else Loc.t("→ УР.2 · нет"), "kind_upg:%d:2" % k3, int(a["ready"]) > 0, "gold"))
+		row.add_child(_small_btn(Loc.t("→ УР.3 · %s") % Economy.cost_text(b3["cost"]) if int(b3["ready"]) > 0 else Loc.t("→ УР.3 · нет"), "kind_upg:%d:3" % k3, int(b3["ready"]) > 0, "gold"))
+
+
 func _open_command_old() -> void:
 	var vb: VBoxContainer = _window("Командный центр", "command")
 	panel_kind = "command"
@@ -499,7 +548,7 @@ func _rail_layout() -> void:
 	var fold: Dictionary = {}
 	if want.size() > cap:
 		var drop: int = want.size() - (cap - 1)
-		for k2: String in ["repair_all", "ore", "order_2", "battle_cam", "order_1", "command", "jet_menu", "order_0"]:
+		for k2: String in ["upgrade_kind", "repair_kind", "repair_all", "ore", "order_2", "battle_cam", "order_1", "command", "jet_menu", "order_0"]:
 			if drop <= 0:
 				break
 			for c: Variant in want:
@@ -562,7 +611,7 @@ func _rail_cd(b: Button, bl: Label, frac: float, txt: String) -> void:
 
 
 func _build_cmd() -> void:
-	for it: Array in [["order_0", "icon_order_arty", "АРТУДАР"], ["jet_menu", "icon_attack_jet", "АВИА"], ["order_1", "icon_order_smoke", "ДЫМ"], ["order_2", "icon_aid", "ГОСПИТ."], ["repair_all", "icon_upgrade", "РЕМОНТ"], ["battle_cam", "icon_battle_cam", "БОЙ"], ["command", "icon_op_operation", "ШТАБ"]]:
+	for it: Array in [["order_0", "icon_order_arty", "АРТУДАР"], ["jet_menu", "icon_attack_jet", "АВИА"], ["order_1", "icon_order_smoke", "ДЫМ"], ["order_2", "icon_aid", "ГОСПИТ."], ["repair_all", "icon_upgrade", "РЕМОНТ"], ["repair_kind", "icon_restore", "РЕМ.ТИП"], ["upgrade_kind", "icon_factory", "УЛУЧШ."], ["battle_cam", "icon_battle_cam", "БОЙ"], ["command", "icon_op_operation", "ШТАБ"]]:
 		var key: String = String(it[0])
 		var b: Button = UiKit.slot(String(it[1]), key.begins_with("order_") or key.begins_with("jet_"), 44.0)
 		b.visible = false

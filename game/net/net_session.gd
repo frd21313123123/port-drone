@@ -32,7 +32,7 @@ const CFG_KEYS: Array = ["ranked", "bots", "difficulty", "aggression", "victory"
 ## (_owns); a City may be foreign (attack target). Add new player actions here (docs/NET_ARCH.md §5).
 const ALLOWED: Dictionary = {
 	".cmd_field": -1, ".cmd_build_sub": -1,
-	"mil.build": -1, "mil.build_line": -1, "mil.demolish": -1, "mil.restore": -1, "mil.restore_all": -1,
+	"mil.build": -1, "mil.build_line": -1, "mil.demolish": -1, "mil.restore": -1, "mil.restore_all": -1, "mil.restore_kinds": -1,
 	"mil.set_halted": -1, "mil.set_prod_type": -1, "mil.set_standing": 0, "mil.set_smart": 0,
 	"mil.set_auto_strike": 0, "mil.set_auto_kab": 0, "mil.set_auto_drones": 0, "mil.launch": -1,
 	"mil.launch_multi_ex": -1, "mil.launch_missiles": -1, "mil.launch_missiles_multi": -1,
@@ -50,7 +50,7 @@ const ALLOWED: Dictionary = {
 	"defense.set_ad_rule": -1, "defense.set_ad_preset": -1,  # R335 AD RULES (arg 0 = the author's Country: entity check)
 	"diplo.demand": 0, "diplo.propose_treaty": 0, "diplo.cancel_treaty": 0, "diplo.set_embargo": 0,
 	"diplo.give_aid": 0, "diplo.declare_war": 0, "diplo.propose": 0, "diplo.break_alliance": 0,
-	"econ.upgrade": -1, "econ.set_export": -1, "econ.buy": -1, "econ.sell": -1, "econ.set_trade": 0, "econ.market_order": -1,
+	"econ.upgrade": -1, "econ.upgrade_kinds": -1, "econ.set_export": -1, "econ.buy": -1, "econ.sell": -1, "econ.set_trade": 0, "econ.market_order": -1,
 	"econ.buy_shortfall": -1, "naval.launch_expedition": -1, "recon.launch": 0, ".cmd_recall": 0,
 	"navy.fleet_create": 0, "navy.fleet_assign": 0, "navy.fleet_unassign": 0, "navy.fleet_disband_by": 0, "navy.fleet_style": 0,
 	"navy.art.strike": 0,  # v0.30 NAVY30: ship battery strike (АРТ. УДАР)
