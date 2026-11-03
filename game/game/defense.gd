@@ -70,6 +70,11 @@ const GUN_LOW: int = 6
 const ALERT_S: float = 10.0
 const GUN_LEAD: float = 100.0
 const SAM_THRIFT: int = 1500
+# Salvo sizing: keep launching at a target until its in-flight interceptors reach SALVO_COVER odds of a kill,
+# never more than SALVO_MAX at once. Once every target is covered the battery holds fire.
+const SALVO_COVER: float = 0.9
+const SALVO_LEFT: float = 1.0 - SALVO_COVER
+const SALVO_MAX: int = 8
 const BROKE_GAP: float = 30.0
 
 
@@ -307,12 +312,23 @@ func _targets(f: Facility, sp: Dictionary) -> Array:
 	return out
 
 
-func _taken(t: Object) -> int:
+# Interceptors in flight at t that can still hit (decoyed ones cannot), and the odds t survives all of them.
+func _salvo(t: Object) -> Array:
 	var n: int = 0
+	var miss: float = 1.0
 	for s: Dictionary in shots:
-		if s["target"] == t:
-			n += 1
-	return n
+		if s["target"] != t or s.get("dp") != null:
+			continue
+		n += 1
+		miss *= 1.0 - clampf(float(s["hit"]) / 100.0, 0.0, 1.0)
+	return [n, miss]
+
+
+# True while t still needs another interceptor: in-flight shots leave it above SALVO_LEFT odds of surviving,
+# and the salvo is under SALVO_MAX.
+func _needs_salvo(t: Object) -> bool:
+	var s: Array = _salvo(t)
+	return int(s[0]) < SALVO_MAX and float(s[1]) > SALVO_LEFT
 
 
 func update(dt: float) -> void:
@@ -743,7 +759,6 @@ func _bot_rules() -> void:
 func _pick(f: Facility, c: Country, ts: Array) -> Array:
 	var sam: bool = f.kind == Facility.Kind.AD_SAM or f.kind == Facility.Kind.AD_PATRIOT
 	var thrifty: bool = sam and (c == null or (c.money < SAM_THRIFT and c.missile_stock[Military.MT_SAM] <= 0))
-	var alt: Array = []
 	for pass_i: int in (2 if sam else 1):
 		for t: Array in ts:
 			if sam:
@@ -754,11 +769,9 @@ func _pick(f: Facility, c: Country, ts: Array) -> Array:
 
 					st335["skip_cheap"] = int(st335.get("skip_cheap", 0)) + 1
 					continue
-			if _taken(t[0]) == 0 or int(t[1]) == T_BALLISTIC:
+			if _needs_salvo(t[0]):
 				return t
-			if alt.is_empty():
-				alt = t
-	return alt
+	return []
 
 
 
